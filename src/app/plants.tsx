@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import { NewPlantForm } from "../components/NewPlantForm";
+import { NewPlantForm } from "../components/PlantForm/NewPlantForm";
 
 export default function PlantsScreen() {
   return (

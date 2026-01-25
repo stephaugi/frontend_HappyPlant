@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TextInput } from "react-native";
-import { theme } from "../theme";
+import { theme } from "../../theme";
 
 type Props = {
   labelName: string;
@@ -40,9 +40,9 @@ const styles = StyleSheet.create({
     borderColor: theme.colorTheme1,
     borderWidth: 1,
     backgroundColor: theme.colorTheme1Light,
-    borderRadius: 15,
-    fontSize: 16,
-    fontWeight: "bold",
+    borderRadius: theme.cornerRound,
+    fontSize: theme.formTextSize,
+    fontWeight: theme.formTextWeight,
     paddingHorizontal: 18,
     paddingVertical: 20,
     minWidth: 300,

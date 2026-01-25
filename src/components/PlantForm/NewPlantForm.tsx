@@ -1,10 +1,12 @@
-import { theme } from "../theme";
+import { theme } from "../../theme";
 import { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Text, StyleSheet, TouchableOpacity, Flatlist } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import ControlledTextInput from "./ControlledTextInput";
 import ControlledOption from "./ControlledOption";
 import PhotoSelect from "./PhotoSelect";
+import { convertToAPI } from "../../utils/api/convertData";
+import { getOwnersFromApi, getPlantsFromApi, createPlantFromApi } from "../../utils/api/plantApiCalls";
 
 type Props = {
   name?: string;
@@ -14,7 +16,7 @@ type Props = {
 const kDefaultForm = {
   name: "",
   description: "",
-  desiredMoistureLevel: "",
+  desiredMoistureLevel: 1,
 };
 
 // required_inputs = ["name", "owner_id", "desired_moisture_level"]
@@ -25,15 +27,28 @@ const kDefaultForm = {
 // ]
 
 export function NewPlantForm({ name, isCompleted }: Props) {
-  const [formData, setFormData] = useState(kDefaultForm);
+  const [plantFormData, setPlantFormData] = useState(kDefaultForm);
+  const [plantsData, setPlantsData] = useState("noName");
+  
+  const handleGetPlants = async () => {
+    const allPlants = await getPlantsFromApi();
+    setPlantsData(await allPlants[0].name);
+  };
+  const handleCreatePlant = async (inputData: object) => {
+    const requestBody = convertToAPI(inputData);
+    const newPlant = await createPlantFromApi(requestBody);
+    console.log(newPlant);
+    setPlantsData(await newPlant.name);
+  };
+
   const handleFormChange = (inputName: string, inputValue: string) => {
     console.log(inputName, inputValue);
-    return setFormData((prevFormData) => {
+    return setPlantFormData((prevFormData) => {
       return { ...prevFormData, [inputName]: inputValue };
     });
   };
   const handleSubmit = () => {
-    return console.log(formData);
+    return console.log(plantFormData);
   };
   return (
     <SafeAreaView>
@@ -44,27 +59,33 @@ export function NewPlantForm({ name, isCompleted }: Props) {
           name="name"
           onChangeText={handleFormChange}
           placeholder="Add a name"
-          value={formData["name"]}
+          value={plantFormData["name"]}
         />
         <ControlledTextInput
           labelName="Description"
           name="description"
           onChangeText={handleFormChange}
           placeholder="Write something about your plant"
-          value={formData["description"]}
+          value={plantFormData["description"]}
           textAreaHeight={100}
           textArea={true}
         />
         <ControlledOption
-          moistureLevel={formData.desiredMoistureLevel}
+          moistureLevel={plantFormData.desiredMoistureLevel}
           onSelectOption={handleFormChange}
         />
         <TouchableOpacity
           style={styles.button}
           activeOpacity={0.8}
-          onPress={handleSubmit}
+          onPress={() => handleCreatePlant(plantFormData)}
         >
           <Text style={styles.buttonText}>Submit</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={getOwnersFromApi}>
+          <Text style={{ fontSize: 30, fontWeight: 600 }}>Get all Owners</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleCreatePlant}>
+          <Text style={{ fontSize: 30, fontWeight: 600 }}>{plantsData}</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -76,7 +97,7 @@ const styles = StyleSheet.create({
     borderColor: theme.colorBlue,
     borderWidth: 1,
     backgroundColor: theme.colorBlue,
-    borderRadius: 15,
+    borderRadius: theme.cornerRound,
     padding: 10,
     marginTop: 30,
     width: 100,
@@ -84,8 +105,8 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "#fff",
-    fontSize: 16,
-    fontWeight: "bold",
+    fontSize: theme.formTextSize,
+    fontWeight: theme.formTextWeight,
     textAlign: "center",
   },
   formContainer: {

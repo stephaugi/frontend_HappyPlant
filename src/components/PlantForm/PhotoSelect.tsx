@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TextInput } from "react-native";
-import { theme } from "../theme";
+import { theme } from "../../theme";
 import Feather from "@expo/vector-icons/Feather";
 
 const PhotoSelect = () => {
@@ -16,16 +16,15 @@ const styles = StyleSheet.create({
     borderColor: theme.colorTheme1,
     borderWidth: 1,
     backgroundColor: theme.colorTheme1Light,
-    borderRadius: 15,
-    width: "90%",
+    borderRadius: theme.cornerRound,
     height: 150,
     alignSelf: "center",
     alignItems: "center",
     justifyContent: "center",
   },
   text: {
-    fontSize: 16,
-    fontWeight: "bold",
+    fontSize: theme.formTextSize,
+    fontWeight: theme.formTextWeight,
     minWidth: 300,
     textAlign: "center",
     color: theme.colorTheme1,

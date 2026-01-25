@@ -1,59 +1,63 @@
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Modal } from "react-native";
 
-import { theme } from "../theme";
+import { theme } from "../../theme";
 import { useState } from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
 type Props = {
-  moistureLevel: string;
+  moistureLevel: number;
   onSelectOption: Function;
 };
 
 const optionsList = [
   {
-    value: "Very Dry",
-    label: "moisture_level1",
+    label: "Very Dry",
+    value: 1,
   },
   {
-    value: "Dry",
-    label: "moisture_level2",
+    label: "Dry",
+    value: 2,
   },
   {
-    value: "Normal",
-    label: "moisture_level3",
+    label: "Normal",
+    value: 3,
   },
   {
-    value: "Damp",
-    label: "moisture_level3",
+    label: "Damp",
+    value: 4,
   },
   {
-    value: "Wet",
-    label: "moisture_level3",
+    label: "Wet",
+    value: 5,
   },
   {
-    value: "Very Wet",
-    label: "moisture_level3",
+    label: "Very Wet",
+    value: 6,
   },
 ];
+const moistureScales = ["Very Dry", "Dry", "Normal", "Damp", "Wet", "Very Wet"];
+
 const ControlledOption = ({ moistureLevel, onSelectOption }: Props) => {
   const [expanded, setExpanded] = useState(false);
+
   const toggleExpand = () => {
     return setExpanded((oldState) => !oldState);
   };
   type ItemProps = {
-    title: string;
+    label: string;
+    value: number;
   };
 
-  const Item = ({title}: ItemProps) => (
+  const Item = ({ label, value }: ItemProps) => (
     <TouchableOpacity
       activeOpacity={0.8}
       style={styles.optionItem}
       onPress={() => {
         toggleExpand();
-        return onSelectOption("desiredMoistureLevel", title);
+        return onSelectOption("desiredMoistureLevel", value);
       }}
     >
-      <Text style={styles.optionText}>{title}</Text>
+      <Text style={styles.optionText}>{label}</Text>
     </TouchableOpacity>
   );
   return (
@@ -67,12 +71,12 @@ const ControlledOption = ({ moistureLevel, onSelectOption }: Props) => {
           style={styles.dropDownContainer}
           keyExtractor={(item) => item.value}
           data={optionsList}
-          renderItem={({ item }) => <Item title={item.value} />}
+          renderItem={({ item }) => <Item label={item.label} value={item.value}/>}
           ItemSeparatorComponent={() => <View style={styles.separator} />}
         />
       ) : (
         <View style={styles.dropDownContainer}>
-          <Item title={moistureLevel} />
+          <Item label={moistureScales[moistureLevel-1]} value={moistureLevel}/>
         </View>
       )}
     </View>
@@ -84,9 +88,9 @@ const styles = StyleSheet.create({
     borderColor: theme.colorTheme1,
     borderWidth: 1,
     backgroundColor: theme.colorTheme1Light,
-    borderRadius: 15,
-    fontSize: 16,
-    fontWeight: "bold",
+    borderRadius: theme.cornerRound,
+    fontSize: theme.formTextSize,
+    fontWeight: theme.formTextWeight,
     paddingLeft: 18,
     paddingVertical: 10,
     width: 200,
@@ -106,8 +110,8 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
   },
   optionText: {
-    fontSize: 16,
-    fontWeight: "bold",
+    fontSize: theme.formTextSize,
+    fontWeight: theme.formTextWeight,
   },
   separator: {
     backgroundColor: theme.colorBlue,

@@ -5,4 +5,8 @@ export const theme = {
   colorGrey: "grey",
   colorTheme1: "#c4cbc3",
   colorTheme1Light: "#ededed",
+  cornerRound: 15,
+  subtitleSize: 14,
+  formTextSize: 16,
+  formTextWeight: 800,
 };
