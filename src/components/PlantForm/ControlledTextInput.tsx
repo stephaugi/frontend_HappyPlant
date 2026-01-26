@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colorTheme1Light,
     borderRadius: theme.cornerRound,
     fontSize: theme.formTextSize,
-    fontWeight: theme.formTextWeight,
+    fontWeight: "800",
     paddingHorizontal: 18,
     paddingVertical: 20,
     minWidth: 300,

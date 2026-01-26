@@ -1,5 +1,5 @@
 import { Tabs } from "expo-router";
-import { theme } from "../theme";
+import { theme } from "../../theme";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Feather from "@expo/vector-icons/Feather";
@@ -30,6 +30,7 @@ export default function Layout() {
         name="plants"
         options={{
           title: "My Plants",
+          headerShown: false,
           tabBarIcon: ({ size, color }) => (
             <MaterialCommunityIcons
               name="flower-tulip"

@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: theme.formTextSize,
-    fontWeight: theme.formTextWeight,
+    fontWeight: "800",
     minWidth: 300,
     textAlign: "center",
     color: theme.colorTheme1,

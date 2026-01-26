@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Modal } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, FlatList } from "react-native";
 
 import { theme } from "../../theme";
 import { useState } from "react";
@@ -69,14 +69,19 @@ const ControlledOption = ({ moistureLevel, onSelectOption }: Props) => {
       {expanded ? (
         <FlatList
           style={styles.dropDownContainer}
-          keyExtractor={(item) => item.value}
+          keyExtractor={(item, index) => index}
           data={optionsList}
-          renderItem={({ item }) => <Item label={item.label} value={item.value}/>}
+          renderItem={({ item }) => (
+            <Item label={item.label} value={item.value} />
+          )}
           ItemSeparatorComponent={() => <View style={styles.separator} />}
         />
       ) : (
         <View style={styles.dropDownContainer}>
-          <Item label={moistureScales[moistureLevel-1]} value={moistureLevel}/>
+          <Item
+            label={moistureScales[moistureLevel - 1]}
+            value={moistureLevel}
+          />
         </View>
       )}
     </View>
@@ -90,7 +95,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colorTheme1Light,
     borderRadius: theme.cornerRound,
     fontSize: theme.formTextSize,
-    fontWeight: theme.formTextWeight,
+    fontWeight: "800",
     paddingLeft: 18,
     paddingVertical: 10,
     width: 200,
@@ -111,10 +116,11 @@ const styles = StyleSheet.create({
   },
   optionText: {
     fontSize: theme.formTextSize,
-    fontWeight: theme.formTextWeight,
+    fontWeight: "800",
   },
   separator: {
     backgroundColor: theme.colorBlue,
+    height: 50,
   },
 });
 
