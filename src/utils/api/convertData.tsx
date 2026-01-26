@@ -1,4 +1,4 @@
-const convertToAPI = (objToConvert) => {
+const convertToAPI = (objToConvert: object) => {
   const converted = {};
   for (const [key, value] of Object.entries(objToConvert)) {
     const newKey = key.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
@@ -7,7 +7,7 @@ const convertToAPI = (objToConvert) => {
   return converted;
 };
 
-const convertFromAPI = (objToConvert) => {
+const convertFromAPI = (objToConvert: object) => {
   const converted = {};
   for (const [key, value] of Object.entries(objToConvert)) {
     const newKey = key.replace(/([_][a-z])/g, (match) =>

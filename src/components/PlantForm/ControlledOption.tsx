@@ -46,33 +46,45 @@ const ControlledOption = ({ moistureLevel, onSelectOption }: Props) => {
   type ItemProps = {
     label: string;
     value: number;
+    isFirstItem: boolean;
   };
 
-  const Item = ({ label, value }: ItemProps) => (
-    <TouchableOpacity
-      activeOpacity={0.8}
-      style={styles.optionItem}
-      onPress={() => {
-        toggleExpand();
-        return onSelectOption("desiredMoistureLevel", value);
-      }}
-    >
-      <Text style={styles.optionText}>{label}</Text>
-    </TouchableOpacity>
+  const Item = ({ label, value, isFirstItem }: ItemProps) => (
+    <View>
+      <TouchableOpacity
+        activeOpacity={0.8}
+        style={[
+          styles.optionItem,
+          { flexDirection: "row", justifyContent: "space-between" },
+        ]}
+        onPress={() => {
+          toggleExpand();
+          return onSelectOption("desiredMoistureLevel", value);
+        }}
+      >
+        <Text style={styles.optionText}>{label}</Text>
+        {isFirstItem && (
+          <AntDesign name={expanded ? "caret-up" : "caret-down"} />
+        )}
+      </TouchableOpacity>
+      </View>
   );
   return (
     <View>
-      <TouchableOpacity style={styles.dropDownButton} onPress={toggleExpand}>
+      {/* <TouchableOpacity style={styles.dropDownButton} onPress={toggleExpand}> */}
         <Text style={styles.dropDownButtonText}>Select when to water</Text>
-        <AntDesign name={expanded ? "caret-up" : "caret-down"} />
-      </TouchableOpacity>
+      {/* </TouchableOpacity> */}
       {expanded ? (
         <FlatList
           style={styles.dropDownContainer}
           keyExtractor={(item, index) => index}
           data={optionsList}
           renderItem={({ item }) => (
-            <Item label={item.label} value={item.value} />
+            <Item
+              label={item.label}
+              value={item.value}
+              isFirstItem={item.value === 1 ? true : false}
+            />
           )}
           ItemSeparatorComponent={() => <View style={styles.separator} />}
         />
@@ -81,6 +93,7 @@ const ControlledOption = ({ moistureLevel, onSelectOption }: Props) => {
           <Item
             label={moistureScales[moistureLevel - 1]}
             value={moistureLevel}
+            isFirstItem={true}
           />
         </View>
       )}
@@ -96,7 +109,7 @@ const styles = StyleSheet.create({
     borderRadius: theme.cornerRound,
     fontSize: theme.formTextSize,
     fontWeight: "800",
-    paddingLeft: 18,
+    paddingHorizontal: 18,
     paddingVertical: 10,
     width: 200,
   },
@@ -119,8 +132,8 @@ const styles = StyleSheet.create({
     fontWeight: "800",
   },
   separator: {
-    backgroundColor: theme.colorBlue,
-    height: 50,
+    // backgroundColor: theme.colorBlue,
+    height: 10,
   },
 });
 
