@@ -34,7 +34,6 @@ const ControlledTextInput = ({
 const styles = StyleSheet.create({
   textInputContainer: {
     marginVertical: 10,
-    // marginHorizontal: 10,
   },
   textInput: {
     borderColor: theme.colorTheme1,

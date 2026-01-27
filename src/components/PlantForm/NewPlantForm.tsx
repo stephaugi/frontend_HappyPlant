@@ -1,12 +1,12 @@
 import { theme } from "../../theme";
 import { useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import ControlledTextInput from "./ControlledTextInput";
 import ControlledOption from "./ControlledOption";
 import PhotoSelect from "./PhotoSelect";
 import { convertToAPI } from "../../utils/api/convertData";
-import { getOwnersFromApi, getPlantsFromApi, createPlantFromApi } from "../../utils/api/plantApiCalls";
+import { useRouter } from "expo-router";
+import { createPlantFromApi } from "../../utils/api/plantApiCalls";
 
 type Props = {
   name?: string;
@@ -28,27 +28,17 @@ const kDefaultForm = {
 
 export function NewPlantForm({ name, isCompleted }: Props) {
   const [plantFormData, setPlantFormData] = useState(kDefaultForm);
-  const [plantsData, setPlantsData] = useState("noName");
-
-  const handleGetPlants = async () => {
-    const allPlants = await getPlantsFromApi();
-    setPlantsData(await allPlants[0].name);
-  };
+  const router = useRouter();
   const handleCreatePlant = async (inputData: object) => {
     const requestBody = convertToAPI(inputData);
     const newPlant = await createPlantFromApi(requestBody);
-    console.log(newPlant);
-    setPlantsData(await newPlant.name);
+    router.back();
   };
 
   const handleFormChange = (inputName: string, inputValue: string) => {
-    console.log(inputName, inputValue);
     return setPlantFormData((prevFormData) => {
       return { ...prevFormData, [inputName]: inputValue };
     });
-  };
-  const handleSubmit = () => {
-    return console.log(plantFormData);
   };
   return (
     <View style={styles.formContainer}>
@@ -79,12 +69,6 @@ export function NewPlantForm({ name, isCompleted }: Props) {
         onPress={() => handleCreatePlant(plantFormData)}
       >
         <Text style={styles.buttonText}>Submit</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={getOwnersFromApi}>
-        <Text style={{ fontSize: 30, fontWeight: 600 }}>Get all Owners</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleCreatePlant}>
-        <Text style={{ fontSize: 30, fontWeight: 600 }}>{plantsData}</Text>
       </TouchableOpacity>
     </View>
   );

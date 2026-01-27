@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from "react-native";
-
+import { DropdownMenu } from "../DropDownMenu/DropDownMenu";
+import { MenuOption } from "../DropDownMenu/MenuOption";
 import { theme } from "../../theme";
 import { useState } from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -38,102 +39,65 @@ const optionsList = [
 const moistureScales = ["Very Dry", "Dry", "Normal", "Damp", "Wet", "Very Wet"];
 
 const ControlledOption = ({ moistureLevel, onSelectOption }: Props) => {
-  const [expanded, setExpanded] = useState(false);
+  const [visible, setVisible] = useState(false);
 
-  const toggleExpand = () => {
-    return setExpanded((oldState) => !oldState);
-  };
-  type ItemProps = {
-    label: string;
-    value: number;
-    isFirstItem: boolean;
-  };
-
-  const Item = ({ label, value, isFirstItem }: ItemProps) => (
-    <View>
-      <TouchableOpacity
-        activeOpacity={0.8}
-        style={[
-          styles.optionItem,
-          { flexDirection: "row", justifyContent: "space-between" },
-        ]}
-        onPress={() => {
-          toggleExpand();
-          return onSelectOption("desiredMoistureLevel", value);
+  const caretToggle = <AntDesign name={visible ? "caret-up" : "caret-down"} />;
+  const menuItems = optionsList.map((item, index) => {
+    return (
+      <MenuOption
+        key={`${item.label}${index}`}
+        onSelect={() => {
+          setVisible((prevVisible) => !prevVisible);
+          return onSelectOption("desiredMoistureLevel", item.value);
         }}
       >
-        <Text style={styles.optionText}>{label}</Text>
-        {isFirstItem && (
-          <AntDesign name={expanded ? "caret-up" : "caret-down"} />
-        )}
-      </TouchableOpacity>
-      </View>
-  );
-  return (
-    <View>
-      {/* <TouchableOpacity style={styles.dropDownButton} onPress={toggleExpand}> */}
-        <Text style={styles.dropDownButtonText}>Select when to water</Text>
-      {/* </TouchableOpacity> */}
-      {expanded ? (
-        <FlatList
-          style={styles.dropDownContainer}
-          keyExtractor={(item, index) => index}
-          data={optionsList}
-          renderItem={({ item }) => (
-            <Item
-              label={item.label}
-              value={item.value}
-              isFirstItem={item.value === 1 ? true : false}
-            />
-          )}
-          ItemSeparatorComponent={() => <View style={styles.separator} />}
-        />
-      ) : (
-        <View style={styles.dropDownContainer}>
-          <Item
-            label={moistureScales[moistureLevel - 1]}
-            value={moistureLevel}
-            isFirstItem={true}
-          />
+        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+          <Text style={styles.menuItemText}>{item.label}</Text>
+          {item.value === 1 ? caretToggle : null}
         </View>
-      )}
-    </View>
+      </MenuOption>
+    );
+  });
+  return (<>
+      <View style={styles.dropDownContainer}>
+        <DropdownMenu
+          visible={visible}
+          handleOpen={() => setVisible(true)}
+          handleClose={() => setVisible(false)}
+          trigger={
+            <View style={[styles.menu, { flexDirection: "row", alignItems: "center", justifyContent: "space-between" }]}>
+              <Text style={styles.menuItemText}>{moistureScales[moistureLevel - 1]}</Text>
+              {caretToggle}
+            </View>
+          }
+        >
+          {menuItems}
+        </DropdownMenu>
+      </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   dropDownContainer: {
+    alignItems: "left",
+  },
+  menu: {
     borderColor: theme.colorTheme1,
     borderWidth: 1,
     backgroundColor: theme.colorTheme1Light,
     borderRadius: theme.cornerRound,
+    padding: 10,
+    elevation: 4,
+    width: 300,
+  },
+  menuItemText: {
     fontSize: theme.formTextSize,
     fontWeight: "800",
-    paddingHorizontal: 18,
-    paddingVertical: 10,
-    width: 200,
   },
-  dropDownButton: {
-    // backgroundColor: theme.colorLightGrey,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 10,
-  },
-  dropDownButtonText: {
-    // backgroundColor: theme.colorGrey,
+  label: {
     paddingBottom: 10,
-  },
-  optionItem: {
-    // paddingVertical: 10,
-    paddingLeft: 20,
-  },
-  optionText: {
-    fontSize: theme.formTextSize,
-    fontWeight: "800",
-  },
-  separator: {
-    // backgroundColor: theme.colorBlue,
-    height: 10,
+    fontSize: 14,
   },
 });
 
