@@ -1,14 +1,12 @@
 import { StyleSheet, Text, View } from "react-native";
 import { theme } from "../../theme";
+import WaterCalendar from "../../components/Calendar/WaterCalendar";
 
 export default function CalendarScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.calendar}>
-        <Text>Calendar</Text>
-      </View>
-      <View style={styles.agenda}>
-        <Text>Agenda</Text>
+        <WaterCalendar />
       </View>
     </View>
   );

@@ -22,6 +22,8 @@ import { useState } from "react";
 import ControlledTextInput from "../PlantForm/ControlledTextInput";
 import ControlledOption from "../PlantForm/ControlledOption";
 import PhotoSelect from "../PlantForm/PhotoSelect";
+import AntDesign from "@expo/vector-icons/AntDesign";
+
 
 const PlantProfileComponent = ({ plantData }) => {
   const [visible, setVisible] = useState(false);
@@ -57,15 +59,6 @@ const PlantProfileComponent = ({ plantData }) => {
     // </View>
 
     <View style={styles.profileContainer}>
-      <TouchableOpacity
-        style={{ backgroundColor: theme.colorBlue, padding: 20 }}
-        onPress={() => {
-          setEditMode(prevEditMode => !prevEditMode);
-          console.log(plantFormData);
-        }}>
-        <Text>Edit!</Text>
-      </TouchableOpacity>
-      <PhotoSelect />
       {editMode ? (<>
           <ControlledTextInput
             labelName=""
@@ -88,15 +81,19 @@ const PlantProfileComponent = ({ plantData }) => {
         <>
           <View style={styles.textInputContainer}>
             <Text style={styles.textInput}>{plantFormData["name"]}</Text>
+            <TouchableOpacity
+              style={styles.editButton}
+              onPress={() => {
+                setEditMode(prevEditMode => !prevEditMode);
+                console.log(plantFormData);
+              }}>
+              <AntDesign name="edit" size={24} color="black" />
+            </TouchableOpacity>
+            <PhotoSelect />
             <Text style={[styles.profileBody, { paddingLeft: 30, paddingVertical: 20 }]}>{plantFormData["description"]}</Text>
             <Text style={styles.label}>When to water</Text>
             <ControlledOption
               moistureLevel={plantFormData.desiredMoistureLevel}
-              onSelectOption={handleFormChange}
-            />
-            <Text style={styles.label}>Today's moisture level</Text>
-            <ControlledOption
-              moistureLevel={plantFormData.currentMoistureLevel}
               onSelectOption={handleFormChange}
             />
           </View>
@@ -122,6 +119,14 @@ const styles = StyleSheet.create({
     height: 600,
     marginHorizontal: 20,
     borderRadius: 16,
+  },
+  editButton: {
+    backgroundColor: theme.colorBlue,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    alignItems: "center",
+    justifyContent: "center",
   },
   textContainer: {
     borderColor: theme.colorTheme1,

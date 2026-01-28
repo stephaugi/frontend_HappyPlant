@@ -1,9 +1,10 @@
 import { StyleSheet, Text, View } from "react-native";
+import MoistureTracker from "../../components/MoistureTracker/MoistureTracker";
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Tracking Page!</Text>
+      <MoistureTracker />
     </View>
   );
 }

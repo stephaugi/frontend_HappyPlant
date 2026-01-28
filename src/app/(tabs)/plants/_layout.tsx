@@ -2,6 +2,7 @@ import { Stack, Link } from "expo-router";
 import { Pressable, TouchableOpacity, View } from "react-native";
 import { useState, useEffect } from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { getPlantsFromApi, createPlantFromApi } from "../../../utils/api/plantApiCalls";
 import { convertToAPI } from "../../../utils/api/convertData";
 import { MenuOption } from "../../../components/DropDownMenu/MenuOption";
@@ -51,7 +52,7 @@ export default function Layout() {
           title: "My Plant",
           headerRight: () => {
             return (<TouchableOpacity hitSlop={20}>
-                <AntDesign name="edit" size={24} color="black" />
+                <FontAwesome6 name="trash" size={24} color="black" />
               </TouchableOpacity>)
           },
         }}
