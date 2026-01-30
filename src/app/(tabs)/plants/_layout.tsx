@@ -3,13 +3,41 @@ import { Pressable, TouchableOpacity, View } from "react-native";
 import { useState, useEffect } from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
-import { getPlantsFromApi, createPlantFromApi } from "../../../utils/api/plantApiCalls";
-import { convertToAPI } from "../../../utils/api/convertData";
-import { MenuOption } from "../../../components/DropDownMenu/MenuOption";
-import { DropdownMenu } from "../../../components/DropDownMenu/DropDownMenu";
+import { getFromStorage } from "../../../utils/storage";
+import { deletePlant } from "../../../utils/plantActions";
+import { useRouter } from "expo-router";
+import { Alert } from "react-native";
 
 export default function Layout() {
   const [visible, setVisible] = useState(false);
+  const router = useRouter();
+
+  const handleDeletePlant = async () => {
+    const fetchCurrentPlant = async () => {
+      return await getFromStorage("currentSelectedPlant");
+    };
+
+    const plantData = await fetchCurrentPlant();
+    const asyncDelete = () => {
+      deletePlant(plantData.id).then(() => router.back());
+    };
+    Alert.alert("Delete a Plant", `Are you sure you want to delete ${plantData.name}?`,
+      [
+        {
+          text: "cancel",
+          onPress: () => console.log("action canceled"),
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: () => {
+            asyncDelete();
+          },
+          style: "destructive",
+        },
+      ],
+    );
+  };
   // const [plantsData, setPlantsData] = useState([]);
   // const getPlants = async () => {
   //   setPlantsData(await getPlantsFromApi());
@@ -51,7 +79,7 @@ export default function Layout() {
         options={{
           title: "My Plant",
           headerRight: () => {
-            return (<TouchableOpacity hitSlop={20}>
+            return (<TouchableOpacity hitSlop={20} onPress={handleDeletePlant}>
                 <FontAwesome6 name="trash" size={24} color="black" />
               </TouchableOpacity>)
           },

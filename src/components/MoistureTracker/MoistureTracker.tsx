@@ -32,13 +32,39 @@ const optionsList = [
 ];
 
 const kDefaultForm = {
+  timeStamp: "",
   moistureLevel: null,
   watered: false,
 };
 
+const moistureLogInfo = {
+  4: {
+    "2026-01-29": {
+      id: 3,
+      moistureLevel: 3,
+    },
+    "2026-01-25": {
+      id: null,
+      moistureLevel: 4,
+    },
+  },
+  5: {
+    "2026-01-29": {
+      id: 3,
+      moistureLevel: 3,
+    },
+    "2026-01-25": {
+      id: null,
+      moistureLevel: 4,
+    },
+  },
+}
+
 const MoistureTracker = () => {
-  const [selectedDay, setSelectedDay] = useState(null);
+  const [selectedDay, setSelectedDay] = useState({selectedDate: "2026-01-29"});
   const [selectedButton, setSelectedButton] = useState(null);
+  const [moistureWaterLogs, setMoistureWaterlogs] = useState();
+  
   const [formData, setFormData] = useState(kDefaultForm);
 
   const handleFormChange = (inputName: string, inputValue: any) => {
@@ -77,6 +103,17 @@ const MoistureTracker = () => {
   return (<>
       <CalendarProvider date="2026-01-27">
         <ExpandableCalendar
+          onDayPress={(day) => {
+            setSelectedDay({selectedDate: day.dateString});
+          }}
+          markedDates={{
+            [selectedDay]: {
+              selected: true,
+              disableTouchEvent: true,
+              selectedColor: '#F1EFFE',
+              selectedTextColor: '#7954FA',
+            },
+          }}
         // horizontal={true}
         />
         <View style={styles.trackerContainer}>

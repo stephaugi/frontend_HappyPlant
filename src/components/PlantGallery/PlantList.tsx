@@ -8,10 +8,9 @@ import PlantCard from "./PlantCard";
 
 type Props = {
   plantsData: any[];
-  onSelect: Function;
 };
 
-const PlantList = ({ plantsData, onSelect }: Props) => {
+const PlantList = ({ plantsData }: Props) => {
   // const plantData = [
   //   {
   //     name: "jellybean",
@@ -28,7 +27,11 @@ const PlantList = ({ plantsData, onSelect }: Props) => {
         keyExtractor={(item) => item.id}
         data={plantsData}
         renderItem={({ item }) => {
-          return <PlantCard plantData={item} onSelect={onSelect} />;
+          return (
+            <PlantCard
+              plantData={item}
+            />
+          );
         }}
         ItemSeparatorComponent={() => {
           return <View style={{ height: 20 }} />;

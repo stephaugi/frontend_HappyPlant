@@ -9,8 +9,10 @@ export default function Layout() {
   return (
     <Tabs screenOptions={{ tabBarActiveTintColor: theme.colorBlue }}>
       <Tabs.Screen
+
         name="calendar"
         options={{
+          headerShown: false,
           title: "Calendar",
           tabBarIcon: ({ size, color }) => (
             <FontAwesome5 name="calendar-alt" size={size} color={color} />
@@ -20,6 +22,7 @@ export default function Layout() {
       <Tabs.Screen
         name="index"
         options={{
+          headerShown: false,
           title: "Track",
           tabBarIcon: ({ size, color }) => (
             <Feather name="plus-circle" size={size} color={color} />

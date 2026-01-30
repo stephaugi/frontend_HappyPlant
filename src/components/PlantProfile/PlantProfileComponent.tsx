@@ -14,26 +14,62 @@
 // plants api call from owners/<user_id>/plants
 // each plant card shows the name of the plant, picture, happy or sad face icon.
 // clicks to go to profile page with more info on plant. Use the current plant for the profile info
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import { theme } from "../../theme";
 import { updatePlantFromApi } from "../../utils/api/plantApiCalls";
+import React, { useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import { useLocalSearchParams } from 'expo-router';
+
+import AntDesign from "@expo/vector-icons/AntDesign";
+import { FontAwesome6 } from "@expo/vector-icons";
 import { convertToAPI, convertFromAPI } from "../../utils/api/convertData";
-import { useState } from "react";
+import { deletePlant } from "../../utils/plantActions";
 import ControlledTextInput from "../PlantForm/ControlledTextInput";
 import ControlledOption from "../PlantForm/ControlledOption";
 import PhotoSelect from "../PlantForm/PhotoSelect";
-import AntDesign from "@expo/vector-icons/AntDesign";
+import { saveToStorage, getFromStorage } from "../../utils/storage";
 
+const PlantProfileComponent = () => {
+  // const selectedPlant = useLocalSearchParams();
+  const [plantFormData, setPlantFormData] = useState({});
+  const [plantsData, setPlantsData] = useState([]);
+  useFocusEffect(
+    React.useCallback(() => {
+      // Do something when the screen is focused
+      // const saveSelectedPlant = async (selectedPlant: object) => {
+      //   await saveToStorage("currentSelectedPlant", selectedPlant);
+      // };
+      // saveSelectedPlant(selectedPlant);
+      async function getPlants() {
+        setPlantsData(await getFromStorage("plantsData"));
+        setPlantFormData(await getFromStorage("currentSelectedPlant"));
+      }
+      getPlants();
+      return () => {
+        // Do something when the screen is unfocused
+        // Useful for cleanup functions
+      };
+    }, [])
+  );
 
-const PlantProfileComponent = ({ plantData }) => {
-  const [visible, setVisible] = useState(false);
-  const [editMode, setEditMode] = useState(false);
-  const [plantFormData, setPlantFormData] = useState(plantData);
+  const handleUpdatePlant = (inputData: object, plantFormData: any[]) => {
+    const updatePlant = async (inputData: object, plantFormData: any[]) => {
+      const requestBody = convertToAPI({ ...inputData });
+      const response = convertFromAPI(await updatePlantFromApi(requestBody));
+      setPlantFormData(response);
 
-  const handleUpdatePlant = async (inputData: object) => {
-    const requestBody = convertToAPI(inputData);
-    const newPlant = convertFromAPI(await updatePlantFromApi(requestBody));
-    setPlantFormData(newPlant);
+      const newPlantData = plantsData.map((plant) => {
+        if (plant.id === plantFormData.id) {
+          return plant;
+        } else {
+          return plant;
+        }
+      });
+      saveToStorage("plantsData", newPlantData);
+    };
+    updatePlant(inputData, plantsData);
+    Alert.alert("Saved!");
   };
 
   const handleFormChange = (inputName: string, inputValue: string) => {
@@ -43,66 +79,35 @@ const PlantProfileComponent = ({ plantData }) => {
   };
 
   return (
-    // <View style={styles.profileContainer}>
-    //   {plantData.photo ? (
-    //     <Text>show photo</Text>
-    //   ) : (
-    //     <View style={styles.textContainer}>
-    //       <Feather name="image" size={24} color={theme.colorTheme1} />
-    //     </View>
-    //   )}
-    //   <Text style={styles.text}>{plantData.name}</Text>
-    //   <Text style={styles.profileBody}>{plantData.description}</Text>
-    //   <Text style={styles.text}>{plantData.desiredMoistureLevel}</Text>
-    //   <Text style={styles.text}>{plantData.currentMoistureLevel}</Text>
-
-    // </View>
-
     <View style={styles.profileContainer}>
-      {editMode ? (<>
-          <ControlledTextInput
-            labelName=""
-            name="name"
-            onChangeText={handleFormChange}
-            placeholder="Add a name"
-            value={plantFormData["name"]}
-          />
-          <ControlledTextInput
-            labelName=""
-            name="description"
-            onChangeText={handleFormChange}
-            placeholder="Write something about your plant"
-            value={plantFormData["description"]}
-            textAreaHeight={100}
-            textArea={true}
-          />
-        </>
-      ) : (
-        <>
-          <View style={styles.textInputContainer}>
-            <Text style={styles.textInput}>{plantFormData["name"]}</Text>
-            <TouchableOpacity
-              style={styles.editButton}
-              onPress={() => {
-                setEditMode(prevEditMode => !prevEditMode);
-                console.log(plantFormData);
-              }}>
-              <AntDesign name="edit" size={24} color="black" />
-            </TouchableOpacity>
-            <PhotoSelect />
-            <Text style={[styles.profileBody, { paddingLeft: 30, paddingVertical: 20 }]}>{plantFormData["description"]}</Text>
-            <Text style={styles.label}>When to water</Text>
-            <ControlledOption
-              moistureLevel={plantFormData.desiredMoistureLevel}
-              onSelectOption={handleFormChange}
-            />
-          </View>
-        </>
-      )}
+
+      <ControlledTextInput
+        labelName="Name"
+        name="name"
+        onChangeText={handleFormChange}
+        placeholder="Add a name"
+        value={plantFormData["name"]}
+      />
+      <PhotoSelect />
+      <ControlledTextInput
+        labelName="Description"
+        name="description"
+        onChangeText={handleFormChange}
+        placeholder="Write something about your plant"
+        value={plantFormData["description"]}
+        textAreaHeight={100}
+        textArea={true}
+      />
+      <Text style={styles.label}>When to water</Text>
+      <ControlledOption
+        moistureLevel={plantFormData.desiredMoistureLevel}
+        onSelectOption={handleFormChange}
+      />
+
       <TouchableOpacity
         style={styles.button}
         activeOpacity={0.8}
-        onPress={() => handleUpdatePlant(plantFormData)}
+        onPress={() => handleUpdatePlant(plantFormData, plantsData)}
       >
         <Text style={styles.buttonText}>Save</Text>
       </TouchableOpacity>

@@ -59,6 +59,7 @@ export function NewPlantForm({ name, isCompleted }: Props) {
         textAreaHeight={100}
         textArea={true}
       />
+      <Text>When to water</Text>
       <ControlledOption
         moistureLevel={plantFormData.desiredMoistureLevel}
         onSelectOption={handleFormChange}

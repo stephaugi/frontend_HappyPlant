@@ -39,7 +39,7 @@ const updatePlantFromApi = async (requestBody) => {
   try {
     const requestUrl = `http://127.0.0.1:5000/plants/${requestBody.id}`;
     const response = await fetch(requestUrl, {
-      method: "PUT",
+      method: "PATCH",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -53,9 +53,27 @@ const updatePlantFromApi = async (requestBody) => {
   }
 };
 
+const deletePlantFromApi = async (id) => {
+  try {
+    const requestUrl = `http://127.0.0.1:5000/plants/${id}`;
+    const response = await fetch(requestUrl, {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+    // const newPlant = await response.json();
+    // return newPlant;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export {
   getOwnersFromApi,
   getPlantsFromApi,
   createPlantFromApi,
   updatePlantFromApi,
+  deletePlantFromApi,
 };

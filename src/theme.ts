@@ -6,7 +6,7 @@ export const theme = {
   colorTheme1: "#c4cbc3",
   colorTheme1Light: "#ededed",
   cornerRound: 10,
-  subtitleSize: 14,
+  subtitleSize: 12,
   formTextSize: 16,
   formTextWeight: 800,
 };

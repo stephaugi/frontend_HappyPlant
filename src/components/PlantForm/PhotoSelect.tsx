@@ -1,15 +1,18 @@
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from "react-native";
 import { theme } from "../../theme";
 import Feather from "@expo/vector-icons/Feather";
+import ImageSelector from "./ImageSelector";
 
 const PhotoSelect = () => {
-  return (
-    <TouchableOpacity onPress={() => console.log("Select an image!")}>
+  return (<>
+    <ImageSelector />
+    {/* <TouchableOpacity onPress={() => console.log("Select an image!")}>
       <View style={styles.textContainer}>
         <Text style={styles.text}>Select a Photo</Text>
         <Feather name="image" size={24} color={theme.colorTheme1} />
       </View>
-    </TouchableOpacity>
+    </TouchableOpacity> */}
+    </>
   );
 };
 
