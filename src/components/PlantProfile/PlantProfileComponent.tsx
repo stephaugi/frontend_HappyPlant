@@ -19,15 +19,10 @@ import { theme } from "../../theme";
 import { updatePlantFromApi } from "../../utils/api/plantApiCalls";
 import React, { useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
-import { useLocalSearchParams } from 'expo-router';
-
-import AntDesign from "@expo/vector-icons/AntDesign";
-import { FontAwesome6 } from "@expo/vector-icons";
+import ImageSelector from "../PlantForm/ImageSelector";
 import { convertToAPI, convertFromAPI } from "../../utils/api/convertData";
-import { deletePlant } from "../../utils/plantActions";
 import ControlledTextInput from "../PlantForm/ControlledTextInput";
 import ControlledOption from "../PlantForm/ControlledOption";
-import PhotoSelect from "../PlantForm/PhotoSelect";
 import { saveToStorage, getFromStorage } from "../../utils/storage";
 
 const PlantProfileComponent = () => {
@@ -80,7 +75,6 @@ const PlantProfileComponent = () => {
 
   return (
     <View style={styles.profileContainer}>
-
       <ControlledTextInput
         labelName="Name"
         name="name"
@@ -88,7 +82,11 @@ const PlantProfileComponent = () => {
         placeholder="Add a name"
         value={plantFormData["name"]}
       />
-      <PhotoSelect />
+      <ImageSelector
+        onSelectImage={handleFormChange}
+        selectedImage={plantFormData["photo"]}
+      />
+
       <ControlledTextInput
         labelName="Description"
         name="description"
@@ -120,7 +118,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 22,
     paddingVertical: 20,
-    backgroundColor: theme.colorLightBlue,
+    // backgroundColor: theme.colorLightBlue,
     height: 600,
     marginHorizontal: 20,
     borderRadius: 16,

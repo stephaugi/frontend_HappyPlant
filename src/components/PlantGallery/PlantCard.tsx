@@ -2,7 +2,7 @@
 // plants api call from owners/<user_id>/plants
 // each plant card shows the name of the plant, picture, happy or sad face icon.
 // clicks to go to profile page with more info on plant. Use the current plant for the profile info
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { saveToStorage } from "../../utils/storage";
 import { useRouter } from "expo-router";
 import { theme } from "../../theme";
@@ -29,9 +29,17 @@ const PlantCard = ({ plantData }: Props) => {
   return (
     <TouchableOpacity onPress={() => handleSelectPlant(plantData)}>
       <View style={styles.plantCardContainer}>
-        <Text style={styles.plantCardText}>{plantData.name}</Text>
-        <Text style={styles.plantSubtitle}>{plantData.description}</Text>
-        <Text style={styles.plantBold}>When to water: {moistureScales[plantData.desiredMoistureLevel-1]}</Text>
+        <View style={styles.textContainer}>
+          <Text style={styles.plantCardText}>{plantData.name}</Text>
+          <Text style={styles.plantSubtitle}>{plantData.description}</Text>
+          <Text style={styles.plantBold}>When to water: {moistureScales[plantData.desiredMoistureLevel-1]}</Text>
+        </View>
+        <View style={styles.photoContainer}>
+          {plantData.photo && <Image source={{ uri: plantData.photo }}
+            style={styles.image}
+            resizeMode="cover"
+          />}
+        </View>
       </View>
     </TouchableOpacity>
   );
@@ -44,6 +52,18 @@ const styles = StyleSheet.create({
     height: 100,
     marginHorizontal: 20,
     borderRadius: 16,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  image: {
+    // alignSelf: "center",
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+  },
+  textContainer: {
+    width: 200,
   },
   plantCardText: {
     fontSize: theme.formTextSize,

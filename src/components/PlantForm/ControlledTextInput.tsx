@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     fontSize: theme.formTextSize,
     fontWeight: "800",
     paddingHorizontal: 18,
-    paddingVertical: 20,
+    paddingVertical: 10,
     minWidth: 300,
   },
   label: {

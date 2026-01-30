@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import ControlledTextInput from "./ControlledTextInput";
 import ControlledOption from "./ControlledOption";
 import PhotoSelect from "./PhotoSelect";
+import ImageSelector from "./ImageSelector";
 import { convertToAPI } from "../../utils/api/convertData";
 import { useRouter } from "expo-router";
 import { createPlantFromApi } from "../../utils/api/plantApiCalls";
@@ -17,14 +18,8 @@ const kDefaultForm = {
   name: "",
   description: "",
   desiredMoistureLevel: 1,
+  photo: "",
 };
-
-// required_inputs = ["name", "owner_id", "desired_moisture_level"]
-// optional_params = [
-// "description",
-// "photo",
-// "current_moisture_level"
-// ]
 
 export function NewPlantForm({ name, isCompleted }: Props) {
   const [plantFormData, setPlantFormData] = useState(kDefaultForm);
@@ -42,13 +37,16 @@ export function NewPlantForm({ name, isCompleted }: Props) {
   };
   return (
     <View style={styles.formContainer}>
-      <PhotoSelect />
       <ControlledTextInput
         labelName="Name"
         name="name"
         onChangeText={handleFormChange}
         placeholder="Add a name"
         value={plantFormData["name"]}
+      />
+      <ImageSelector
+        onSelectImage={handleFormChange}
+        selectedImage={plantFormData["photo"]}
       />
       <ControlledTextInput
         labelName="Description"
