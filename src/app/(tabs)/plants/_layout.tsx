@@ -62,7 +62,14 @@ export default function Layout() {
           title: "Plants",
           headerRight: () => {
             return (
-              <View style={{ alignItems: "center", justifyContent: "center" }}>
+              <View
+                style={{
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: 36,
+                  height: 36,
+                }}
+              >
                 <Link href="plants/newPlant" asChild>
                   <TouchableOpacity hitSlop={20}>
                     <AntDesign name="plus" size={24} color="black" />
@@ -79,9 +86,18 @@ export default function Layout() {
         options={{
           title: "My Plant",
           headerRight: () => {
-            return (<TouchableOpacity hitSlop={20} onPress={handleDeletePlant}>
-                <FontAwesome6 name="trash" size={24} color="black" />
-              </TouchableOpacity>)
+            return (<View
+                style={{
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: 36,
+                  height: 36,
+                }}
+              >
+                <TouchableOpacity hitSlop={20} onPress={handleDeletePlant}>
+                  <FontAwesome6 name="trash" size={24} color="black" />
+                </TouchableOpacity>
+              </View>)
           },
         }}
       />
