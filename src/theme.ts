@@ -1,6 +1,10 @@
+import { StyleSheet } from "react-native";
+
 export const theme = {
-  colorBlue: "#3c8bf3",
-  colorLightBlue: "#b1cef3",
+  colorWhite: "#fff",
+  colorBlack: "#000",
+  colorBlue: "#2a8692",
+  colorLightBlue: "#a8f3e5",
   colorLightGrey: "#eee",
   colorGrey: "grey",
   colorTheme1: "#c4cbc3",
@@ -10,3 +14,62 @@ export const theme = {
   formTextSize: 16,
   formTextWeight: 800,
 };
+
+export const uiStyles = StyleSheet.create({
+  buttons: {
+    padding: 12,
+    maxWidth: "100%",
+    alignSelf: "center",
+  },
+  roundCorner: {
+    borderRadius: 15,
+  },
+  pill: {
+    borderRadius: 50,
+  },
+  centerAlign: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
+
+export const fontStyles = StyleSheet.create({
+  header: {
+    fontSize: 20,
+    fontWeight: "800",
+  },
+  tinyDescription: {
+    fontSize: 12,
+    fontWeight: "300",
+  },
+  emphasis: {
+    fontSize: 12,
+    fontWeight: "600",
+  },
+  buttonLarge: {
+    fontSize: 16,
+    fontWeight: "400",
+  },
+  buttonBold: {
+    fontSize: 16,
+    fontWeight: "800",
+  },
+  spacing: {
+    letterSpacing: 1,
+  }
+});
+
+export const colorStyles = StyleSheet.create({
+  colorTheme1: {
+    backgroundColor: theme.colorBlue,
+    color: theme.colorWhite,
+  },
+  colorTheme2: {
+    backgroundColor: theme.colorLightGrey,
+    color: theme.colorBlack,
+  },
+  selectedColorTheme1: {
+    backgroundColor: theme.colorLightBlue,
+    color: theme.colorBlack,
+  },
+});

@@ -1,5 +1,10 @@
-import React, { useRef, useEffect, useState, ReactNode } from "react";
-import { View, Modal, StyleSheet, TouchableWithoutFeedback } from "react-native";
+import React, { useRef, useEffect, useState } from "react";
+import {
+  View,
+  Modal,
+  StyleSheet,
+  TouchableWithoutFeedback,
+} from "react-native";
 import { theme } from "../../theme";
 
 interface DropdownMenuProps {
@@ -20,7 +25,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
   dropdownWidth = 300,
 }) => {
   const triggerRef = useRef<View>(null);
-  const [position, setPosition] = useState({x: 0, y: 0, width: 0});
+  const [position, setPosition] = useState({ x: 0, y: 0, width: 0 });
 
   useEffect(() => {
     if (triggerRef.current && visible) {

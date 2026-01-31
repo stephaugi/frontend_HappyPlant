@@ -45,11 +45,11 @@ const WaterCalendar = () => {
           label="Upcoming Waterings"
           dateList={[
             {
-              date: "2026-01-28", 
+              date: "2026-01-28",
               name: "water jimmy",
             },
             {
-              date: "2026-01-30", 
+              date: "2026-01-30",
               name: "water xiaomao",
             },
           ]}

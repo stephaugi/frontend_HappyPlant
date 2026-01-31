@@ -3,11 +3,11 @@ import { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import ControlledTextInput from "./ControlledTextInput";
 import ControlledOption from "./ControlledOption";
-import PhotoSelect from "./PhotoSelect";
 import ImageSelector from "./ImageSelector";
 import { convertToAPI } from "../../utils/api/convertData";
 import { useRouter } from "expo-router";
 import { createPlantFromApi } from "../../utils/api/plantApiCalls";
+import CustomButton from "../UI/CustomButton";
 
 type Props = {
   name?: string;
@@ -47,7 +47,7 @@ export function NewPlantForm({ name, isCompleted }: Props) {
       <ImageSelector
         onSelectImage={handleFormChange}
         selectedImage={plantFormData["photo"]}
-      />
+        />
       <ControlledTextInput
         labelName="Description"
         name="description"
@@ -62,13 +62,20 @@ export function NewPlantForm({ name, isCompleted }: Props) {
         moistureLevel={plantFormData.desiredMoistureLevel}
         onSelectOption={handleFormChange}
       />
-      <TouchableOpacity
+      <CustomButton
+      label="Submit"
+      pill={true}
+      fontStyle="buttonBold"
+      onPress={() => handleCreatePlant(plantFormData)}
+      />
+      
+      {/* <TouchableOpacity
         style={styles.button}
         activeOpacity={0.8}
         onPress={() => handleCreatePlant(plantFormData)}
       >
         <Text style={styles.buttonText}>Submit</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 }

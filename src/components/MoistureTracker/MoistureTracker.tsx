@@ -1,7 +1,8 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import CustomButton from "../UI/CustomButton";
 import { CalendarProvider, ExpandableCalendar } from "react-native-calendars";
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { theme } from "../../theme";
+import { theme, fontStyles, colorStyles, uiStyles } from "../../theme";
 import { useState } from "react";
 
 const optionsList = [
@@ -38,34 +39,45 @@ const kDefaultForm = {
 };
 
 const moistureLogInfo = {
-  4: {
-    "2026-01-29": {
-      id: 3,
-      moistureLevel: 3,
-    },
-    "2026-01-25": {
-      id: null,
-      moistureLevel: 4,
-    },
+  "2026-01-29": {
+    id: 3,
+    moistureLevel: 3,
   },
-  5: {
-    "2026-01-29": {
-      id: 3,
-      moistureLevel: 3,
-    },
-    "2026-01-25": {
-      id: null,
-      moistureLevel: 4,
-    },
+  "2026-01-25": {
+    id: null,
+    moistureLevel: 4,
   },
-}
+};
+
+const waterLogInfo = {
+  "2026-01-29": {
+    id: 3,
+    watered: 3,
+  },
+  "2026-01-25": {
+    id: null,
+    moistureLevel: 4,
+  },
+};
+
+const moistureLogChanges = {
+};
+const waterLogChanges = {
+};
+
+const todayDate = new Date();
+const today = todayDate.toISOString().split('T')[0];
 
 const MoistureTracker = () => {
   const [selectedDay, setSelectedDay] = useState({selectedDate: "2026-01-29"});
+  const [selectedPlant, setSelectedPlant] = useState(null);
   const [selectedButton, setSelectedButton] = useState(null);
-  const [moistureWaterLogs, setMoistureWaterlogs] = useState();
+  const [moistureLogs, setMoistureLogs] = useState();
   
   const [formData, setFormData] = useState(kDefaultForm);
+
+   // Format as 'YYYY-MM-DD'
+
 
   const handleFormChange = (inputName: string, inputValue: any) => {
     return setFormData((prevFormData) => {
@@ -79,15 +91,14 @@ const MoistureTracker = () => {
     // with api call, see if there is a log for this date + plant. If not, send post request
     // if log exists, send patch request.
   };
-  const moistureButtons = optionsList.map((item,index) => {
+  const moistureButtons = optionsList.map((item, index) => {
     return (
-      <TouchableOpacity
+      <CustomButton
         key={`${item}${index}`}
-        style={[
-          styles.moistureButton,
-          formData["moistureLevel"] === item.value ? styles.selectedButton : null,
-        ]}
-        activeOpacity={0.8}
+        label={item.label}
+        size={[90, 90]}
+        colorTheme="colorTheme2"
+        selected={formData["moistureLevel"] === item.value}
         onPress={() => {
           if (formData["moistureLevel"] !== item.value) {
             handleFormChange("moistureLevel", item.value);
@@ -95,9 +106,7 @@ const MoistureTracker = () => {
             handleFormChange("moistureLevel", null);
           }
         }}
-      >
-        <Text style={styles.label}>{item.label}</Text>
-      </TouchableOpacity>
+      />
     );
   });
   return (<>
@@ -114,13 +123,15 @@ const MoistureTracker = () => {
               selectedTextColor: '#7954FA',
             },
           }}
-        // horizontal={true}
         />
         <View style={styles.trackerContainer}>
-          <View style={styles.selectPlantButton}>
-            <TouchableOpacity activeOpacity={0.8}>
-              <Text style={styles.label}>Select Plant</Text>
-            </TouchableOpacity>
+          <View style={uiStyles.centerAlign}>
+            <CustomButton
+              label={selectedPlant ? selectedPlant : "Select Plant"}
+              colorTheme="colorTheme1"
+              // size={[300]}
+              onPress={() => console.log("selected plant")}>
+              </CustomButton>
           </View>
           <View
             style={{
@@ -135,26 +146,28 @@ const MoistureTracker = () => {
           >
             {moistureButtons}
           </View>
-          <View>
-            <TouchableOpacity
-              style={[styles.waterButton, formData["watered"] ? styles.selectedButton : null]}
+          <View style={uiStyles.centerAlign}>
+
+            <CustomButton
+              label={formData["watered"] ? "Watered" : "Water"}
+              colorTheme="colorTheme2"
+              selected={formData["watered"]}
+              size={[100]}
               onPress={() => {
                 handleFormChange("watered", !formData["watered"]);
-
               }}
             >
-              <Text style={styles.label}>{formData["watered"] ? "Watered" : "Water"}</Text>
               <Ionicons name="water" size={32} color="white" />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.waterButton}
-              hitSlop={20}
+            </CustomButton>
+            <CustomButton
+              label="Save"
+              pill={true}
+              fontStyle="buttonBold"
               onPress={() => {
                 handleSubmit();
               }}
-            >
-              <Text style={styles.label}>Save</Text>
-            </TouchableOpacity>
+            />
+
           </View>
         </View>
       </CalendarProvider>
@@ -170,31 +183,5 @@ const styles = StyleSheet.create({
     // width: "80%",
     height: "90%",
     backgroundColor: "white",
-  },
-  selectPlantButton: {
-    backgroundColor: theme.colorBlue,
-  },
-  moistureButton: {
-    width: 74,
-    height: 80,
-    backgroundColor: theme.colorBlue,
-    justifyContent: "center",
-  },
-  waterButton: {
-    backgroundColor: theme.colorBlue,
-    alignSelf: "center",
-    alignItems: "center",
-    width: 150,
-    padding: 10,
-    margin: 6,
-  },
-  selectedButton: {
-    backgroundColor: theme.colorTheme1Light,
-  },
-  label: {
-    fontSize: 24,
-    fontWeight: "800",
-    color: "black",
-    textAlign: "center",
   },
 });

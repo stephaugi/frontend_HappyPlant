@@ -5,7 +5,7 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { saveToStorage } from "../../utils/storage";
 import { useRouter } from "expo-router";
-import { theme } from "../../theme";
+import { theme, fontStyles } from "../../theme";
 
 type Props = {
   plantData: object;
@@ -30,9 +30,9 @@ const PlantCard = ({ plantData }: Props) => {
     <TouchableOpacity onPress={() => handleSelectPlant(plantData)}>
       <View style={styles.plantCardContainer}>
         <View style={styles.textContainer}>
-          <Text style={styles.plantCardText}>{plantData.name}</Text>
-          <Text style={styles.plantSubtitle}>{plantData.description}</Text>
-          <Text style={styles.plantBold}>When to water: {moistureScales[plantData.desiredMoistureLevel-1]}</Text>
+          <Text style={fontStyles.header}>{plantData.name}</Text>
+          <Text style={fontStyles.tinyDescription}>{plantData.description}</Text>
+          <Text style={fontStyles.emphasis}>When to water: {moistureScales[plantData.desiredMoistureLevel-1]}</Text>
         </View>
         <View style={styles.photoContainer}>
           {plantData.photo && <Image source={{ uri: plantData.photo }}
@@ -65,17 +65,6 @@ const styles = StyleSheet.create({
   textContainer: {
     width: 200,
   },
-  plantCardText: {
-    fontSize: theme.formTextSize,
-    fontWeight: "800",
-  },
-  plantBold: {
-    fontWeight: "600",
-  },
-  plantSubtitle: {
-    fontSize: theme.subtitleSize,
-    fontWeight: "300",
-  }
 });
 
 export default PlantCard;
