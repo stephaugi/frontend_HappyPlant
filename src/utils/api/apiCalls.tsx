@@ -1,6 +1,8 @@
+const apiUrl = "http://127.0.0.1:5000";
+
 const getOwnersFromApi = async () => {
   try {
-    const response = await fetch("http://127.0.0.1:5000/owners");
+    const response = await fetch(`${apiUrl}/owners`);
     const owners = await response.json();
     return owners;
   } catch (error) {
@@ -10,7 +12,7 @@ const getOwnersFromApi = async () => {
 
 const getPlantsFromApi = async () => {
   try {
-    const response = await fetch("http://127.0.0.1:5000/owners/1/plants");
+    const response = await fetch(`${apiUrl}/owners/1/plants`);
     const plants = await response.json();
     return plants;
   } catch (error) {
@@ -20,7 +22,7 @@ const getPlantsFromApi = async () => {
 
 const createPlantFromApi = async (requestBody) => {
   try {
-    const response = await fetch("http://127.0.0.1:5000/owners/1/plants", {
+    const response = await fetch(`${apiUrl}/owners/1/plants`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -37,7 +39,7 @@ const createPlantFromApi = async (requestBody) => {
 
 const updatePlantFromApi = async (requestBody) => {
   try {
-    const requestUrl = `http://127.0.0.1:5000/plants/${requestBody.id}`;
+    const requestUrl = `${apiUrl}/plants/${requestBody.id}`;
     const response = await fetch(requestUrl, {
       method: "PATCH",
       headers: {
@@ -55,7 +57,7 @@ const updatePlantFromApi = async (requestBody) => {
 
 const deletePlantFromApi = async (id) => {
   try {
-    const requestUrl = `http://127.0.0.1:5000/plants/${id}`;
+    const requestUrl = `${apiUrl}/plants/${id}`;
     const response = await fetch(requestUrl, {
       method: "DELETE",
       headers: {
@@ -65,6 +67,34 @@ const deletePlantFromApi = async (id) => {
     });
     // const newPlant = await response.json();
     // return newPlant;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getMoistureFromApi = async (id) => {
+  try {
+    const response = await fetch(`${apiUrl}/plants/${id}/moisture`);
+    const moistureLogs = await response.json();
+    return moistureLogs;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const updateMoistureFromApi = async (requestBody) => {
+  try {
+    const requestUrl = `${apiUrl}/plants/${id}/moisture`;
+    const response = await fetch(requestUrl, {
+      method: "PATCH",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestBody),
+    });
+    const newMoistureLog = await response.json();
+    return newMoistureLog;
   } catch (error) {
     console.log(error);
   }

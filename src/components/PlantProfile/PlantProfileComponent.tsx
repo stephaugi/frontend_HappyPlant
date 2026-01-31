@@ -16,7 +16,7 @@
 // clicks to go to profile page with more info on plant. Use the current plant for the profile info
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import { theme } from "../../theme";
-import { updatePlantFromApi } from "../../utils/api/plantApiCalls";
+import { updatePlantFromApi } from "../../utils/api/apiCalls";
 import React, { useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import ImageSelector from "../PlantForm/ImageSelector";

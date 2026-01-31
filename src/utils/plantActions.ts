@@ -1,4 +1,4 @@
-import { deletePlantFromApi, getPlantsFromApi } from "./api/plantApiCalls";
+import { deletePlantFromApi, getPlantsFromApi } from "./api/apiCalls";
 import { convertFromAPI, convertToAPI } from "./api/convertData";
 import { Alert } from "react-native";
 import { saveToStorage, getFromStorage } from "./storage";

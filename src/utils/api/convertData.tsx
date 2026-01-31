@@ -18,4 +18,35 @@ const convertFromAPI = (objToConvert: object) => {
   return converted;
 };
 
+const convertMoistureFromAPI = (objToConvert: object) => {
+  console.log("placeholder");
+  const exampleResponse = [
+    {
+      id: 1,
+      moisture_level: 6,
+      timestamp: "2026-01-29",
+    },
+    {
+      id: 3,
+      moisture_level: 6,
+      timestamp: "2026-01-28",
+    },
+  ];
+  const entries = exampleResponse.map((eachLog) => {
+    return {
+      [eachLog.timestamp]: {
+        id: eachLog.id,
+        moistureLevel: eachLog.moisture_level,
+      },
+    };
+  });
+  const converted = Object.fromEntries(entries);
+  return converted;
+};
+
+const convertMoistureToAPI = (objToConvert: object) => {
+  
+  console.log("placeholder");
+};
+
 export { convertFromAPI, convertToAPI };

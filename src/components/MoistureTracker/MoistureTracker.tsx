@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import CustomButton from "../UI/CustomButton";
+import {Picker} from '@react-native-picker/picker';
 import { CalendarProvider, ExpandableCalendar } from "react-native-calendars";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { theme, fontStyles, colorStyles, uiStyles } from "../../theme";
@@ -60,24 +61,40 @@ const waterLogInfo = {
   },
 };
 
-const moistureLogChanges = {
+const defMoistureChanges = {
 };
-const waterLogChanges = {
+const defWaterChanges = {
 };
 
 const todayDate = new Date();
 const today = todayDate.toISOString().split('T')[0];
 
-const MoistureTracker = () => {
+type Props = {
+  plantsData: object[];
+  moistureData?: object;
+  waterData?: object;
+};
+
+const MoistureTracker = ({plantsData, moistureData, waterData}: Props) => {
   const [selectedDay, setSelectedDay] = useState({selectedDate: "2026-01-29"});
   const [selectedPlant, setSelectedPlant] = useState(null);
   const [selectedButton, setSelectedButton] = useState(null);
   const [moistureLogs, setMoistureLogs] = useState();
-  
+  // const [moistureChanges, setMoistureChanges] = useState(defMoistureChanges);
+  // const [waterChanges, setWaterChanges] = useState(defWaterChanges);
+
+
   const [formData, setFormData] = useState(kDefaultForm);
-
    // Format as 'YYYY-MM-DD'
-
+  const plantOptions = plantsData.map((plant, index) => {
+    return (
+      <Picker.Item
+        key={`${index}${plant.id}`}
+        label={plant.name}
+        value={plant.id}
+      />
+    );
+  });
 
   const handleFormChange = (inputName: string, inputValue: any) => {
     return setFormData((prevFormData) => {
@@ -91,6 +108,7 @@ const MoistureTracker = () => {
     // with api call, see if there is a log for this date + plant. If not, send post request
     // if log exists, send patch request.
   };
+
   const moistureButtons = optionsList.map((item, index) => {
     return (
       <CustomButton
@@ -125,20 +143,37 @@ const MoistureTracker = () => {
           }}
         />
         <View style={styles.trackerContainer}>
-          <View style={uiStyles.centerAlign}>
-            <CustomButton
+          <View>
+            <Picker
+              style={[{ marginTop: -50, height: 160, width: "100%" }]}
+              selectedValue={selectedPlant ? selectedPlant : null}
+              onValueChange={(itemValue, itemIndex) =>
+                setSelectedPlant(itemValue)
+              }>
+              {plantOptions}
+            </Picker>
+
+            {/* <Picker
+              selectedValue={selectedLanguage}
+              onValueChange={(itemValue, itemIndex) =>
+                setSelectedLanguage(itemValue)
+              }>
+              <Picker.Item label="Java" value="java" />
+              <Picker.Item label="JavaScript" value="js" />
+            </Picker> */}
+            {/* <CustomButton
               label={selectedPlant ? selectedPlant : "Select Plant"}
               colorTheme="colorTheme1"
               // size={[300]}
               onPress={() => console.log("selected plant")}>
-              </CustomButton>
+            </CustomButton> */}
           </View>
           <View
             style={{
               flexDirection: "row",
               justifyContent: "space-evenly",
               paddingHorizontal: 30,
-              paddingVertical: 30,
+              paddingVertical: 10,
               backgroundColor: "white",
               flexWrap: "wrap",
               gap: 30,

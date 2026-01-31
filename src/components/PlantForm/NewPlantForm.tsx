@@ -6,7 +6,7 @@ import ControlledOption from "./ControlledOption";
 import ImageSelector from "./ImageSelector";
 import { convertToAPI } from "../../utils/api/convertData";
 import { useRouter } from "expo-router";
-import { createPlantFromApi } from "../../utils/api/plantApiCalls";
+import { createPlantFromApi } from "../../utils/api/apiCalls";
 import CustomButton from "../UI/CustomButton";
 
 type Props = {

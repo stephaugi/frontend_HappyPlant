@@ -21,6 +21,11 @@ export const uiStyles = StyleSheet.create({
     maxWidth: "100%",
     alignSelf: "center",
   },
+  txtInput: {
+    padding: 12,
+    maxWidth: "100%",
+    alignSelf: "center",
+  },
   roundCorner: {
     borderRadius: 15,
   },
