@@ -45,4 +45,38 @@ const convertMoistureToAPI = (toConvert: object) => {
   return converted;
 };
 
-export { convertFromAPI, convertToAPI };
+const convertWaterFromAPI = (toConvert: object[]) => {
+  try {
+    const entries = toConvert.map((eachLog) => {
+      const new_dict = [
+        eachLog.timestamp, {
+          id: eachLog.id,
+          watered: eachLog.watered,
+        },
+      ];
+      return new_dict;
+    });
+    const converted = Object.fromEntries(entries);
+    return converted;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const convertWaterToAPI = (toConvert: object) => {
+  const converted = Object.keys(toConvert).map(entryDate => {
+    return {timestamp: entryDate,
+      id: toConvert[entryDate].id,
+      watered: toConvert[entryDate].moistureLevel}
+  });
+  return converted;
+};
+
+export {
+  convertFromAPI,
+  convertToAPI,
+  convertMoistureFromAPI,
+  convertMoistureToAPI,
+  convertWaterFromAPI,
+  convertWaterToAPI,
+};

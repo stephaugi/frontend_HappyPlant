@@ -1,3 +1,10 @@
+import {
+  convertMoistureFromAPI,
+  convertMoistureToAPI,
+  convertWaterFromAPI,
+  convertWaterToAPI,
+} from "./convertData";
+
 const apiUrl = "http://127.0.0.1:5000";
 
 const getOwnersFromApi = async () => {
@@ -76,17 +83,18 @@ const getMoistureFromApi = async (id) => {
   try {
     const response = await fetch(`${apiUrl}/plants/${id}/moisture`);
     const moistureLogs = await response.json();
-    return moistureLogs;
+    return convertMoistureFromAPI(moistureLogs);
   } catch (error) {
     console.log(error);
   }
 };
 
-const updateMoistureFromApi = async (requestBody) => {
+const updateMoistureFromApi = async (id, inputData) => {
   try {
+    const requestBody = convertMoistureToAPI(inputData);
     const requestUrl = `${apiUrl}/plants/${id}/moisture`;
     const response = await fetch(requestUrl, {
-      method: "PATCH",
+      method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -94,7 +102,36 @@ const updateMoistureFromApi = async (requestBody) => {
       body: JSON.stringify(requestBody),
     });
     const newMoistureLog = await response.json();
-    return newMoistureLog;
+    return convertMoistureFromAPI(newMoistureLog);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getWaterFromApi = async (id) => {
+  try {
+    const response = await fetch(`${apiUrl}/plants/${id}/water`);
+    const waterLogs = await response.json();
+    return convertWaterFromAPI(waterLogs);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const updateWaterFromApi = async (id, inputData) => {
+  try {
+    const requestBody = convertWaterToAPI(inputData);
+    const requestUrl = `${apiUrl}/plants/${id}/water`;
+    const response = await fetch(requestUrl, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestBody),
+    });
+    const newWaterLog = await response.json();
+    return convertWaterFromAPI(newWaterLog);
   } catch (error) {
     console.log(error);
   }
@@ -106,4 +143,8 @@ export {
   createPlantFromApi,
   updatePlantFromApi,
   deletePlantFromApi,
+  getMoistureFromApi,
+  updateMoistureFromApi,
+  updateWaterFromApi,
+  getWaterFromApi,
 };

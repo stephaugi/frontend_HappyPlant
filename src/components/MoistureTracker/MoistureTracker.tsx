@@ -33,9 +33,15 @@ const optionsList = [
   },
 ];
 
-const kDefaultForm = {
-  timeStamp: "",
+
+
+const kDefaultMoistureForm = {
+  id: null,
   moistureLevel: null,
+};
+
+const kDefaultWaterForm = {
+  id: null,
   watered: false,
 };
 
@@ -73,18 +79,19 @@ type Props = {
   plantsData: object[];
   moistureData?: object;
   waterData?: object;
+  selectedPlant?: object;
+  onSelectPlant: Function;
 };
 
-const MoistureTracker = ({plantsData, moistureData, waterData}: Props) => {
+const MoistureTracker = ({plantsData, moistureData, waterData, selectedPlant, onSelectPlant}: Props) => {
   const [selectedDay, setSelectedDay] = useState({selectedDate: "2026-01-29"});
-  const [selectedPlant, setSelectedPlant] = useState(null);
   const [selectedButton, setSelectedButton] = useState(null);
-  const [moistureLogs, setMoistureLogs] = useState();
-  // const [moistureChanges, setMoistureChanges] = useState(defMoistureChanges);
-  // const [waterChanges, setWaterChanges] = useState(defWaterChanges);
+  const [moistureChanges, setMoistureChanges] = useState(defMoistureChanges);
+  const [moistureFormData, setMoistureFormData] = useState(kDefaultMoistureForm);
+  const [waterFormData, setWaterFormData] = useState(kDefaultWaterForm);
+  // const [selectedDayData, setSelectedDayData] = useState(null);
+  // use moisture log data if there is data. Otherwise don't use it. do this for date change
 
-
-  const [formData, setFormData] = useState(kDefaultForm);
    // Format as 'YYYY-MM-DD'
   const plantOptions = plantsData.map((plant, index) => {
     return (
@@ -96,17 +103,38 @@ const MoistureTracker = ({plantsData, moistureData, waterData}: Props) => {
     );
   });
 
-  const handleFormChange = (inputName: string, inputValue: any) => {
-    return setFormData((prevFormData) => {
+  const handleWaterFormChange = (inputName: string, inputValue: any) => {
+    return setWaterFormData((prevFormData) => {
+      return { ...prevFormData, [inputName]: inputValue };
+    });
+  };
+  const handleMoistureFormChange = (inputName: string, inputValue: any) => {
+    return setMoistureFormData((prevFormData) => {
       return { ...prevFormData, [inputName]: inputValue };
     });
   };
 
+  const handleDateChange = (newDate) => {
+    if (newDate in moistureData) {
+      setMoistureFormData(moistureData[newDate]);
+    } else {
+      setMoistureFormData(kDefaultMoistureForm);
+    }
+    if (newDate in waterData) {
+      setWaterFormData(waterData[newDate]);
+    } else {
+      setWaterFormData(kDefaultWaterForm);
+    }
+    };
+
   const handleSubmit = () => {
     console.log(`Submitting data! ${formData}`);
-    // call api to create moisture log, or edit existing one?
-    // with api call, see if there is a log for this date + plant. If not, send post request
-    // if log exists, send patch request.
+    // submit logged info in formData for the day
+    const newMoistureData = [{ [selectedDay.selectedDate]: moistureFormData }];
+    // submit logged info in formData for the day
+    const newWaterData = [{ [selectedDay.selectedDate]: waterFormData }];
+    // call api to save changes to moisture/water
+    
   };
 
   const moistureButtons = optionsList.map((item, index) => {
@@ -116,12 +144,13 @@ const MoistureTracker = ({plantsData, moistureData, waterData}: Props) => {
         label={item.label}
         size={[90, 90]}
         colorTheme="colorTheme2"
-        selected={formData["moistureLevel"] === item.value}
+        // selected={formData["moistureLevel"] === item.value}
+        selected={moistureFormData["moistureLevel"] === item.value}
         onPress={() => {
-          if (formData["moistureLevel"] !== item.value) {
-            handleFormChange("moistureLevel", item.value);
+          if (moistureFormData["moistureLevel"] !== item.value) {
+            handleMoistureFormChange("moistureLevel", item.value);
           } else {
-            handleFormChange("moistureLevel", null);
+            handleMoistureFormChange("moistureLevel", null);
           }
         }}
       />
@@ -131,7 +160,11 @@ const MoistureTracker = ({plantsData, moistureData, waterData}: Props) => {
       <CalendarProvider date="2026-01-27">
         <ExpandableCalendar
           onDayPress={(day) => {
+            // console.log({selectedDate: day.dateString});
+            // addToChanges();
+            handleDateChange(day.dateString);
             setSelectedDay({selectedDate: day.dateString});
+            console.log(moistureChanges);
           }}
           markedDates={{
             [selectedDay]: {
@@ -146,9 +179,9 @@ const MoistureTracker = ({plantsData, moistureData, waterData}: Props) => {
           <View>
             <Picker
               style={[{ marginTop: -50, height: 160, width: "100%" }]}
-              selectedValue={selectedPlant ? selectedPlant : null}
+              selectedValue={selectedPlant ? selectedPlant.id : null}
               onValueChange={(itemValue, itemIndex) =>
-                setSelectedPlant(itemValue)
+                onSelectPlant(itemValue)
               }>
               {plantOptions}
             </Picker>
@@ -170,12 +203,12 @@ const MoistureTracker = ({plantsData, moistureData, waterData}: Props) => {
           <View style={uiStyles.centerAlign}>
 
             <CustomButton
-              label={formData["watered"] ? "Watered" : "Water"}
+              label={waterFormData["watered"] ? "Watered" : "Water"}
               colorTheme="colorTheme2"
-              selected={formData["watered"]}
+              selected={waterFormData["watered"]}
               size={[100]}
               onPress={() => {
-                handleFormChange("watered", !formData["watered"]);
+                handleWaterFormChange("watered", !waterFormData["watered"]);
               }}
             >
               <Ionicons name="water" size={32} color="white" />
