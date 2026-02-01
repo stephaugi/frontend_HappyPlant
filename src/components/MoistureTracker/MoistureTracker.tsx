@@ -153,20 +153,6 @@ const MoistureTracker = ({plantsData, moistureData, waterData}: Props) => {
               {plantOptions}
             </Picker>
 
-            {/* <Picker
-              selectedValue={selectedLanguage}
-              onValueChange={(itemValue, itemIndex) =>
-                setSelectedLanguage(itemValue)
-              }>
-              <Picker.Item label="Java" value="java" />
-              <Picker.Item label="JavaScript" value="js" />
-            </Picker> */}
-            {/* <CustomButton
-              label={selectedPlant ? selectedPlant : "Select Plant"}
-              colorTheme="colorTheme1"
-              // size={[300]}
-              onPress={() => console.log("selected plant")}>
-            </CustomButton> */}
           </View>
           <View
             style={{
@@ -176,7 +162,7 @@ const MoistureTracker = ({plantsData, moistureData, waterData}: Props) => {
               paddingVertical: 10,
               backgroundColor: "white",
               flexWrap: "wrap",
-              gap: 30,
+              gap: 10,
             }}
           >
             {moistureButtons}

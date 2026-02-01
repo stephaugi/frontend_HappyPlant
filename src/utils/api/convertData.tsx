@@ -1,15 +1,15 @@
-const convertToAPI = (objToConvert: object) => {
+const convertToAPI = (toConvert: object) => {
   const converted = {};
-  for (const [key, value] of Object.entries(objToConvert)) {
+  for (const [key, value] of Object.entries(toConvert)) {
     const newKey = key.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
     converted[newKey] = value;
   }
   return converted;
 };
 
-const convertFromAPI = (objToConvert: object) => {
+const convertFromAPI = (toConvert: object) => {
   const converted = {};
-  for (const [key, value] of Object.entries(objToConvert)) {
+  for (const [key, value] of Object.entries(toConvert)) {
     const newKey = key.replace(/([_][a-z])/g, (match) =>
       match[1].toUpperCase()
     );
@@ -18,35 +18,31 @@ const convertFromAPI = (objToConvert: object) => {
   return converted;
 };
 
-const convertMoistureFromAPI = (objToConvert: object) => {
-  console.log("placeholder");
-  const exampleResponse = [
-    {
-      id: 1,
-      moisture_level: 6,
-      timestamp: "2026-01-29",
-    },
-    {
-      id: 3,
-      moisture_level: 6,
-      timestamp: "2026-01-28",
-    },
-  ];
-  const entries = exampleResponse.map((eachLog) => {
-    return {
-      [eachLog.timestamp]: {
-        id: eachLog.id,
-        moistureLevel: eachLog.moisture_level,
-      },
-    };
-  });
-  const converted = Object.fromEntries(entries);
-  return converted;
+const convertMoistureFromAPI = (toConvert: object[]) => {
+  try {
+    const entries = toConvert.map((eachLog) => {
+      const new_dict = [
+        eachLog.timestamp, {
+          id: eachLog.id,
+          moistureLevel: eachLog.moisture_level,
+        },
+      ];
+      return new_dict;
+    });
+    const converted = Object.fromEntries(entries);
+    return converted;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
-const convertMoistureToAPI = (objToConvert: object) => {
-  
-  console.log("placeholder");
+const convertMoistureToAPI = (toConvert: object) => {
+  const converted = Object.keys(toConvert).map(entryDate => {
+    return {timestamp: entryDate,
+      id: toConvert[entryDate].id,
+      moisture_level: toConvert[entryDate].moistureLevel}
+  });
+  return converted;
 };
 
 export { convertFromAPI, convertToAPI };
