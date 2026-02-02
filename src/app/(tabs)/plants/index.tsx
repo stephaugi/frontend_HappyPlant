@@ -12,6 +12,22 @@ const storageKey = "plantsData";
 export default function PlantsScreen() {
   const [plantsData, setPlantsData] = useState([]);
   const router = useRouter();
+  // useEffect(() => {
+  //   const fetchInitial = async () => {
+  //     const data = await getFromStorage(storageKey);
+  //     if (data) {
+  //       setPlantsData(data);
+  //       console.log("getting data from storage");
+  //     } else {
+  //       const response = await getPlantsFromApi();
+  //       saveToStorage("plantsData", response.map(plantData => convertFromAPI(plantData)));
+  //       setPlantsData(response.map(plantData => convertFromAPI(plantData)));
+  //       console.log("getting data from api");
+  //     }
+  //   };
+  //   // setPlantsData([]);
+  //   fetchInitial();
+  // }, []);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -20,6 +36,7 @@ export default function PlantsScreen() {
         const response = await getPlantsFromApi();
         saveToStorage("plantsData", response.map(plantData => convertFromAPI(plantData)));
         setPlantsData(response.map(plantData => convertFromAPI(plantData)));
+        console.log(response);
       }
       getPlants();
       return () => {
@@ -29,22 +46,6 @@ export default function PlantsScreen() {
     }, [])
   );
 
-  // useEffect(() => {
-    // const fetchInitial = async () => {
-    //   const data = await getFromStorage(storageKey);
-    //   if (data) {
-    //     setPlantsData(data);
-    //     console.log("getting data from storage");
-    //   } else {
-    //     const response = await getPlantsFromApi();
-    //     saveToStorage("plantsData", response.map(plantData => convertFromAPI(plantData)));
-    //     setPlantsData(response.map(plantData => convertFromAPI(plantData)));
-    //     console.log("getting data from api");
-    //   }
-  //   };
-  //   // setPlantsData([]);
-  //   fetchInitial();
-  // }, []);
 
   // const handleSelectPlant = (item: object) => {
   //   // set the selected plant

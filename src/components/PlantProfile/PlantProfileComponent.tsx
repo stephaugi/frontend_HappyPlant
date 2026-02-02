@@ -15,7 +15,7 @@
 // each plant card shows the name of the plant, picture, happy or sad face icon.
 // clicks to go to profile page with more info on plant. Use the current plant for the profile info
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
-import { theme } from "../../theme";
+import { fontStyles, theme } from "../../theme";
 import { updatePlantFromApi } from "../../utils/api/apiCalls";
 import React, { useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
@@ -96,12 +96,13 @@ const PlantProfileComponent = () => {
         textAreaHeight={100}
         textArea={true}
       />
-      <Text style={styles.label}>When to water</Text>
-      <ControlledOption
-        moistureLevel={plantFormData.desiredMoistureLevel}
-        onSelectOption={handleFormChange}
-      />
-
+      <Text style={fontStyles.emphasis}>When to water</Text>
+      <View style={{ alignSelf: "center" }}>
+        <ControlledOption
+          moistureLevel={plantFormData.desiredMoistureLevel}
+          onSelectOption={handleFormChange}
+        />
+      </View>
       <TouchableOpacity
         style={styles.button}
         activeOpacity={0.8}

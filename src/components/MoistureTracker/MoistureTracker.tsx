@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import CustomButton from "../UI/CustomButton";
 import {Picker} from '@react-native-picker/picker';
-import { CalendarProvider, ExpandableCalendar } from "react-native-calendars";
+import { CalendarProvider, ExpandableCalendar, WeekCalendar } from "react-native-calendars";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { theme, fontStyles, colorStyles, uiStyles } from "../../theme";
 import { useState } from "react";
@@ -72,8 +72,7 @@ const defMoistureChanges = {
 const defWaterChanges = {
 };
 
-const todayDate = new Date();
-const today = todayDate.toISOString().split('T')[0];
+
 
 type Props = {
   plantsData: object[];
@@ -81,14 +80,19 @@ type Props = {
   waterData?: object;
   selectedPlant?: object;
   onSelectPlant: Function;
+  onSubmit: Function;
 };
+const todayDate = new Date();
+const today = todayDate.toISOString().split('T')[0];
 
-const MoistureTracker = ({plantsData, moistureData, waterData, selectedPlant, onSelectPlant}: Props) => {
-  const [selectedDay, setSelectedDay] = useState({selectedDate: "2026-01-29"});
+const MoistureTracker = ({plantsData, moistureData, waterData, selectedPlant, onSelectPlant, onSubmit}: Props) => {
+  const [selectedDay, setSelectedDay] = useState({selectedDate: today});
   const [selectedButton, setSelectedButton] = useState(null);
   const [moistureChanges, setMoistureChanges] = useState(defMoistureChanges);
   const [moistureFormData, setMoistureFormData] = useState(kDefaultMoistureForm);
   const [waterFormData, setWaterFormData] = useState(kDefaultWaterForm);
+  
+
   // const [selectedDayData, setSelectedDayData] = useState(null);
   // use moisture log data if there is data. Otherwise don't use it. do this for date change
 
@@ -115,27 +119,19 @@ const MoistureTracker = ({plantsData, moistureData, waterData, selectedPlant, on
   };
 
   const handleDateChange = (newDate) => {
-    if (newDate in moistureData) {
+    if ((moistureData) && (newDate in moistureData)) {
       setMoistureFormData(moistureData[newDate]);
     } else {
       setMoistureFormData(kDefaultMoistureForm);
     }
-    if (newDate in waterData) {
+
+    if ((waterData) && (newDate in waterData)) {
       setWaterFormData(waterData[newDate]);
     } else {
       setWaterFormData(kDefaultWaterForm);
     }
-    };
-
-  const handleSubmit = () => {
-    console.log(`Submitting data! ${formData}`);
-    // submit logged info in formData for the day
-    const newMoistureData = [{ [selectedDay.selectedDate]: moistureFormData }];
-    // submit logged info in formData for the day
-    const newWaterData = [{ [selectedDay.selectedDate]: waterFormData }];
-    // call api to save changes to moisture/water
-    
   };
+
 
   const moistureButtons = optionsList.map((item, index) => {
     return (
@@ -157,35 +153,48 @@ const MoistureTracker = ({plantsData, moistureData, waterData, selectedPlant, on
     );
   });
   return (<>
-      <CalendarProvider date="2026-01-27">
-        <ExpandableCalendar
-          onDayPress={(day) => {
-            // console.log({selectedDate: day.dateString});
-            // addToChanges();
-            handleDateChange(day.dateString);
-            setSelectedDay({selectedDate: day.dateString});
-            console.log(moistureChanges);
-          }}
-          markedDates={{
-            [selectedDay]: {
-              selected: true,
-              disableTouchEvent: true,
-              selectedColor: '#F1EFFE',
-              selectedTextColor: '#7954FA',
-            },
-          }}
-        />
-        <View style={styles.trackerContainer}>
-          <View>
-            <Picker
-              style={[{ marginTop: -50, height: 160, width: "100%" }]}
-              selectedValue={selectedPlant ? selectedPlant.id : null}
-              onValueChange={(itemValue, itemIndex) =>
-                onSelectPlant(itemValue)
-              }>
-              {plantOptions}
-            </Picker>
-
+      <View style={{ height: 150, marginTop: 30 }}>
+        <CalendarProvider
+          // style={{ height: 150 }}
+          // date={selectedDay.selectedDate}
+          date={todayDate}
+          disableAutoDaySelection={[
+            ExpandableCalendar.navigationTypes.MONTH_SCROLL,
+            ExpandableCalendar.navigationTypes.MONTH_ARROWS,
+            ExpandableCalendar.navigationTypes.WEEK_SCROLL,
+            ExpandableCalendar.navigationTypes.WEEK_ARROWS,
+          ]}
+        >
+          <ExpandableCalendar
+            horizontal={true}
+            disablePan={true}
+            disableWeekScroll={false}
+            onDayPress={(day) => {
+              handleDateChange(day.dateString);
+              setSelectedDay({selectedDate: day.dateString});
+            }}
+            markedDates={Object.fromEntries([...Object.keys(moistureData).map(moistureDates => {
+                return [moistureDates, {marked:true}]
+              }),
+              [[selectedDay.selectedDate], { selected: true, selectedColor: theme.colorGrey }]]
+              )}
+          />
+        </CalendarProvider>
+      </View>
+      <View style={styles.trackerContainer}>
+        <View>
+          <Picker
+            style={[{ marginTop: -50, height: 160, width: "100%", textAlign: "center" }]}
+            // itemStyle={{ textAlign: "center", backgroundColor: "#b11313" }}
+            selectedValue={selectedPlant ? selectedPlant.id : null}
+            onValueChange={(itemValue, itemIndex) => {
+              onSelectPlant(itemValue);
+              handleDateChange(selectedDay.selectedDate);
+            }
+            }>
+            {plantOptions}
+          </Picker>
+          <Text style={[fontStyles.header, { alignSelf: "center" }]}>How is the soil feeling today?</Text>
           </View>
           <View
             style={{
@@ -200,7 +209,7 @@ const MoistureTracker = ({plantsData, moistureData, waterData, selectedPlant, on
           >
             {moistureButtons}
           </View>
-          <View style={uiStyles.centerAlign}>
+          <View style={[uiStyles.centerAlign, { gap: 20, }]}>
 
             <CustomButton
               label={waterFormData["watered"] ? "Watered" : "Water"}
@@ -218,13 +227,14 @@ const MoistureTracker = ({plantsData, moistureData, waterData, selectedPlant, on
               pill={true}
               fontStyle="buttonBold"
               onPress={() => {
-                handleSubmit();
+                console.log(waterFormData);
+                onSubmit(selectedDay, moistureFormData, waterFormData);
               }}
             />
 
           </View>
         </View>
-      </CalendarProvider>
+      
     </>
   );
 };

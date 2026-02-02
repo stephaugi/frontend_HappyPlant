@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TextInput } from "react-native";
-import { theme } from "../../theme";
+import { fontStyles, theme } from "../../theme";
 
 type Props = {
   labelName: string;
@@ -20,11 +20,11 @@ const ControlledTextInput = ({
   textAreaHeight,
   textArea,
 }: Props) => (<View style={styles.textInputContainer}>
-    <Text style={styles.label}>{labelName}</Text>
+    <Text style={fontStyles.emphasis}>{labelName}</Text>
     <TextInput
       multiline={textArea}
       placeholder={placeholder}
-      style={[styles.textInput, { height: textAreaHeight }]}
+      style={[styles.textInput, fontStyles.label, { height: textAreaHeight, alignSelf: "center" }]}
       value={value}
       onChangeText={(value: string) => onChangeText(name, value)}
     />
@@ -40,8 +40,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     backgroundColor: theme.colorTheme1Light,
     borderRadius: theme.cornerRound,
-    fontSize: theme.formTextSize,
-    fontWeight: "800",
+    // fontSize: theme.formTextSize,
+    // fontWeight: "800",
     paddingHorizontal: 18,
     paddingVertical: 10,
     minWidth: 300,

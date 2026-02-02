@@ -34,7 +34,7 @@ const PlantCard = ({ plantData }: Props) => {
           <Text style={fontStyles.tinyDescription}>{plantData.description}</Text>
           <Text style={fontStyles.emphasis}>When to water: {moistureScales[plantData.desiredMoistureLevel-1]}</Text>
         </View>
-        <View style={styles.photoContainer}>
+        <View>
           {plantData.photo && <Image source={{ uri: plantData.photo }}
             style={styles.image}
             resizeMode="cover"
@@ -48,7 +48,7 @@ const PlantCard = ({ plantData }: Props) => {
 const styles = StyleSheet.create({
   plantCardContainer: {
     padding: 22,
-    backgroundColor: theme.colorLightBlue,
+    backgroundColor: theme.colorLightGrey,
     height: 100,
     marginHorizontal: 20,
     borderRadius: 16,

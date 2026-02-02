@@ -22,7 +22,7 @@ const PlantList = ({ plantsData }: Props) => {
   //   },
   // ];
   return (
-    <View>
+    <View style={{ marginTop: 20 }}>
       <FlatList
         keyExtractor={(item) => item.id}
         data={plantsData}

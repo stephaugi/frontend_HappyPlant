@@ -59,6 +59,10 @@ export const fontStyles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "800",
   },
+  label: {
+    fontSize: 16,
+    fontWeight: "400",
+  },
   spacing: {
     letterSpacing: 1,
   }

@@ -1,8 +1,10 @@
 import { View, Text, StyleSheet } from "react-native";
+import { fontStyles } from "../../theme";
 
 const WaterAgenda = ({ label, dateList, renderItem }) => {
+
   return (<>
-    <Text style={styles.label}>{label}</Text>
+    <Text style={fontStyles.header}>{label}</Text>
     {dateList.map((item, index) => renderItem(item,index))}
   </>);
 };
