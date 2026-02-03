@@ -9,7 +9,6 @@ export default function Layout() {
   return (
     <Tabs screenOptions={{ tabBarActiveTintColor: theme.colorBlue }}>
       <Tabs.Screen
-
         name="calendar"
         options={{
           headerShown: false,

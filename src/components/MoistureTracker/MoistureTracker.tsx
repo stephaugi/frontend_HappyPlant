@@ -69,8 +69,6 @@ const waterLogInfo = {
 
 const defMoistureChanges = {
 };
-const defWaterChanges = {
-};
 
 
 
@@ -88,7 +86,6 @@ const today = todayDate.toISOString().split('T')[0];
 const MoistureTracker = ({plantsData, moistureData, waterData, selectedPlant, onSelectPlant, onSubmit}: Props) => {
   const [selectedDay, setSelectedDay] = useState({selectedDate: today});
   const [selectedButton, setSelectedButton] = useState(null);
-  const [moistureChanges, setMoistureChanges] = useState(defMoistureChanges);
   const [moistureFormData, setMoistureFormData] = useState(kDefaultMoistureForm);
   const [waterFormData, setWaterFormData] = useState(kDefaultWaterForm);
   
@@ -196,46 +193,45 @@ const MoistureTracker = ({plantsData, moistureData, waterData, selectedPlant, on
             {plantOptions}
           </Picker>
           <Text style={[fontStyles.header, { alignSelf: "center" }]}>How is the soil feeling today?</Text>
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-evenly",
-              paddingHorizontal: 30,
-              paddingVertical: 10,
-              backgroundColor: "white",
-              flexWrap: "wrap",
-              gap: 10,
+        </View>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-evenly",
+            paddingHorizontal: 30,
+            paddingVertical: 10,
+            backgroundColor: "white",
+            flexWrap: "wrap",
+            gap: 10,
+          }}
+        >
+          {moistureButtons}
+        </View>
+        <View style={[uiStyles.centerAlign, { gap: 10, }]}>
+
+          <CustomButton
+            label={waterFormData["watered"] ? "Watered" : "Water"}
+            colorTheme="colorTheme2"
+            selected={waterFormData["watered"]}
+            size={[100]}
+            onPress={() => {
+              handleWaterFormChange("watered", !waterFormData["watered"]);
             }}
           >
-            {moistureButtons}
-          </View>
-          <View style={[uiStyles.centerAlign, { gap: 20, }]}>
-
-            <CustomButton
-              label={waterFormData["watered"] ? "Watered" : "Water"}
-              colorTheme="colorTheme2"
-              selected={waterFormData["watered"]}
-              size={[100]}
-              onPress={() => {
-                handleWaterFormChange("watered", !waterFormData["watered"]);
-              }}
-            >
-              <Ionicons name="water" size={32} color="white" />
-            </CustomButton>
-            <CustomButton
-              label="Save"
-              pill={true}
-              fontStyle="buttonBold"
-              onPress={() => {
-                console.log(waterFormData);
-                onSubmit(selectedDay, moistureFormData, waterFormData);
-              }}
-            />
-
-          </View>
+            <Ionicons name="water" size={32} color="white" />
+          </CustomButton>
+          <CustomButton
+            label="Save"
+            pill={true}
+            fontStyle="buttonBold"
+            onPress={() => {
+              console.log(waterFormData);
+              onSubmit(selectedDay, moistureFormData, waterFormData);
+            }}
+          />
         </View>
-      
+      </View>
+
     </>
   );
 };

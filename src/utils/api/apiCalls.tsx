@@ -3,11 +3,12 @@ import {
   convertAllMoistureFromAPI,
   convertMoistureToAPI,
   convertWaterFromAPI,
+  convertAllWaterFromAPI,
   convertWaterToAPI,
 } from "./convertData";
 
-const apiUrl = "https://backend-happyplant.onrender.com";
-// const apiUrl = "http://127.0.0.1:5000";
+// const apiUrl = "https://backend-happyplant.onrender.com";
+const apiUrl = "http://127.0.0.1:5000";
 const ownerId = 1;
 
 const getOwnersFromApi = async () => {
@@ -24,7 +25,6 @@ const getPlantsFromApi = async () => {
   try {
     const response = await fetch(`${apiUrl}/owners/1/plants`);
     const plants = await response.json();
-    // console.log(plants);
     return plants;
   } catch (error) {
     console.log(error);
@@ -115,8 +115,6 @@ const getAllMoistureFromApi = async (ownerId=1) => {
 const updateMoistureFromApi = async (id, inputData) => {
   try {
     const requestBody = convertMoistureToAPI(inputData);
-    console.log("checking data");
-    console.log(requestBody);
     const requestUrl = `${apiUrl}/plants/${id}/moisture`;
     const response = await fetch(requestUrl, {
       method: "POST",
@@ -156,7 +154,6 @@ const getAllWaterFromApi = async (ownerId=1) => {
 const updateWaterFromApi = async (id, inputData) => {
   try {
     const requestBody = convertWaterToAPI(inputData);
-    console.log(requestBody);
     const requestUrl = `${apiUrl}/plants/${id}/water`;
     const response = await fetch(requestUrl, {
       method: "POST",

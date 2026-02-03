@@ -1,4 +1,4 @@
-import { theme } from "../../theme";
+import { fontStyles, theme } from "../../theme";
 import { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import ControlledTextInput from "./ControlledTextInput";
@@ -9,11 +9,6 @@ import { useRouter } from "expo-router";
 import { createPlantFromApi } from "../../utils/api/apiCalls";
 import CustomButton from "../UI/CustomButton";
 
-type Props = {
-  name?: string;
-  isCompleted?: boolean;
-};
-
 const kDefaultForm = {
   name: "",
   description: "",
@@ -21,7 +16,7 @@ const kDefaultForm = {
   photo: "",
 };
 
-export function NewPlantForm({ name, isCompleted }: Props) {
+export function NewPlantForm() {
   const [plantFormData, setPlantFormData] = useState(kDefaultForm);
   const router = useRouter();
   const handleCreatePlant = async (inputData: object) => {
@@ -31,9 +26,11 @@ export function NewPlantForm({ name, isCompleted }: Props) {
   };
 
   const handleFormChange = (inputName: string, inputValue: string) => {
-    return setPlantFormData((prevFormData) => {
-      return { ...prevFormData, [inputName]: inputValue };
-    });
+    if (inputValue.length <= 100) {
+      return setPlantFormData((prevFormData) => {
+        return { ...prevFormData, [inputName]: inputValue };
+      });
+    }
   };
   return (
     <View style={styles.formContainer}>
@@ -59,25 +56,19 @@ export function NewPlantForm({ name, isCompleted }: Props) {
         textAreaHeight={100}
         textArea={true}
       />
-      <Text>When to water</Text>
+      <Text style={fontStyles.emphasis}>When to water</Text>
       <ControlledOption
         moistureLevel={plantFormData.desiredMoistureLevel}
         onSelectOption={handleFormChange}
       />
-      <CustomButton
-      label="Submit"
-      pill={true}
-      fontStyle="buttonBold"
-      onPress={() => handleCreatePlant(plantFormData)}
-      />
-      
-      {/* <TouchableOpacity
-        style={styles.button}
-        activeOpacity={0.8}
-        onPress={() => handleCreatePlant(plantFormData)}
-      >
-        <Text style={styles.buttonText}>Submit</Text>
-      </TouchableOpacity> */}
+      <View style={{ marginTop: 20 }}>
+        <CustomButton
+          label="Submit"
+          pill={true}
+          fontStyle="buttonBold"
+          onPress={() => handleCreatePlant(plantFormData)}
+        />
+      </View>
     </View>
   );
 }
@@ -100,7 +91,13 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   formContainer: {
-    paddingHorizontal: 30,
+    flex: 1,
+    paddingHorizontal: 22,
+    paddingVertical: 20,
+    // backgroundColor: theme.colorLightBlue,
+    height: 600,
+    marginHorizontal: 20,
+    borderRadius: 16,
   },
   photoSelectContainer: {
     height: 200,

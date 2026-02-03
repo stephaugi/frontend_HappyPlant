@@ -22,10 +22,8 @@ export default function CalendarScreen() {
         const converted = response.map((plantData) => convertFromAPI(plantData));
         setPlantsData(converted);
         const toWater = [];
-        // let allMoistureData = new Object();
         for (const plant of converted) {
           if (plant.nextWaterDate !== "None") {
-            // console.log(`${plant.name} has a watering date ${plant.nextWaterDate}`)
             toWater.push(plant);
           }
           const moisture = await getAllMoistureFromApi();
@@ -34,9 +32,6 @@ export default function CalendarScreen() {
           const water = await getAllMoistureFromApi();
           saveToStorage("allWaterData", water);
           setAllWaterData(water);
-          // const water = await getWaterFromApi(storedSelectedPlant.id);
-          // saveToStorage("waterData", water);
-          // setWaterData(water);
         }
         setPlantsToWater(toWater);
       }
@@ -46,6 +41,7 @@ export default function CalendarScreen() {
         // Useful for cleanup functions
       };
     }, []));
+
 
   return (
     <View style={styles.container}>

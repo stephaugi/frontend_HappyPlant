@@ -5,16 +5,13 @@ import { moistureScales } from "../../constants";
 
 type Prop = {
   plant?: object;
-  moistureData?: object;
+  data?: object;
 };
-
-
-const PlantAgenda = ({ plant, upcomingWater=true, water=false, moisture=false, moistureData }: Prop) => {
-  // console.log(moistureData);
+const PlantAgenda = ({ plant, upcomingWater=false, water=false, moisture=false, data }: Prop) => {
   const moistureDateLog = moisture ? (<><Text style={fontStyles.emphasis}>
         Moisture Check
       </Text>
-      <Text>{`${moistureData.plantName}'s Soil was feeling ${moistureScales[moistureData.moistureLevel-1]} today!`}</Text>
+      <Text>{`${data.plantName}'s Soil was feeling ${moistureScales[data.moistureLevel-1]} today!`}</Text>
   </>) : null;
 
   const nextWater = upcomingWater ? (<><Text style={fontStyles.emphasis}>
@@ -22,6 +19,7 @@ const PlantAgenda = ({ plant, upcomingWater=true, water=false, moisture=false, m
           year: 'numeric',
           month: 'long',
           day: 'numeric',
+          timeZone: 'UTC',
         })}
       </Text>
       <Text>Time to water {plant.name}!</Text></>) : null;
@@ -29,15 +27,16 @@ const PlantAgenda = ({ plant, upcomingWater=true, water=false, moisture=false, m
   const waterDate = water ? (<><Text style={fontStyles.emphasis}>
         Watered
       </Text>
-      <Text>{`${moistureData.plantName} was watered today!`}</Text>
+      <Text>{`${data.plantName} was watered today!`}</Text>
   </>) : null;
 
   return (
     <>
-      <View style={[styles.plantCardContainer, upcomingWater ? styles.waterColor : styles.moistureColor]}>
+      <View style={[styles.plantCardContainer, upcomingWater ? styles.upcomingWater : (moisture ? styles.moistureColor : styles.waterColor )]}>
         <View style={styles.agendaItem}>
           {nextWater}
           {moistureDateLog}
+          {waterDate}
         </View>
         {plant && plant.photo && (
           <View>
@@ -67,10 +66,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   waterColor: {
-    backgroundColor: theme.waterColor,
+    backgroundColor: theme.colorLightGrey,
   },
   moistureColor: {
     backgroundColor: theme.moistureColor,
+  },
+  upcomingWater: {
+    backgroundColor: theme.waterColor,
   },
   agendaItem: {
     // backgroundColor: "#eee",

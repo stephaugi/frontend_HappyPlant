@@ -81,9 +81,11 @@ const convertAllWaterFromAPI = (toConvert) => {
 
 const convertMoistureToAPI = (toConvert) => {
   const converted = Object.keys(toConvert).map(entryDate => {
-    return {timestamp: entryDate,
+    return {
+      timestamp: entryDate,
       id: toConvert[entryDate].id,
-      moisture_level: toConvert[entryDate].moistureLevel}
+      moisture_level: toConvert[entryDate].moistureLevel,
+    };
   });
   return converted;
 };

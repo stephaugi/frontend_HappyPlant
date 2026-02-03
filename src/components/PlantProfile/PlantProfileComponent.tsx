@@ -9,7 +9,7 @@ import ControlledTextInput from "../PlantForm/ControlledTextInput";
 import ControlledOption from "../PlantForm/ControlledOption";
 import { saveToStorage, getFromStorage } from "../../utils/storage";
 
-const PlantProfileComponent = () => {
+const PlantProfileComponent = ({ toNavigate }) => {
   // const selectedPlant = useLocalSearchParams();
   const [plantFormData, setPlantFormData] = useState({});
   const [plantsData, setPlantsData] = useState([]);
@@ -45,7 +45,13 @@ const PlantProfileComponent = () => {
       saveToStorage("plantsData", newPlantData);
     };
     updatePlant(inputData, plantsData);
-    Alert.alert("Saved!");
+    Alert.alert("Saved!", "", [
+      {
+        text: "OK",
+        onPress: () => toNavigate.back(),
+        style: "default",
+      },
+    ],);
   };
 
   const handleFormChange = (inputName: string, inputValue: string) => {
@@ -105,33 +111,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     borderRadius: 16,
   },
-  editButton: {
-    backgroundColor: theme.colorBlue,
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  textContainer: {
-    borderColor: theme.colorTheme1,
-    borderWidth: 1,
-    backgroundColor: theme.colorTheme1Light,
-    borderRadius: theme.cornerRound,
-    height: 150,
-    width: "100%",
-    alignSelf: "center",
-    alignItems: "center",
-    justifyContent: "center",
-  },
   text: {
     fontSize: theme.formTextSize,
     fontWeight: "800",
-    color: "black",
-  },
-  profileBody: {
-    fontSize: theme.subtitleSize,
-    fontWeight: "300",
     color: "black",
   },
   button: {

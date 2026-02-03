@@ -17,6 +17,7 @@ export default function App() {
   const [plantsData, setPlantsData] = useState([]);
   const [selectedPlant, setSelectedPlant] = useState([]);
   const [moistureData, setMoistureData] = useState({});
+
   const [waterData, setWaterData] = useState({});
   useFocusEffect(
     React.useCallback(() => {
@@ -57,21 +58,13 @@ export default function App() {
       const newWaterData = await updateWaterFromApi(selectedPlant.id, waterRequestData);
       saveToStorage("waterData", newWaterData);
       setWaterData(newWaterData);
-      // console.log(newMoistureData);
-      // const newWaterData
+
     };
-    // const submitWaterData = async(waterRequestData) => {
-    //   const newWaterData = await updateWaterFromApi(selectedPlant.id, waterRequestData);
-    //   saveToStorage("waterData", newWaterData);
-    //   setWaterData(newWaterData);
-    //   // console.log(newWaterData);
-    // };
 
     const submitDataUpdatePlants = (moistureRequestData, waterRequestData, selectedPlant) => {
       submitData(moistureRequestData, waterRequestData).then(async() => {
         const newPlantData = await getOnePlantFromApi(selectedPlant.id);
         const converted = convertFromAPI(newPlantData);
-        console.log(converted.currentMoistureLevel);
         setSelectedPlant(converted);
         saveToStorage("currentSelectedPlant", converted);
         const updatedPlantsData = plantsData.map(plantData => {
@@ -105,7 +98,6 @@ export default function App() {
         setMoistureData(moistureLogs);
         saveToStorage("moistureData", moistureLogs);
         const waterLogs = await getWaterFromApi(id);
-        console.log(waterLogs);
         setWaterData(waterLogs);
         saveToStorage("waterData", waterLogs);
       } catch (error) {
