@@ -1,7 +1,7 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import CustomButton from "../UI/CustomButton";
 import {Picker} from '@react-native-picker/picker';
-import { CalendarProvider, ExpandableCalendar, WeekCalendar } from "react-native-calendars";
+import { CalendarProvider, ExpandableCalendar} from "react-native-calendars";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { theme, fontStyles, colorStyles, uiStyles } from "../../theme";
 import { useState } from "react";
@@ -133,6 +133,7 @@ const MoistureTracker = ({plantsData, moistureData, waterData, selectedPlant, on
   };
 
 
+
   const moistureButtons = optionsList.map((item, index) => {
     return (
       <CustomButton
@@ -184,7 +185,7 @@ const MoistureTracker = ({plantsData, moistureData, waterData, selectedPlant, on
       <View style={styles.trackerContainer}>
         <View>
           <Picker
-            style={[{ marginTop: -50, height: 160, width: "100%", textAlign: "center" }]}
+            style={[{ marginTop: -30, height: 160, width: "100%", textAlign: "center" }]}
             // itemStyle={{ textAlign: "center", backgroundColor: "#b11313" }}
             selectedValue={selectedPlant ? selectedPlant.id : null}
             onValueChange={(itemValue, itemIndex) => {

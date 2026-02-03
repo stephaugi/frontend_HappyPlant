@@ -44,10 +44,12 @@ export function NewPlantForm({ name, isCompleted }: Props) {
         placeholder="Add a name"
         value={plantFormData["name"]}
       />
+      <View style={styles.photoSelectContainer}>
       <ImageSelector
         onSelectImage={handleFormChange}
         selectedImage={plantFormData["photo"]}
         />
+        </View>
       <ControlledTextInput
         labelName="Description"
         name="description"
@@ -100,4 +102,7 @@ const styles = StyleSheet.create({
   formContainer: {
     paddingHorizontal: 30,
   },
+  photoSelectContainer: {
+    height: 200,
+  }
 });

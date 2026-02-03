@@ -1,11 +1,14 @@
 import {
   convertMoistureFromAPI,
+  convertAllMoistureFromAPI,
   convertMoistureToAPI,
   convertWaterFromAPI,
   convertWaterToAPI,
 } from "./convertData";
 
 const apiUrl = "https://backend-happyplant.onrender.com";
+// const apiUrl = "http://127.0.0.1:5000";
+const ownerId = 1;
 
 const getOwnersFromApi = async () => {
   try {
@@ -21,6 +24,7 @@ const getPlantsFromApi = async () => {
   try {
     const response = await fetch(`${apiUrl}/owners/1/plants`);
     const plants = await response.json();
+    // console.log(plants);
     return plants;
   } catch (error) {
     console.log(error);
@@ -98,6 +102,15 @@ const getMoistureFromApi = async (id) => {
     console.log(error);
   }
 };
+const getAllMoistureFromApi = async (ownerId=1) => {
+  try {
+    const response = await fetch(`${apiUrl}/owners/${ownerId}/moisture`);
+    const moistureLogs = await response.json();
+    return convertAllMoistureFromAPI(moistureLogs);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 const updateMoistureFromApi = async (id, inputData) => {
   try {
@@ -125,6 +138,16 @@ const getWaterFromApi = async (id) => {
     const response = await fetch(`${apiUrl}/plants/${id}/water`);
     const waterLogs = await response.json();
     return convertWaterFromAPI(waterLogs);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getAllWaterFromApi = async (ownerId=1) => {
+  try {
+    const response = await fetch(`${apiUrl}/owners/${ownerId}/moisture`);
+    const waterLogs = await response.json();
+    return convertAllWaterFromAPI(waterLogs);
   } catch (error) {
     console.log(error);
   }
@@ -158,7 +181,9 @@ export {
   updatePlantFromApi,
   deletePlantFromApi,
   getMoistureFromApi,
+  getAllMoistureFromApi,
   updateMoistureFromApi,
   updateWaterFromApi,
   getWaterFromApi,
+  getAllWaterFromApi,
 };

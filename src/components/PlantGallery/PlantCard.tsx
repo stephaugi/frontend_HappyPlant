@@ -6,12 +6,13 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { saveToStorage } from "../../utils/storage";
 import { useRouter } from "expo-router";
 import { theme, fontStyles } from "../../theme";
+import { moistureScales } from "../../constants";
 
 type Props = {
   plantData: object;
 };
 
-const moistureScales = ["Very Dry", "Dry", "Normal", "Damp", "Wet", "Very Wet"];
+
 
 const PlantCard = ({ plantData }: Props) => {
   const router = useRouter();

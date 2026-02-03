@@ -35,6 +35,49 @@ const convertMoistureFromAPI = (toConvert) => {
     console.log(error);
   }
 };
+const convertAllMoistureFromAPI = (toConvert) => {
+  try {
+    let converted = new Object();
+    for (const eachLog of toConvert) {
+      const moistureInfo = {
+        id: eachLog.id,
+        plantName: eachLog.plant_name,
+        plantId: eachLog.plant_id,
+        moistureLevel: eachLog.moisture_level,
+      };
+      if (eachLog.timestamp in converted) {
+        converted[eachLog.timestamp].push(moistureInfo);
+      } else {
+        converted = { ...converted, [eachLog.timestamp]: [moistureInfo] };
+      }
+    };
+    return converted;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const convertAllWaterFromAPI = (toConvert) => {
+  try {
+    let converted = new Object();
+    for (const eachLog of toConvert) {
+      const waterInfo = {
+        id: eachLog.id,
+        plantName: eachLog.plant_name,
+        plantId: eachLog.plant_id,
+        watered: eachLog.moisture_level,
+      };
+      if (eachLog.timestamp in converted) {
+        converted[eachLog.timestamp].push(waterInfo);
+      } else {
+        converted = { ...converted, [eachLog.timestamp]: [waterInfo] };
+      }
+    };
+    return converted;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 const convertMoistureToAPI = (toConvert) => {
   const converted = Object.keys(toConvert).map(entryDate => {
@@ -76,7 +119,9 @@ export {
   convertFromAPI,
   convertToAPI,
   convertMoistureFromAPI,
+  convertAllMoistureFromAPI,
   convertMoistureToAPI,
   convertWaterFromAPI,
+  convertAllWaterFromAPI,
   convertWaterToAPI,
 };

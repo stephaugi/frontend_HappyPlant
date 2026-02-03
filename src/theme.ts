@@ -9,6 +9,8 @@ export const theme = {
   colorGrey: "grey",
   colorTheme1: "#c4cbc3",
   colorTheme1Light: "#ededed",
+  waterColor: "#a8f3e5",
+  moistureColor: "#ffc286",
   cornerRound: 10,
   subtitleSize: 12,
   formTextSize: 16,

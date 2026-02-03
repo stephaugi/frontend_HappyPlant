@@ -1,10 +1,17 @@
 import { Alert, StyleSheet, Text, View } from "react-native";
 import MoistureTracker from "../../components/MoistureTracker/MoistureTracker";
 import { saveToStorage, getFromStorage } from "../../utils/storage";
-import { getPlantsFromApi, getOnePlantFromApi, getMoistureFromApi, updateMoistureFromApi, updateWaterFromApi, getWaterFromApi } from "../../utils/api/apiCalls";
 import { convertFromAPI } from "../../utils/api/convertData";
 import React, { useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
+import {
+  getPlantsFromApi,
+  getOnePlantFromApi,
+  getMoistureFromApi,
+  updateMoistureFromApi,
+  updateWaterFromApi,
+  getWaterFromApi,
+} from "../../utils/api/apiCalls";
 
 export default function App() {
   const [plantsData, setPlantsData] = useState([]);
@@ -39,12 +46,10 @@ export default function App() {
     }, []));
 
   const handleSubmit = (selectedDay, moistureFormData, waterFormData) => {
-    // console.log(`Submitting data!`);
-    // submit logged info in formData for the day
     const moistureRequestData = { [selectedDay.selectedDate]: moistureFormData };
 
-    // submit logged info in formData for the day
     const waterRequestData = { [selectedDay.selectedDate]: waterFormData };
+    // submit logged info in formData for the day
     const submitData = async(moistureRequestData, waterRequestData) => {
       const newMoistureData = await updateMoistureFromApi(selectedPlant.id, moistureRequestData);
       saveToStorage("moistureData", newMoistureData);
@@ -97,7 +102,6 @@ export default function App() {
     const getMoistureLogs = async (id) => {
       try {
         const moistureLogs = await getMoistureFromApi(id);
-        console.log(moistureLogs);
         setMoistureData(moistureLogs);
         saveToStorage("moistureData", moistureLogs);
         const waterLogs = await getWaterFromApi(id);

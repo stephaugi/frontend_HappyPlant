@@ -2,7 +2,7 @@ import { StyleSheet, View } from "react-native";
 import { theme } from "../../theme";
 import { getFromStorage, saveToStorage } from "../../utils/storage";
 import React, { useState, useEffect } from "react";
-import { getPlantsFromApi } from "../../utils/api/apiCalls";
+import { getPlantsFromApi, getAllMoistureFromApi } from "../../utils/api/apiCalls";
 import { convertFromAPI } from "../../utils/api/convertData";
 import { useFocusEffect } from "@react-navigation/native";
 import WaterCalendar from "../../components/Calendar/WaterCalendar";
@@ -10,23 +10,8 @@ import WaterCalendar from "../../components/Calendar/WaterCalendar";
 export default function CalendarScreen() {
   const [plantsData, setPlantsData] = useState([]);
   const [plantsToWater, setPlantsToWater] = useState([]);
-
-  // useEffect(() => {
-  //   const fetchInitial = async () => {
-  //     const data = await getFromStorage("plantsData");
-  //     if (data) {
-  //       setPlantsData(data);
-  //       console.log("getting data from storage");
-  //     } else {
-  //       const response = await getPlantsFromApi();
-  //       saveToStorage("plantsData", response.map(plantData => convertFromAPI(plantData)));
-  //       setPlantsData(response.map(plantData => convertFromAPI(plantData)));
-  //       console.log("getting data from api");
-  //     }
-  //   };
-  //   // setPlantsData([]);
-  //   fetchInitial();
-  // }, []);
+  const [allMoistureData, setAllMoistureData] = useState({});
+  const [allWaterData, setAllWaterData] = useState({});
 
   useFocusEffect(
     React.useCallback(() => {
@@ -37,13 +22,23 @@ export default function CalendarScreen() {
         const converted = response.map((plantData) => convertFromAPI(plantData));
         setPlantsData(converted);
         const toWater = [];
+        // let allMoistureData = new Object();
         for (const plant of converted) {
-          if (plant.nextWaterDate) {
+          if (plant.nextWaterDate !== "None") {
+            // console.log(`${plant.name} has a watering date ${plant.nextWaterDate}`)
             toWater.push(plant);
           }
+          const moisture = await getAllMoistureFromApi();
+          saveToStorage("allMoistureData", moisture);
+          setAllMoistureData(moisture);
+          const water = await getAllMoistureFromApi();
+          saveToStorage("allWaterData", water);
+          setAllWaterData(water);
+          // const water = await getWaterFromApi(storedSelectedPlant.id);
+          // saveToStorage("waterData", water);
+          // setWaterData(water);
         }
         setPlantsToWater(toWater);
-        console.log(toWater);
       }
       fetchInitial();
       return () => {
@@ -54,9 +49,9 @@ export default function CalendarScreen() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.calendar}>
-        <WaterCalendar plants={plantsData} plantsToWater={plantsToWater}/>
-      </View>
+      {/* <View style={styles.calendar}> */}
+        <WaterCalendar plants={plantsData} plantsToWater={plantsToWater} allMoistureLogs={allMoistureData} allWaterLogs={allWaterData}/>
+      {/* </View> */}
     </View>
   );
 }
@@ -67,12 +62,5 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-  },
-  calendar: {
-    backgroundColor: theme.colorLightGrey,
-  },
-  agenda: {
-    backgroundColor: theme.colorLightGrey,
-    padding: 12,
   },
 });

@@ -1,19 +1,3 @@
-// plant profile page with plant info from state/api call
-// edit button that allows user to edit the profile info
-// top is a calendar to select date that you want to log
-// photo/image
-// name Text
-// description Text
-// desiredMoistureLevel Text
-// <actions section>
-// water button
-// moisture level buttons
-// save button to save new changes
-
-// states to use:
-// plants api call from owners/<user_id>/plants
-// each plant card shows the name of the plant, picture, happy or sad face icon.
-// clicks to go to profile page with more info on plant. Use the current plant for the profile info
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import { fontStyles, theme } from "../../theme";
 import { updatePlantFromApi } from "../../utils/api/apiCalls";
@@ -32,10 +16,7 @@ const PlantProfileComponent = () => {
   useFocusEffect(
     React.useCallback(() => {
       // Do something when the screen is focused
-      // const saveSelectedPlant = async (selectedPlant: object) => {
-      //   await saveToStorage("currentSelectedPlant", selectedPlant);
-      // };
-      // saveSelectedPlant(selectedPlant);
+
       async function getPlants() {
         setPlantsData(await getFromStorage("plantsData"));
         setPlantFormData(await getFromStorage("currentSelectedPlant"));
