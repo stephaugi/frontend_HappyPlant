@@ -1,0 +1,12 @@
+export const getOwnersFromApi = jest.fn();
+export const getPlantsFromApi = jest.fn();
+export const getOnePlantFromApi = jest.fn();
+export const createPlantFromApi = jest.fn();
+export const updatePlantFromApi = jest.fn();
+export const deletePlantFromApi = jest.fn();
+export const getMoistureFromApi = jest.fn();
+export const getAllMoistureFromApi = jest.fn();
+export const updateMoistureFromApi = jest.fn();
+export const updateWaterFromApi = jest.fn();
+export const getWaterFromApi = jest.fn();
+export const getAllWaterFromApi = jest.fn();

@@ -12,31 +12,16 @@ const storageKey = "plantsData";
 export default function PlantsScreen() {
   const [plantsData, setPlantsData] = useState([]);
   const router = useRouter();
-  // useEffect(() => {
-  //   const fetchInitial = async () => {
-  //     const data = await getFromStorage(storageKey);
-  //     if (data) {
-  //       setPlantsData(data);
-  //       console.log("getting data from storage");
-  //     } else {
-  //       const response = await getPlantsFromApi();
-  //       saveToStorage("plantsData", response.map(plantData => convertFromAPI(plantData)));
-  //       setPlantsData(response.map(plantData => convertFromAPI(plantData)));
-  //       console.log("getting data from api");
-  //     }
-  //   };
-  //   // setPlantsData([]);
-  //   fetchInitial();
-  // }, []);
 
   useFocusEffect(
     React.useCallback(() => {
       // Do something when the screen is focused
       async function getPlants() {
         const response = await getPlantsFromApi();
-        saveToStorage("plantsData", response.map(plantData => convertFromAPI(plantData)));
-        setPlantsData(response.map(plantData => convertFromAPI(plantData)));
-        console.log(response);
+        const converted = response.map(plantData => convertFromAPI(plantData))
+        saveToStorage("plantsData", converted);
+        setPlantsData(converted);
+        console.log(converted);
       }
       getPlants();
       return () => {
@@ -45,17 +30,6 @@ export default function PlantsScreen() {
       };
     }, [])
   );
-
-
-  // const handleSelectPlant = (item: object) => {
-  //   // set the selected plant
-  //   // go to the profile page with the selected plant info passed
-  //   saveToStorage("currentSelectedPlant", item);
-  //   router.navigate({
-  //     pathname: `plants/plantProfile`,
-  //     // params: item,
-  //   });
-  // };
 
   return (
     <View style={styles.container}>

@@ -25,7 +25,6 @@ export default function Layout() {
       [
         {
           text: "cancel",
-          onPress: () => console.log("action canceled"),
           style: "cancel",
         },
         {
