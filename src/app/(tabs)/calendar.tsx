@@ -1,7 +1,6 @@
 import { StyleSheet, View } from "react-native";
-import { theme } from "../../theme";
-import { getFromStorage, saveToStorage } from "../../utils/storage";
-import React, { useState, useEffect } from "react";
+import { saveToStorage } from "../../utils/storage";
+import React, { useState } from "react";
 import { getPlantsFromApi, getAllMoistureFromApi } from "../../utils/api/apiCalls";
 import { convertFromAPI } from "../../utils/api/convertData";
 import { useFocusEffect } from "@react-navigation/native";

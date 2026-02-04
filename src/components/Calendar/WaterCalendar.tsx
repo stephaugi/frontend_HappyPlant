@@ -63,11 +63,10 @@ const WaterCalendar = ({ plants, plantsToWater, allMoistureLogs, allWaterLogs })
     return [moistureDate, {marked: true, dotColor: theme.moistureColor}]
   }));
 
-
   return (<>
       <View style={{ flex: 1, marginTop: 30 }}>
         <Calendar
-          style={{ width: 300, position: "relative", alignSelf: "center" }}
+          style={{ width: 300, height: 350, position: "relative", alignSelf: "center" }}
           headerStyle={{ justifyContent: "center" }}
           onDayPress={day => {
             const newDate = (day.dateString == selectedDate) ? null : day.dateString
