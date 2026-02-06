@@ -37,22 +37,7 @@ export default function Layout() {
       ],
     );
   };
-  // const [plantsData, setPlantsData] = useState([]);
-  // const getPlants = async () => {
-  //   setPlantsData(await getPlantsFromApi());
-  // };
-
-  // const handleCreatePlant = (inputData: object) => {
-  //   const requestBody = convertToAPI(inputData);
-  //   createPlantFromApi(requestBody).then(() => {
-  //     getPlants();
-  //   });
-  // };
-
-  // useEffect(() => {
-  //   getPlants();
-  // }, []);
-
+  
   return (
     <Stack>
       <Stack.Screen

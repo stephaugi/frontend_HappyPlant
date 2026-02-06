@@ -1,57 +1,69 @@
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
-import { fontStyles, theme } from "../../theme";
-import { updatePlantFromApi } from "../../utils/api/apiCalls";
+import { View, Text, StyleSheet, Alert } from "react-native";
+import { fontStyles } from "../../theme";
 import React, { useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
+import { useLocalSearchParams } from "expo-router";
 import ImageSelector from "../PlantForm/ImageSelector";
-import { convertToAPI, convertFromAPI } from "../../utils/api/convertData";
 import ControlledTextInput from "../PlantForm/ControlledTextInput";
 import ControlledOption from "../PlantForm/ControlledOption";
-import { saveToStorage, getFromStorage } from "../../utils/storage";
+import CustomButton from "components/UI/CustomButton";
+import { usePlantsData } from "contexts/PlantsData/PlantsDataContext";
 
 const PlantProfileComponent = ({ toNavigate }) => {
-  // const selectedPlant = useLocalSearchParams();
-  const [plantFormData, setPlantFormData] = useState({});
-  const [plantsData, setPlantsData] = useState([]);
+  const { plantsData, updatePlantsData, selectPlant } = usePlantsData();
+  const [plantFormData, setPlantFormData] = useState(null);
+  const plant = useLocalSearchParams();
+
   useFocusEffect(
     React.useCallback(() => {
-      // Do something when the screen is focused
-
-      async function getPlants() {
-        setPlantsData(await getFromStorage("plantsData"));
-        setPlantFormData(await getFromStorage("currentSelectedPlant"));
-      }
-      getPlants();
-      return () => {
-        // Do something when the screen is unfocused
-        // Useful for cleanup functions
-      };
+      setPlantFormData({ ...plant });
     }, [])
   );
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     // Do something when the screen is focused
+  //     async function getPlants() {
+  //       setPlantsData(await getFromStorage("plantsData"));
+  //       setPlantFormData(await getFromStorage("currentSelectedPlant"));
+  //       // setPlantsData({...selectedPlant});
+  //       // selectPlant(1);
+  //       // console.log(selectedPlant);
+  //       setPlantFormData({...selectedPlant});
+  //     }
+  //     getPlants();
+  //     return () => {
+  //       // Do something when the screen is unfocused
+  //       // Useful for cleanup functions
+  //     };
+  //   }, [])
+  // );
+  if (!plantFormData) return null; // or loading spinner
 
-  const handleUpdatePlant = (inputData: object, plantFormData: any[]) => {
-    const updatePlant = async (inputData: object, plantFormData: any[]) => {
-      const requestBody = convertToAPI({ ...inputData });
-      const response = convertFromAPI(await updatePlantFromApi(requestBody));
-      setPlantFormData(response);
+  const handleUpdatePlant = (plantFormData: Object) => {
+    // const updatePlant = async (inputData: object, plantFormData: any[]) => {
+    //   const requestBody = convertToAPI({ ...inputData });
+    //   const response = convertFromAPI(await updatePlantFromApi(requestBody));
+    //   setPlantFormData(response);
 
-      const newPlantData = plantsData.map((plant) => {
-        if (plant.id === plantFormData.id) {
-          return plant;
-        } else {
-          return plant;
-        }
-      });
-      saveToStorage("plantsData", newPlantData);
-    };
-    updatePlant(inputData, plantsData);
-    Alert.alert("Saved!", "", [
-      {
-        text: "OK",
-        onPress: () => toNavigate.back(),
-        style: "default",
-      },
-    ],);
+    //   const newPlantData = plantsData.map((plant) => {
+    //     if (plant.id === plantFormData.id) {
+    //       return plant;
+    //     } else {
+    //       return plant;
+    //     }
+    //   });
+    //   saveToStorage("plantsData", newPlantData);
+    // };
+    // updatePlantsData(inputData, plantsData);
+    updatePlantsData(plantFormData).then(() => {
+      Alert.alert("Saved!", "", [
+        {
+          text: "OK",
+          onPress: () => toNavigate.back(),
+          style: "default",
+        },
+      ]);
+    });
   };
 
   const handleFormChange = (inputName: string, inputValue: string) => {
@@ -73,7 +85,6 @@ const PlantProfileComponent = ({ toNavigate }) => {
         onSelectImage={handleFormChange}
         selectedImage={plantFormData["photo"]}
       />
-
       <ControlledTextInput
         labelName="Description"
         name="description"
@@ -83,20 +94,17 @@ const PlantProfileComponent = ({ toNavigate }) => {
         textAreaHeight={100}
         textArea={true}
       />
+      <View>
       <Text style={fontStyles.emphasis}>When to water</Text>
-      <View style={{ alignSelf: "center" }}>
         <ControlledOption
           moistureLevel={plantFormData.desiredMoistureLevel}
           onSelectOption={handleFormChange}
         />
       </View>
-      <TouchableOpacity
-        style={styles.button}
-        activeOpacity={0.8}
-        onPress={() => handleUpdatePlant(plantFormData, plantsData)}
-      >
-        <Text style={styles.buttonText}>Save</Text>
-      </TouchableOpacity>
+      <CustomButton
+      label="Save"
+      onPress={() => handleUpdatePlant(plantFormData)}
+      />
     </View>
   );
 };
@@ -106,46 +114,10 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 22,
     paddingVertical: 20,
-    // backgroundColor: theme.colorLightBlue,
     height: 600,
     marginHorizontal: 20,
     borderRadius: 16,
-  },
-  text: {
-    fontSize: theme.formTextSize,
-    fontWeight: "800",
-    color: "black",
-  },
-  button: {
-    borderColor: theme.colorBlue,
-    borderWidth: 1,
-    backgroundColor: theme.colorBlue,
-    borderRadius: theme.cornerRound,
-    padding: 10,
-    marginTop: 30,
-    width: 100,
-    alignSelf: "center",
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: theme.formTextSize,
-    fontWeight: "800",
-    textAlign: "center",
-  },
-  formContainer: {
-    paddingHorizontal: 30,
-  },
-  textInputContainer: {
-    marginVertical: 10,
-  },
-  textInput: {
-    fontSize: theme.formTextSize,
-    fontWeight: "800",
-    minWidth: 300,
-  },
-  label: {
-    paddingBottom: 10,
-    fontSize: 14,
+    gap: 10,
   },
 });
 

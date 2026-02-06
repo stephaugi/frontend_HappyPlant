@@ -35,6 +35,32 @@ const convertMoistureFromAPI = (toConvert) => {
     console.log(error);
   }
 };
+
+// const convertMoistureFromAPI = (toConvert) => {
+//   try {
+//     let converted = new Object();
+//     for (const eachLog of toConvert) {
+//       const moistureInfo = {
+//         [eachLog.plant_name]: {
+//           id: eachLog.id,
+//           plantName: eachLog.plant_name,
+//           plantId: eachLog.plant_id,
+//           moistureLevel: eachLog.moisture_level,
+//         }};
+//       if (eachLog.timestamp in converted) {
+//         const newDict = {...converted[eachLog.timestamp], ...moistureInfo}
+//         converted = { ...converted, [eachLog.timestamp]: newDict };
+//         // converted[eachLog.timestamp].push(moistureInfo);
+//       } else {
+//         converted = { ...converted, [eachLog.timestamp]: moistureInfo };
+//       }
+//     };
+//     return converted;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
 const convertAllMoistureFromAPI = (toConvert) => {
   try {
     let converted = new Object();
@@ -65,7 +91,7 @@ const convertAllWaterFromAPI = (toConvert) => {
         id: eachLog.id,
         plantName: eachLog.plant_name,
         plantId: eachLog.plant_id,
-        watered: eachLog.moisture_level,
+        watered: eachLog.watered,
       };
       if (eachLog.timestamp in converted) {
         converted[eachLog.timestamp].push(waterInfo);
@@ -89,6 +115,30 @@ const convertMoistureToAPI = (toConvert) => {
   });
   return converted;
 };
+
+// const convertWaterFromAPI = (toConvert) => {
+//   try {
+//     let converted = new Object();
+//     for (const eachLog of toConvert) {
+//       const waterInfo = {
+//         [eachLog.plant_name]: {
+//         id: eachLog.id,
+//         // plantName: eachLog.plant_name,
+//         // plantId: eachLog.plant_id,
+//         watered: eachLog.watered,
+//       }};
+//       if (eachLog.timestamp in converted) {
+//         const newDict = { ...converted[eachLog.timestamp], ...waterInfo };
+//         converted = { ...converted, [eachLog.timestamp]: newDict };
+//       } else {
+//         converted = { ...converted, [eachLog.timestamp]: waterInfo };
+//       }
+//     };
+//     return converted;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 
 const convertWaterFromAPI = (toConvert) => {
   try {

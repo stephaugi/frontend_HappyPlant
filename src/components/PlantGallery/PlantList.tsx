@@ -5,22 +5,26 @@
 import { View, Text, StyleSheet, FlatList } from "react-native";
 import { theme } from "../../theme";
 import PlantCard from "./PlantCard";
+import { usePlantsData } from "contexts/PlantsData/PlantsDataContext";
+import { PlantsDataProvider } from "contexts/PlantsData/PlantsDataContext";
+import { useState } from "react";
+import { useFocusEffect } from "expo-router";
+import React from "react";
 
-type Props = {
-  plantsData: any[];
-};
+const PlantList = () => {
+  const { plantsData, refreshPlantsData } = usePlantsData();
 
-const PlantList = ({ plantsData }: Props) => {
-  // const plantData = [
-  //   {
-  //     name: "jellybean",
-  //     id: "1209j",
-  //   },
-  //   {
-  //     name: "peanut butter",
-  //     id: "199403n",
-  //   },
-  // ];
+
+  useFocusEffect(
+    React.useCallback(() => {
+      refreshPlantsData();
+      // Do something when the screen is focused
+      return () => {
+        // Do something when the screen is unfocused
+      };
+    }, [])
+);
+
   return (
     <View style={{ marginTop: 20 }}>
       <FlatList

@@ -1,9 +1,6 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import MoistureTracker from '../src/components/MoistureTracker/MoistureTracker';
-import { Alert } from 'react-native';
-import { getMoistureFromApi, getPlantsFromApi, getWaterFromApi } from "../src/utils/api/apiCalls";
-import { getFromStorage, saveToStorage } from "../src/utils/storage";
 
 const testPlantData = [
   {
@@ -18,31 +15,22 @@ const testPlantData = [
   },
 ];
 
-// jest.mock(apiCalls);
-jest.mock("../src/utils/storage");
-jest.mock('../src/utils/api/apiCalls.tsx', () => ({
-  ...(jest.requireActual('../src/utils/api/apiCalls.tsx')),
-  getPlantsFromApi: jest.fn(),
-}));
+// Disable useFocusEffect completely
+jest.mock('@react-navigation/native', () => {
+  const actual = jest.requireActual('@react-navigation/native');
+  return {
+    ...actual,
+    useFocusEffect: jest.fn(), // NO-OP
+  };
+});
+
+// // Prevent animation crashes
+// jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
 
 jest.mock('react-native-calendars', () => ({
   CalendarProvider: ({ children }: any) => children,
   ExpandableCalendar: () => null,
 }));
-
-// // Prevent animation crashes
-// jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
-
-// Make focus effects opt-in
-jest.mock('@react-navigation/native', () => {
-  const actual = jest.requireActual('@react-navigation/native');
-  return {
-    ...actual,
-    useFocusEffect: jest.fn(), // NO-OP by default
-  };
-});
-
-jest.spyOn(Alert, 'alert').mockImplementation(jest.fn());
 
 describe('MoistureTracker', () => {
   afterEach(() => {

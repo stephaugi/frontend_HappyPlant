@@ -93,6 +93,15 @@ const deletePlantFromApi = async (id) => {
   }
 };
 
+// const getMoistureFromApi = async (id) => {
+//   try {
+//     const response = await fetch(`${apiUrl}/owners/${ownerId}/moisture`);
+//     const moistureLogs = await response.json();
+//     return convertMoistureFromAPI(moistureLogs);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 const getMoistureFromApi = async (id) => {
   try {
     const response = await fetch(`${apiUrl}/plants/${id}/moisture`);
@@ -141,9 +150,18 @@ const getWaterFromApi = async (id) => {
   }
 };
 
+// const getWaterFromApi = async (ownerId=1) => {
+//   try {
+//     const response = await fetch(`${apiUrl}/owners/${ownerId}/water`);
+//     const waterLogs = await response.json();
+//     return convertWaterFromAPI(waterLogs);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 const getAllWaterFromApi = async (ownerId=1) => {
   try {
-    const response = await fetch(`${apiUrl}/owners/${ownerId}/moisture`);
+    const response = await fetch(`${apiUrl}/owners/${ownerId}/water`);
     const waterLogs = await response.json();
     return convertAllWaterFromAPI(waterLogs);
   } catch (error) {

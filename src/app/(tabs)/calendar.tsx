@@ -1,10 +1,13 @@
 import { StyleSheet, View } from "react-native";
 import { saveToStorage } from "../../utils/storage";
 import React, { useState } from "react";
-import { getPlantsFromApi, getAllMoistureFromApi } from "../../utils/api/apiCalls";
+import { getPlantsFromApi, getAllMoistureFromApi, getAllWaterFromApi } from "../../utils/api/apiCalls";
 import { convertFromAPI } from "../../utils/api/convertData";
 import { useFocusEffect } from "@react-navigation/native";
 import WaterCalendar from "../../components/Calendar/WaterCalendar";
+import { AllMoistureDataProvider } from "contexts/AllMoistureData/AllMoistureDataContext";
+import { AllWaterDataProvider } from "contexts/AllWaterDataContext";
+import { PlantsDataProvider } from "contexts/PlantsData/PlantsDataContext";
 
 export default function CalendarScreen() {
   const [plantsData, setPlantsData] = useState([]);
@@ -25,12 +28,13 @@ export default function CalendarScreen() {
           if (plant.nextWaterDate !== "None") {
             toWater.push(plant);
           }
-          const moisture = await getAllMoistureFromApi();
-          saveToStorage("allMoistureData", moisture);
-          setAllMoistureData(moisture);
-          const water = await getAllMoistureFromApi();
-          saveToStorage("allWaterData", water);
-          setAllWaterData(water);
+        const moisture = await getAllMoistureFromApi();
+        saveToStorage("allMoistureData", moisture);
+        setAllMoistureData(moisture);
+        const water = await getAllWaterFromApi();
+        saveToStorage("allWaterData", water);
+        setAllWaterData(water);
+        console.log(water);
         }
         setPlantsToWater(toWater);
       }
@@ -45,8 +49,14 @@ export default function CalendarScreen() {
   return (
     <View style={styles.container}>
       {/* <View style={styles.calendar}> */}
-        <WaterCalendar plants={plantsData} plantsToWater={plantsToWater} allMoistureLogs={allMoistureData} allWaterLogs={allWaterData}/>
-      {/* </View> */}
+      <PlantsDataProvider>
+        <AllWaterDataProvider>
+          <AllMoistureDataProvider>
+            <WaterCalendar plants={plantsData} plantsToWater={plantsToWater} allMoistureLogs={allMoistureData} allWaterLogs={allWaterData}/>
+          {/* </View> */}
+          </AllMoistureDataProvider>
+        </AllWaterDataProvider>
+      </PlantsDataProvider>
     </View>
   );
 }

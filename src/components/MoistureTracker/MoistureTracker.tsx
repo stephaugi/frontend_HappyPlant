@@ -8,6 +8,7 @@ import { saveToStorage, getFromStorage } from "../../utils/storage";
 import { convertFromAPI } from "../../utils/api/convertData";
 import React, { useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
+import { PlantsDataProvider, usePlantsData } from "contexts/PlantsData/PlantsDataContext";
 import {
   getPlantsFromApi,
   getOnePlantFromApi,
@@ -16,6 +17,8 @@ import {
   updateWaterFromApi,
   getWaterFromApi,
 } from "../../utils/api/apiCalls";
+import { useTrackerMoistureData } from "contexts/TrackerMoistureData/TrackerMoistureDataContext";
+import { useTrackerWaterData } from "contexts/TrackerMoistureData/TrackerWaterDataContext";
 
 const optionsList = [
   {
@@ -61,30 +64,33 @@ const MoistureTracker = () => {
   const [selectedDay, setSelectedDay] = useState({ selectedDate: today });
   const [moistureFormData, setMoistureFormData] = useState(kDefaultMoistureForm);
   const [waterFormData, setWaterFormData] = useState(kDefaultWaterForm);
-  const [plantsData, setPlantsData] = useState([]);
+  // const [plantsData, setPlantsData] = useState([]);
   const [selectedPlant, setSelectedPlant] = useState([]);
-  const [moistureData, setMoistureData] = useState({});
-  const [waterData, setWaterData] = useState({});
+  // const [moistureData, setMoistureData] = useState({});
+  // const [waterData, setWaterData] = useState({});
+
+  const {
+    trackerMoistureData,
+    updateTrackerMoistureData,
+    resetTrackerMoistureData,
+    refreshTrackerMoistureData } = useTrackerMoistureData();
+  const { trackerWaterData, updateTrackerWaterData } = useTrackerWaterData();
+  const { plantsData } = usePlantsData();
 
   useFocusEffect(
     React.useCallback(() => {
-      // Do something when the screen is focused
       async function fetchInitial() {
-        const response = await getPlantsFromApi();
         const storedSelectedPlant = await getFromStorage("currentSelectedPlant");
-        saveToStorage("plantsData", response.map(plantData => convertFromAPI(plantData)));
-        setPlantsData(response.map((plantData) => convertFromAPI(plantData)));
-        // get moisture data from api and save to storage/state
         if (storedSelectedPlant) {
           setSelectedPlant(storedSelectedPlant);
-          const moisture = await getMoistureFromApi(storedSelectedPlant.id);
-          saveToStorage("moistureData", moisture);
-          setMoistureData(moisture);
-          const water = await getWaterFromApi(storedSelectedPlant.id);
-          saveToStorage("waterData", water);
-          setWaterData(water);
+          if (selectedDay.selectedDate in trackerMoistureData && storedSelectedPlant.id in trackerMoistureData[selectedDay.selectedDate]) {
+            setMoistureFormData(...trackerMoistureData[selectedDay.selectedDate][storedSelectedPlant.name])
+
+          }
         }
-      }
+      };
+      // Do something when the screen is focused
+
       fetchInitial();
       return () => {
         // Do something when the screen is unfocused
@@ -94,16 +100,15 @@ const MoistureTracker = () => {
 
   const handleSubmit = (selectedDay, moistureFormData, waterFormData) => {
     const moistureRequestData = { [selectedDay.selectedDate]: moistureFormData };
-    const waterRequestData = { [selectedDay.selectedDate]: waterFormData };
-    // submit logged info in formData for the day
-    const submitData = async(moistureRequestData, waterRequestData) => {
-      const newMoistureData = await updateMoistureFromApi(selectedPlant.id, moistureRequestData);
-      saveToStorage("moistureData", newMoistureData);
-      setMoistureData(newMoistureData);
-      const newWaterData = await updateWaterFromApi(selectedPlant.id, waterRequestData);
-      saveToStorage("waterData", newWaterData);
-      setWaterData(newWaterData);
-    };
+    // const waterRequestData = { [selectedDay.selectedDate]: waterFormData };
+    // // submit logged info in formData for the day
+    // const submitData = async(moistureRequestData, waterRequestData) => {
+    //   const newMoistureData = await updateMoistureFromApi(selectedPlant.id, moistureRequestData);
+    //   saveToStorage("moistureData", newMoistureData);
+    //   setMoistureData(newMoistureData);
+    //   const newWaterData = await updateWaterFromApi(selectedPlant.id, waterRequestData);
+    //   saveToStorage("waterData", newWaterData);
+    //   setWaterData(newWaterData);
 
     const submitDataUpdatePlants = (moistureRequestData, waterRequestData, selectedPlant) => {
       submitData(moistureRequestData, waterRequestData).then(async() => {
@@ -139,11 +144,11 @@ const MoistureTracker = () => {
     const getMoistureLogs = async (id) => {
       try {
         const moistureLogs = await getMoistureFromApi(id);
-        setMoistureData(moistureLogs);
+        // setMoistureData(moistureLogs);
         saveToStorage("moistureData", moistureLogs);
 
         const waterLogs = await getWaterFromApi(id);
-        setWaterData(waterLogs);
+        // setWaterData(waterLogs);
         saveToStorage("waterData", waterLogs);
 
         handleDateChange(selectedDay.selectedDate, moistureLogs, waterLogs);
@@ -209,6 +214,7 @@ const MoistureTracker = () => {
       />
     );
   });
+
   return (<>
       <View style={{ height: 150, marginTop: 30 }}>
         <CalendarProvider
@@ -227,10 +233,10 @@ const MoistureTracker = () => {
             disablePan={true}
             disableWeekScroll={false}
             onDayPress={(day) => {
-              handleDateChange(day.dateString, moistureData, waterData);
+              handleDateChange(day.dateString, trackerMoistureData, trackerWaterData);
               setSelectedDay({selectedDate: day.dateString});
             }}
-            markedDates={Object.fromEntries([...Object.keys(moistureData).map(moistureDates => {
+            markedDates={Object.fromEntries([...Object.keys(trackerMoistureData).map(moistureDates => {
                 return [moistureDates, {marked:true}]
               }),
               [[selectedDay.selectedDate], { selected: true, selectedColor: theme.colorGrey }]]
@@ -246,7 +252,7 @@ const MoistureTracker = () => {
             selectedValue={selectedPlant ? selectedPlant.id : null}
             onValueChange={(itemValue, itemIndex) => {
               selectPlant(itemValue);
-              handleDateChange(selectedDay.selectedDate, moistureData, waterData);
+              handleDateChange(selectedDay.selectedDate, trackerMoistureData, trackerWaterData);
             }
             }>
             {plantOptions}

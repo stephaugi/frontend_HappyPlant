@@ -7,14 +7,16 @@ import { saveToStorage } from "../../utils/storage";
 import { useRouter } from "expo-router";
 import { theme, fontStyles } from "../../theme";
 import { moistureScales } from "../../constants";
+import { usePlantsData } from "contexts/PlantsData/PlantsDataContext";
+import { useEffect } from "react";
 
 type Props = {
   plantData: object;
 };
 
-
-
 const PlantCard = ({ plantData }: Props) => {
+  const { plantsData, selectedPlant, updatePlantsData, resetPlantsData, refreshPlantsData, selectPlant } = usePlantsData();
+
   const router = useRouter();
   const handleSelectPlant = (item: object) => {
     // set the selected plant
@@ -22,9 +24,14 @@ const PlantCard = ({ plantData }: Props) => {
       await saveToStorage("currentSelectedPlant", item);
     };
     saveSelectedPlant(item);
+
     // go to the profile page with the selected plant info passed
+
+    selectPlant(item.id);
+
     router.navigate({
       pathname: `plants/plantProfile`,
+      params: plantData,
     });
   };
   return (
