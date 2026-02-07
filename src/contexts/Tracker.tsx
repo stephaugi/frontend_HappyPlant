@@ -40,13 +40,13 @@ const TrackerProvider = ({ children }) => {
       const newMoistureData = await updateMoistureFromApi(selectedPlant.id, moistureRequestData);
       const newWaterData = await updateWaterFromApi(selectedPlant.id, waterRequestData);
       const newPlantData = convertFromAPI(await getOnePlantFromApi(selectedPlant.id));
-      // updateSelectedPlant(newPlantData);
-      if (newPlantData.currentMoistureLevel <= newPlantData.desiredMoistureLevel) {
-        Alert.alert("Watering Alert!", `Looks like ${newPlantData.name} is ready for a drink!`);
-      }
+      // if (newPlantData.currentMoistureLevel <= newPlantData.desiredMoistureLevel) {
+      //   Alert.alert("Watering Alert!", `Looks like ${newPlantData.name} is ready for a drink!`);
+      // }
+      updateSelectedPlant(newPlantData);
     };
     updateAPI(moistureRequestData, waterRequestData);
-    // refreshPlantsData();
+
   };
 
 

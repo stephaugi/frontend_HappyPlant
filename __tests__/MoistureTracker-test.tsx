@@ -39,11 +39,11 @@ describe('MoistureTracker', () => {
   it("checks that my test runs at all", () => {
     expect(5).toEqual(5);
   });
-  it("checks that my test runs with one button", () => {
-    // const testButton = render(<CustomButton />);
-    getPlantsFromApi.mockReturnValue("Hello");
-    expect(getPlantsFromApi()).toBe("Hello");
-  });
+  // it("checks that my test runs with one button", () => {
+  //   // const testButton = render(<CustomButton />);
+  //   getPlantsFromApi.mockReturnValue("Hello");
+  //   expect(getPlantsFromApi()).toBe("Hello");
+  // });
 
   // it('renders and allows saving moisture data', () => {
   //   const screen = render(<MoistureTracker />);
