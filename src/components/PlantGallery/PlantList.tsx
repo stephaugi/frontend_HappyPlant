@@ -14,7 +14,6 @@ import React from "react";
 const PlantList = () => {
   const { plantsData, refreshPlantsData } = usePlantsData();
 
-
   useFocusEffect(
     React.useCallback(() => {
       refreshPlantsData();
@@ -23,7 +22,7 @@ const PlantList = () => {
         // Do something when the screen is unfocused
       };
     }, [])
-);
+  );
 
   return (
     <View style={{ marginTop: 20 }}>

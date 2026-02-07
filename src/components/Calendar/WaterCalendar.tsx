@@ -4,28 +4,28 @@ import {Calendar, LocaleConfig, Agenda, CalendarList, CalendarProvider, Expandab
 import PlantAgenda from './PlantAgenda';
 import { theme, colorStyles, uiStyles, fontStyles } from '../../theme';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useAllMoistureData } from 'contexts/AllMoistureData/AllMoistureDataContext';
-import { useAllWaterData } from 'contexts/AllWaterDataContext';
+import { useAllMoistureData } from 'contexts/AllData/AllMoistureDataContext';
+import { useAllWaterData } from 'contexts/AllData/AllWaterDataContext';
 import { usePlantsData } from 'contexts/PlantsData/PlantsDataContext';
 import { useFocusEffect } from "@react-navigation/native";
 
 const WaterCalendar = () => {
   const [selectedDate, setSelectedDate] = useState('');
-  const [plantsToWater, setPlantsToWater] = useState(null);
+  // const [plantsToWater, setPlantsToWater] = useState(null);
   const { allMoistureData } = useAllMoistureData();
   const { allWaterData } = useAllWaterData();
-  const { plantsData, getPlantsToWater } = usePlantsData();
+  const { plantsData, plantsToWater } = usePlantsData();
 
-  useFocusEffect(
-    React.useCallback(() => {
-      // Do something when the screen is focused
-      const toWater = getPlantsToWater();
-      setPlantsToWater(toWater);
-      return () => {
-        // Do something when the screen is unfocused
-        // Useful for cleanup functions
-      };
-    }, []));
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     // Do something when the screen is focused
+  //     const toWater = getPlantsToWater();
+  //     setPlantsToWater(toWater);
+  //     return () => {
+  //       // Do something when the screen is unfocused
+  //       // Useful for cleanup functions
+  //     };
+  //   }, []));
 
   const water_history = selectedDate && (selectedDate in allWaterData) ? allWaterData[selectedDate].map((waterLog, index) => {
           return (
@@ -41,6 +41,7 @@ const WaterCalendar = () => {
       : null;
 
   const moisture_history = selectedDate && (selectedDate in allMoistureData) ? allMoistureData[selectedDate].map((moistureLog, index) => {
+    console.log("loll what is happening");
           return (
             <PlantAgenda
               key={`moistureLog${selectedDate}${index}`}

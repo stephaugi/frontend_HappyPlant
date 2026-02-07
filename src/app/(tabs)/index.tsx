@@ -1,9 +1,10 @@
 import { StyleSheet, View } from "react-native";
 import MoistureTracker from "../../components/MoistureTracker/MoistureTracker";
 import React from "react";
-import { TrackerMoistureDataProvider } from "contexts/TrackerMoistureData/TrackerMoistureDataContext";
-import { TrackerWaterDataProvider } from "contexts/TrackerMoistureData/TrackerWaterDataContext";
+import { TrackerMoistureDataProvider } from "contexts/TrackerData/TrackerMoistureDataContext";
+import { TrackerWaterDataProvider } from "contexts/TrackerData/TrackerWaterDataContext";
 import { PlantsDataProvider } from "contexts/PlantsData/PlantsDataContext";
+import { TrackerProvider } from "contexts/Tracker";
 
 export default function App() {
   return (
@@ -11,7 +12,9 @@ export default function App() {
       <PlantsDataProvider>
         <TrackerWaterDataProvider>
           <TrackerMoistureDataProvider>
-            <MoistureTracker />
+            <TrackerProvider>
+              <MoistureTracker />
+            </TrackerProvider>
           </TrackerMoistureDataProvider>
         </TrackerWaterDataProvider>
       </PlantsDataProvider>

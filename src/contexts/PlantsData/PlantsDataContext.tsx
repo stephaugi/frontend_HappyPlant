@@ -15,11 +15,14 @@ const initialPlantsData = [
     photo: "",
   },
 ];
+
 const PlantsDataContext = createContext(initialPlantsData);
 
 const PlantsDataProvider = ({ children }) => {
   const [plantsData, setPlantsData] = useState(initialPlantsData);
   const [selectedPlant, setSelectedPlant] = useState(null);
+  const [selectedPlantId, setSelectedPlantId] = useState(null);
+  const [plantsToWater, setPlantsToWater] = useState(null);
 
   const addPlantsData = async (inputData: object) => {
     const requestBody = convertToAPI(inputData);
@@ -37,6 +40,11 @@ const PlantsDataProvider = ({ children }) => {
     });
   };
 
+  const updateSelectedPlant = (update) => {
+    setSelectedPlant({...update});
+    setSelectedPlantId(update.id);
+  };
+
   const resetPlantsData = () => {
     setPlantsData({...initialPlantsData});
   };
@@ -46,6 +54,7 @@ const PlantsDataProvider = ({ children }) => {
       return plant.id === plantId;
     });
     setSelectedPlant(selected[0]);
+    setSelectedPlantId(plantId);
   };
 
   const refreshPlantsData = () => {
@@ -56,36 +65,57 @@ const PlantsDataProvider = ({ children }) => {
           convertFromAPI(plantData),
         );
         setPlantsData(plantsConvertedData);
+        getPlantsToWater(plantsConvertedData);
+        if (!selectedPlant) {
+          setSelectedPlantId(plantsConvertedData[0].id);
+          setSelectedPlant(plantsConvertedData[0]);
+        } else {
+          const select = plantsConvertedData.filter(plant => plant.id === selectedPlantId);
+          setSelectedPlant(select[0]);
+          setSelectedPlantId(select[0].id);
+        }
+
       }
     };
     getPlants();
   };
 
-  const getPlantsToWater = () => {
+  const getPlantsToWater = (plants) => {
     const toWater = [];
     for (const plant of plantsData) {
       if (plant.nextWaterDate !== "None") {
         toWater.push(plant);
       }
     }
-    return toWater;
+    setPlantsToWater([...toWater]);
   };
 
   useEffect(() => {
     refreshPlantsData();
   }, []);
 
+  // useEffect(() => {
+  //   if (!selectedPlant) {
+  //     setSelectedPlantId(plantsData[0].id);
+  //     setSelectedPlant(plantsData[0]);
+  //   } else {
+  //     const select = plantsData.filter(plant => plant.id === selectedPlantId);
+  //     setSelectedPlant(select[0]);
+  //   }
+  // }, [plantsData]);
+
   return (
     <PlantsDataContext.Provider
       value={{
         plantsData,
         selectedPlant,
+        plantsToWater,
         addPlantsData,
         updatePlantsData,
+        updateSelectedPlant,
         resetPlantsData,
         refreshPlantsData,
         selectPlant,
-        getPlantsToWater,
       }}
     >
       {children}

@@ -46,6 +46,6 @@ const UserDataProvider = ({ children }) => {
   )
 }
 
-const useJournalEntry = () => useContext(JournalEntryContext);
+const useUserData = () => useContext(UserDataContext);
 
-export { JournalEntryProvider, useJournalEntry };
+export { UserDataProvider, useUserData };

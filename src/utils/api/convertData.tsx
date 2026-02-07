@@ -18,7 +18,7 @@ const convertFromAPI = (toConvert: object) => {
   return converted;
 };
 
-const convertMoistureFromAPI = (toConvert) => {
+const convertMoistureFromAPI = (toConvert: object[]) => {
   try {
     const entries = toConvert.map((eachLog) => {
       const new_dict = [
@@ -105,7 +105,7 @@ const convertAllWaterFromAPI = (toConvert) => {
   }
 };
 
-const convertMoistureToAPI = (toConvert) => {
+const convertMoistureToAPI = (toConvert: object) => {
   const converted = Object.keys(toConvert).map(entryDate => {
     return {
       timestamp: entryDate,

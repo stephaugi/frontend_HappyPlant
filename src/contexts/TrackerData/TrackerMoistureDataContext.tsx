@@ -1,3 +1,4 @@
+import { usePlantsData } from "contexts/PlantsData/PlantsDataContext";
 import { createContext, useState, useEffect, useContext } from "react";
 import { getMoistureFromApi } from "utils/api/apiCalls";
 import { getFromStorage } from "utils/storage";
@@ -15,6 +16,7 @@ const getInitialTrackerMoistureData = () => {
 
 const TrackerMoistureDataProvider = ({ children }) => {
   const [trackerMoistureData, setTrackerMoistureData] = useState(getInitialTrackerMoistureData);
+  const { selectedPlant } = usePlantsData();
 
   const updateTrackerMoistureData = (updates) => {
     setTrackerMoistureData(prev => ({
@@ -28,13 +30,20 @@ const TrackerMoistureDataProvider = ({ children }) => {
   };
 
   const refreshTrackerMoistureData = () => {
-    const getMoisture = async () => {
-      const currentPlant = await getFromStorage("currentSelectedPlant");
-      const response = await getMoistureFromApi(currentPlant.id);
-      setTrackerMoistureData(response);
-    };
-    getMoisture();
+    if (selectedPlant) {
+      const getMoisture = async () => {
+        // const currentPlant = await getFromStorage("currentSelectedPlant");
+        // const response = await getMoistureFromApi(currentPlant.id);
+        const response = await getMoistureFromApi(selectedPlant.id);
+        setTrackerMoistureData(response);
+      };
+      getMoisture();
+    }
   };
+
+  useEffect(() => {
+    refreshTrackerMoistureData();
+  }, [selectedPlant]);
 
   useEffect(() => {
     refreshTrackerMoistureData();

@@ -1,3 +1,4 @@
+import { usePlantsData } from "contexts/PlantsData/PlantsDataContext";
 import { createContext, useState, useEffect, useContext } from "react";
 import { getAllWaterFromApi } from "utils/api/apiCalls";
 
@@ -14,6 +15,7 @@ const getInitialAllWaterData = () => {
 
 const AllWaterDataProvider = ({ children }) => {
   const [allWaterData, setAllWaterData] = useState(getInitialAllWaterData);
+  const { plantsData } = usePlantsData();
 
   const updateAllWaterData = (updates) => {
     setAllWaterData(prev => ({
@@ -37,6 +39,10 @@ const AllWaterDataProvider = ({ children }) => {
   useEffect(() => {
     refreshAllWaterData();
   }, []);
+
+  useEffect(() => {
+    refreshAllWaterData();
+  }, [plantsData]);
 
   return (
     <AllWaterDataContext.Provider value={{ allWaterData, updateAllWaterData, resetAllWaterData, refreshAllWaterData }}>

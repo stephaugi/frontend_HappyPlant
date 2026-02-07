@@ -104,6 +104,7 @@ const deletePlantFromApi = async (id) => {
 // };
 const getMoistureFromApi = async (id) => {
   try {
+    // const response = await fetch(`${apiUrl}/plants/${id}/moisture`);
     const response = await fetch(`${apiUrl}/plants/${id}/moisture`);
     const moistureLogs = await response.json();
     return convertMoistureFromAPI(moistureLogs);

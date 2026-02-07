@@ -1,3 +1,4 @@
+import { usePlantsData } from "contexts/PlantsData/PlantsDataContext";
 import { createContext, useState, useEffect, useContext } from "react";
 import { getWaterFromApi } from "utils/api/apiCalls";
 import { getFromStorage } from "utils/storage";
@@ -14,6 +15,7 @@ const initialTrackerWaterData = {
 
 const TrackerWaterDataProvider = ({ children }) => {
   const [trackerWaterData, setTrackerWaterData] = useState(initialTrackerWaterData);
+  const { selectedPlant } = usePlantsData();
 
   const updateTrackerWaterData = (updates) => {
     setTrackerWaterData(prev => ({
@@ -27,13 +29,20 @@ const TrackerWaterDataProvider = ({ children }) => {
   };
 
   const refreshTrackerWaterData = () => {
-    const getWater = async () => {
-      const currentPlant = await getFromStorage("currentSelectedPlant");
-      const response = await getWaterFromApi(currentPlant.id);
-      setTrackerWaterData(response);
-    };
-    getWater();
+    if (selectedPlant) {
+      const getWater = async () => {
+        // const currentPlant = await getFromStorage("currentSelectedPlant");
+        // const response = await getWaterFromApi(currentPlant.id);
+        const response = await getWaterFromApi(selectedPlant.id);
+        setTrackerWaterData(response);
+      };
+      getWater();
+    }
   };
+
+  useEffect(() => {
+    refreshTrackerWaterData();
+  }, [selectedPlant]);
 
   useEffect(() => {
     refreshTrackerWaterData();

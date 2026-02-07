@@ -5,8 +5,8 @@ import { getPlantsFromApi, getAllMoistureFromApi, getAllWaterFromApi } from "../
 import { convertFromAPI } from "../../utils/api/convertData";
 import { useFocusEffect } from "@react-navigation/native";
 import WaterCalendar from "../../components/Calendar/WaterCalendar";
-import { AllMoistureDataProvider } from "contexts/AllMoistureData/AllMoistureDataContext";
-import { AllWaterDataProvider } from "contexts/AllWaterDataContext";
+import { AllMoistureDataProvider } from "contexts/AllData/AllMoistureDataContext";
+import { AllWaterDataProvider } from "contexts/AllData/AllWaterDataContext";
 import { PlantsDataProvider } from "contexts/PlantsData/PlantsDataContext";
 
 export default function CalendarScreen() {
