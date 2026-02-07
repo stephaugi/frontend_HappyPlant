@@ -30,7 +30,7 @@ const TrackerProvider = ({ children }) => {
   const [moistureFormData, setMoistureFormData] = useState(kDefaultMoistureForm);
   const [waterFormData, setWaterFormData] = useState(kDefaultWaterForm);
   const [selectedDay, setSelectedDay] = useState(today);
-  const [trackedDates, setTrackedDates] = useState({});
+  const [trackedDates, setTrackedDates] = useState(null);
 
   const submitData = () => {
     const moistureRequestData = { [selectedDay]: moistureFormData };
@@ -41,12 +41,12 @@ const TrackerProvider = ({ children }) => {
       const newWaterData = await updateWaterFromApi(selectedPlant.id, waterRequestData);
       const newPlantData = convertFromAPI(await getOnePlantFromApi(selectedPlant.id));
       // updateSelectedPlant(newPlantData);
-      // if (newPlantData.currentMoistureLevel < newPlantData.desiredMoistureLevel) {
-      //   Alert.alert("Watering Alert!", `Looks like ${newPlantData.name} is ready for a drink!`);
-      // }
+      if (newPlantData.currentMoistureLevel <= newPlantData.desiredMoistureLevel) {
+        Alert.alert("Watering Alert!", `Looks like ${newPlantData.name} is ready for a drink!`);
+      }
     };
     updateAPI(moistureRequestData, waterRequestData);
-    refreshPlantsData();
+    // refreshPlantsData();
   };
 
 
@@ -77,7 +77,7 @@ const TrackerProvider = ({ children }) => {
   };
 
   const getMarkedDates = () => {
-    setTrackedDates(Object.fromEntries([...Object.keys(trackerMoistureData).map(moistureDates => {
+    return setTrackedDates(Object.fromEntries([...Object.keys(trackerMoistureData).map(moistureDates => {
           return [moistureDates, {marked:true}]
         }
       )
@@ -95,12 +95,12 @@ const TrackerProvider = ({ children }) => {
     }
   }, [trackerMoistureData, trackerWaterData]);
 
-  // useEffect(() => {
-  //   if (!selectedPlant) return;
-  //   if (selectedPlant.currentMoistureLevel <= selectedPlant.desiredMoistureLevel) {
-  //     Alert.alert("Watering Alert!", `Looks like ${selectedPlant.name} is ready for a drink!`)
-  //   };
-  // }, [trackerMoistureData]);
+  useEffect(() => {
+    if (!selectedPlant) return;
+    if (selectedPlant.currentMoistureLevel <= selectedPlant.desiredMoistureLevel) {
+      Alert.alert("Watering Alert!", `Looks like ${selectedPlant.name} is ready for a drink!`);
+    };
+  }, [selectedPlant]);
 
   return (
     <TrackerContext.Provider value={{ waterFormData, moistureFormData, selectedDay, trackedDates, updateWaterForm, updateMoistureForm, changeDate, submitData }}>

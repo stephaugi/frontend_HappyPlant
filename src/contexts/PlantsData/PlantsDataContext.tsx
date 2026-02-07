@@ -74,7 +74,6 @@ const PlantsDataProvider = ({ children }) => {
           setSelectedPlant(select[0]);
           setSelectedPlantId(select[0].id);
         }
-
       }
     };
     getPlants();
@@ -82,7 +81,7 @@ const PlantsDataProvider = ({ children }) => {
 
   const getPlantsToWater = (plants) => {
     const toWater = [];
-    for (const plant of plantsData) {
+    for (const plant of plants) {
       if (plant.nextWaterDate !== "None") {
         toWater.push(plant);
       }
@@ -116,6 +115,7 @@ const PlantsDataProvider = ({ children }) => {
         resetPlantsData,
         refreshPlantsData,
         selectPlant,
+        getPlantsToWater,
       }}
     >
       {children}

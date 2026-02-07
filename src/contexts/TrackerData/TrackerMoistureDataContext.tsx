@@ -15,7 +15,7 @@ const getInitialTrackerMoistureData = () => {
 };
 
 const TrackerMoistureDataProvider = ({ children }) => {
-  const [trackerMoistureData, setTrackerMoistureData] = useState(getInitialTrackerMoistureData);
+  const [trackerMoistureData, setTrackerMoistureData] = useState(null);
   const { selectedPlant } = usePlantsData();
 
   const updateTrackerMoistureData = (updates) => {

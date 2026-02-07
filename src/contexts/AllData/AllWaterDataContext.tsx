@@ -14,7 +14,7 @@ const getInitialAllWaterData = () => {
 };
 
 const AllWaterDataProvider = ({ children }) => {
-  const [allWaterData, setAllWaterData] = useState(getInitialAllWaterData);
+  const [allWaterData, setAllWaterData] = useState(null);
   const { plantsData } = usePlantsData();
 
   const updateAllWaterData = (updates) => {

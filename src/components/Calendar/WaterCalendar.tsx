@@ -12,14 +12,14 @@ import { useFocusEffect } from "@react-navigation/native";
 const WaterCalendar = () => {
   const [selectedDate, setSelectedDate] = useState('');
   // const [plantsToWater, setPlantsToWater] = useState(null);
-  const { allMoistureData } = useAllMoistureData();
+  const { allMoistureData, moistureDates } = useAllMoistureData();
   const { allWaterData } = useAllWaterData();
   const { plantsData, plantsToWater } = usePlantsData();
 
   // useFocusEffect(
   //   React.useCallback(() => {
   //     // Do something when the screen is focused
-  //     const toWater = getPlantsToWater();
+  //     const toWater = getPlantsToWater(plantsData);
   //     setPlantsToWater(toWater);
   //     return () => {
   //       // Do something when the screen is unfocused
@@ -41,7 +41,6 @@ const WaterCalendar = () => {
       : null;
 
   const moisture_history = selectedDate && (selectedDate in allMoistureData) ? allMoistureData[selectedDate].map((moistureLog, index) => {
-    console.log("loll what is happening");
           return (
             <PlantAgenda
               key={`moistureLog${selectedDate}${index}`}
@@ -78,9 +77,9 @@ const WaterCalendar = () => {
     return [plant.nextWaterDate, {marked: true, selectedDotColor: theme.waterColor}]
   })) : null;
 
-  const moistureDates = Object.fromEntries(Object.keys(allMoistureData).map(moistureDate => {
-    return [moistureDate, {marked: true, dotColor: theme.moistureColor}]
-  }));
+  // const moistureDates = Object.fromEntries(Object.keys(allMoistureData).map(moistureDate => {
+  //   return [moistureDate, {marked: true, dotColor: theme.moistureColor}]
+  // }));
 
   return (<>
       <View style={{ flex: 1, marginTop: 30 }}>

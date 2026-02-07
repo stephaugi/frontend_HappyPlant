@@ -14,7 +14,7 @@ const initialTrackerWaterData = {
 
 
 const TrackerWaterDataProvider = ({ children }) => {
-  const [trackerWaterData, setTrackerWaterData] = useState(initialTrackerWaterData);
+  const [trackerWaterData, setTrackerWaterData] = useState(null);
   const { selectedPlant } = usePlantsData();
 
   const updateTrackerWaterData = (updates) => {

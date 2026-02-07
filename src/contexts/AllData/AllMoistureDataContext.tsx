@@ -1,6 +1,7 @@
 import { usePlantsData } from "contexts/PlantsData/PlantsDataContext";
 import { createContext, useState, useEffect, useContext } from "react";
 import { getAllMoistureFromApi } from "utils/api/apiCalls";
+import { theme } from "theme";
 
 const AllMoistureDataContext = createContext();
 
@@ -15,8 +16,8 @@ const getInitialAllMoistureData = () => {
 
 const AllMoistureDataProvider = ({ children }) => {
   const { plantsData } = usePlantsData();
-  const [allMoistureData, setAllMoistureData] = useState(getInitialAllMoistureData);
-
+  const [allMoistureData, setAllMoistureData] = useState(null);
+  const [moistureDates, setMoistureDates] = useState(null);
 
   const updateAllMoistureData = (updates) => {
     setAllMoistureData(prev => ({
@@ -24,6 +25,15 @@ const AllMoistureDataProvider = ({ children }) => {
       ...updates,
     }));
   };
+
+  const getMoistureDates = (data) => setMoistureDates(Object.fromEntries(Object.keys(data).map(moistureDate => {
+      return [
+        moistureDate,
+        { marked: true, dotColor: theme.moistureColor },
+      ];
+      }
+    ))
+  );
 
   const resetAllMoistureData = () => {
     setAllMoistureData(getInitialAllMoistureData());
@@ -33,6 +43,7 @@ const AllMoistureDataProvider = ({ children }) => {
     const getMoisture = async () => {
       const response = await getAllMoistureFromApi();
       setAllMoistureData(response);
+      getMoistureDates(response);
     };
     getMoisture();
   };
@@ -46,7 +57,7 @@ const AllMoistureDataProvider = ({ children }) => {
   }, [plantsData]);
 
   return (
-    <AllMoistureDataContext.Provider value={{ allMoistureData, updateAllMoistureData, resetAllMoistureData, refreshAllMoistureData }}>
+    <AllMoistureDataContext.Provider value={{ allMoistureData, moistureDates, updateAllMoistureData, resetAllMoistureData, refreshAllMoistureData }}>
       {children}
     </AllMoistureDataContext.Provider>
   );
