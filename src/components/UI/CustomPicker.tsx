@@ -8,7 +8,9 @@ const CustomPicker = () => {
   if (plantsData?.length) {
     plantOptions = plantsData.map((plant, index) => {
       return (<Picker.Item
+          // style={{ textAlign: "center", alignSelf:"center", backgroundColor: "pink", }}
           key={`${index}${plant.id}`}
+          // color='blue'
           label={plant.name}
           value={plant.id}
         />);
@@ -18,7 +20,7 @@ const CustomPicker = () => {
   return (
     <Picker
       testID='plantPicker:test'
-      style={[{ marginTop: -30, height: 160, width: "100%", textAlign: "center" }]}
+      style={[{ marginTop: -30, height: 160, width: "100%", alignSelf: "center" }]}
       selectedValue={selectedPlant ? selectedPlant.id : null}
       onValueChange={(itemValue, itemIndex) => {
         selectPlant(itemValue);

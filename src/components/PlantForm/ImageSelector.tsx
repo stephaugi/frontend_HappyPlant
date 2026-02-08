@@ -24,7 +24,7 @@ export default function ImageSelector({ onSelectImage, selectedImage }) {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ["images"],
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [4, 4],
       quality: 1,
     });
 
@@ -54,12 +54,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-
+    justifyContent: "center",
   },
   image: {
     // alignSelf: "center",
-    width: 300,
-    height: 190,
+    width: 200,
+    height: 200,
     borderRadius: 5,
   },
 });

@@ -56,7 +56,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
                 style={[
                   styles.menu,
                   {
-                    top: position.y,
+                    top: position.y-27,
                     left: position.x,
                     // left: position.x + position.width / 2 - dropdownWidth / 2,
                     width: dropdownWidth,

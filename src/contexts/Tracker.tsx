@@ -38,7 +38,7 @@ const TrackerProvider = ({ children }) => {
     // // submit logged info in formData for the day
     const updateAPI = async(moistureRequestData, waterRequestData) => {
       const newMoistureData = await updateMoistureFromApi(selectedPlant.id, moistureRequestData);
-      const newWaterData = await updateWaterFromApi(selectedPlant.id, waterRequestData);
+      updateWaterFromApi(selectedPlant.id, waterRequestData);
       const newPlantData = convertFromAPI(await getOnePlantFromApi(selectedPlant.id));
       // if (newPlantData.currentMoistureLevel <= newPlantData.desiredMoistureLevel) {
       //   Alert.alert("Watering Alert!", `Looks like ${newPlantData.name} is ready for a drink!`);
@@ -46,6 +46,7 @@ const TrackerProvider = ({ children }) => {
       updateSelectedPlant(newPlantData);
     };
     updateAPI(moistureRequestData, waterRequestData);
+    Alert.alert("Saved!");
 
   };
 
@@ -97,7 +98,7 @@ const TrackerProvider = ({ children }) => {
 
   useEffect(() => {
     if (!selectedPlant) return;
-    if (selectedPlant.currentMoistureLevel <= selectedPlant.desiredMoistureLevel) {
+    if (selectedPlant.nextWaterDate === today) {
       Alert.alert("Watering Alert!", `Looks like ${selectedPlant.name} is ready for a drink!`);
     };
   }, [selectedPlant]);

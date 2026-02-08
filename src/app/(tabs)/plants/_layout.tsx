@@ -64,7 +64,12 @@ export default function Layout() {
           },
         }}
       />
-
+      <Stack.Screen
+        name="newPlant"
+        options={{
+          title: "Add a Plant",
+        }}
+      />
       <Stack.Screen
         name="plantProfile"
         options={{

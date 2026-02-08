@@ -16,17 +16,6 @@ const WaterCalendar = () => {
   const { allWaterData } = useAllWaterData();
   const { plantsData, plantsToWater } = usePlantsData();
 
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     // Do something when the screen is focused
-  //     const toWater = getPlantsToWater(plantsData);
-  //     setPlantsToWater(toWater);
-  //     return () => {
-  //       // Do something when the screen is unfocused
-  //       // Useful for cleanup functions
-  //     };
-  //   }, []));
-
   const water_history = selectedDate && (selectedDate in allWaterData) ? allWaterData[selectedDate].map((waterLog, index) => {
           return (
             <PlantAgenda

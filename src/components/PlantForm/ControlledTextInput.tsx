@@ -11,6 +11,8 @@ type Props = {
   textArea?: boolean;
 };
 
+
+
 const ControlledTextInput = ({
   labelName,
   name,
@@ -19,9 +21,15 @@ const ControlledTextInput = ({
   value,
   textAreaHeight,
   textArea,
-}: Props) => (<View style={styles.textInputContainer}>
+}: Props) => {
+  return(<View style={styles.textInputContainer}>
     <Text style={fontStyles.emphasis}>{labelName}</Text>
     <TextInput
+      // onFocus={(event: Event) => {
+      //     // `bind` the function if you're using ES6 classes
+      //     this._scrollToInput(ReactNative.findNodeHandle(event.target))
+      //   }}
+      // autoFocus={true}
       multiline={textArea}
       placeholder={placeholder}
       style={[styles.textInput, fontStyles.label, { height: textAreaHeight, alignSelf: "center" }]}
@@ -29,7 +37,7 @@ const ControlledTextInput = ({
       onChangeText={(value: string) => onChangeText(name, value)}
     />
   </View>
-);
+);}
 
 const styles = StyleSheet.create({
   // textInputContainer: {
