@@ -125,4 +125,4 @@ const PlantsDataProvider = ({ children }) => {
 
 const usePlantsData = () => useContext(PlantsDataContext);
 
-export { PlantsDataProvider, usePlantsData };
+export { PlantsDataProvider, usePlantsData, PlantsDataContext };

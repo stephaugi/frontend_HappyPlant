@@ -1,69 +1,100 @@
-import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
-import MoistureTracker from '../src/components/MoistureTracker/MoistureTracker';
+import React from "react";
+import { TouchableOpacity, Text } from "react-native";
+import { render, fireEvent } from "@testing-library/react-native";
+import MoistureTracker from "../src/components/MoistureTracker/MoistureTracker";
 
-const testPlantData = [
-  {
-    averageWaterCycle: 4,
-    currentMoistureLevel: 3,
-    description: "Likes to live on the edge. It gets real dry",
-    desiredMoistureLevel: 1,
-    id: 1,
-    name: "Danger",
-    nextWaterDate: "2026-02-05",
-    photo: null,
-  },
-];
+import { usePlantsData } from "contexts/PlantsData/PlantsDataContext";
+import { useTracker } from "contexts/Tracker";
 
-// Disable useFocusEffect completely
-jest.mock('@react-navigation/native', () => {
-  const actual = jest.requireActual('@react-navigation/native');
+const mockSelectPlant = jest.fn();
+const mockChangeDate = jest.fn();
+const mockUpdateMoisture = jest.fn();
+const mockUpdateWater = jest.fn();
+const mockSubmit = jest.fn();
+
+const mockUsePlantsData = jest.fn();
+const mockUseTracker = jest.fn();
+
+jest.mock("contexts/PlantsData/PlantsDataContext", () => {
   return {
-    ...actual,
-    useFocusEffect: jest.fn(), // NO-OP
-  };
+    usePlantsData: () => {
+      return {
+        plantsData: [
+          { id: 1, name: "Fern" },
+          { id: 2, name: "Cactus" },
+        ],
+        selectedPlant: { id: 1, name: "Fern" },
+        selectPlant: mockSelectPlant,
+    }
+    }
+  }
+  }
+);
+
+jest.mock("contexts/Tracker", () => {
+  return {
+    useTracker: (() => {
+      return {
+        waterFormData: { watered: false },
+        moistureFormData: { moistureLevel: null },
+        selectedDay: "2026-02-01",
+        trackedDates: {},
+        updateWaterForm: mockUpdateWater,
+        updateMoistureForm: mockUpdateMoisture,
+        changeDate: mockChangeDate,
+        submitData: mockSubmit,
+      };
+    })
+  }
 });
 
-// // Prevent animation crashes
-// jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
+jest.mock("@expo/vector-icons/Ionicons", () => "Ionicons");
 
-jest.mock('react-native-calendars', () => ({
-  CalendarProvider: ({ children }: any) => children,
-  ExpandableCalendar: () => null,
-}));
+describe("testing whether you get context", () => {
 
-describe('MoistureTracker', () => {
-  afterEach(() => {
-    jest.clearAllMocks(); // Resets mock calls/implementations after each test
+  it("shows plant options", () => {
+    const screen = render(<MoistureTracker />);
+
+    expect(screen.getByText("Fern")).toBeTruthy();
+    expect(screen.getByText("Cactus")).toBeTruthy();
   });
-  it("checks that my test runs at all", () => {
-    expect(5).toEqual(5);
+  it("selects plant from picker", () => {
+    const screen = render(<MoistureTracker />);
+
+    fireEvent.press(screen.getByText("Cactus"));
+
+    expect(mockSelectPlant).toHaveBeenCalledWith(2);
   });
-  // it("checks that my test runs with one button", () => {
-  //   // const testButton = render(<CustomButton />);
-  //   getPlantsFromApi.mockReturnValue("Hello");
-  //   expect(getPlantsFromApi()).toBe("Hello");
-  // });
 
-  // it('renders and allows saving moisture data', () => {
-  //   const screen = render(<MoistureTracker />);
-  //   const dryButton = screen.getByText('Dry');
-  //   const wetButton = screen.getByText('Wet');
-  //   const normalButton = screen.getByText('Normal');
-  //   const unselectedState = normalButton.props.style.backgroundColor;
+  it("changes date when calendar pressed", () => {
+    const screen = render(<MoistureTracker />);
 
-  //   // Select moisture level
-  //   fireEvent.press(dryButton);
-  //   expect(dryButton.props.style.backgroundColor).not.toEqual(unselectedState);
-  //   expect(wetButton.props.style.backgroundColor).toEqual(unselectedState);
+    fireEvent.press(screen.getByTestId("calendar"));
 
-  //   // Toggle water
-  //   fireEvent.press(screen.getByText('Water'));
+    expect(mockChangeDate).toHaveBeenCalledWith("2026-02-01");
+  });
 
-  //   // Save
-  //   fireEvent.press(screen.getByText('Save'));
+  it("updates moisture level", () => {
+    const screen = render(<MoistureTracker />);
 
-  //   // Nothing crashes = success
-  //   expect(screen.getByText('Save')).toBeTruthy();
-  // });
+    fireEvent.press(screen.getByText("Dry"));
+
+    expect(mockUpdateMoisture).toHaveBeenCalledWith("moistureLevel", 2);
+  });
+
+  it("toggles watered state", () => {
+    const screen = render(<MoistureTracker />);
+
+    fireEvent.press(screen.getByText("Water"));
+
+    expect(mockUpdateWater).toHaveBeenCalledWith("watered", true);
+  });
+
+  it("submits data", () => {
+    const screen = render(<MoistureTracker />);
+
+    fireEvent.press(screen.getByText("Save"));
+
+    expect(mockSubmit).toHaveBeenCalledWith("2026-02-01");
+  });
 });

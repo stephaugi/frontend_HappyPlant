@@ -1,12 +1,12 @@
 import { View, Text, StyleSheet } from "react-native";
 import CustomButton from "../UI/CustomButton";
-import { Picker } from "@react-native-picker/picker";
 import { CalendarProvider, ExpandableCalendar } from "react-native-calendars";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { theme, fontStyles, uiStyles } from "../../theme";
 import React from "react";
 import { usePlantsData } from "contexts/PlantsData/PlantsDataContext";
 import { useTracker } from "contexts/Tracker";
+import CustomPicker from "components/UI/CustomPicker";
 
 const optionsList = [
   {
@@ -48,15 +48,15 @@ const MoistureTracker = () => {
     submitData,
   } = useTracker();
 
-  const plantOptions = plantsData.map((plant, index) => {
-    return (
-      <Picker.Item
-        key={`${index}${plant.id}`}
-        label={plant.name}
-        value={plant.id}
-      />
-    );
-  });
+  // const plantOptions = plantsData.map((plant, index) => {
+  //   return (
+  //     <Picker.Item
+  //       key={`${index}${plant.id}`}
+  //       label={plant.name}
+  //       value={plant.id}
+  //     />
+  //   );
+  // });
 
   const moistureButtons = optionsList.map((item, index) => {
     return (
@@ -103,15 +103,7 @@ const MoistureTracker = () => {
       </View>
       <View style={styles.trackerContainer}>
         <View>
-          <Picker
-            style={[{ marginTop: -30, height: 160, width: "100%", textAlign: "center" }]}
-            selectedValue={selectedPlant ? selectedPlant.id : null}
-            onValueChange={(itemValue, itemIndex) => {
-              selectPlant(itemValue);
-            }}
-          >
-            {plantOptions}
-          </Picker>
+          <CustomPicker />
           <Text style={[fontStyles.header, { alignSelf: "center" }]}>How is the soil feeling today?</Text>
         </View>
         <View

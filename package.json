@@ -14,7 +14,12 @@
     "preset": "jest-expo",
     "setupFilesAfterEnv": ["./jest.setup.ts"],
     "transformIgnorePatterns": ["node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@sentry/react-native|native-base|react-native-svg)"],
-    "testPathIgnorePatterns": ["/node_modules/", "/android/", "/ios/"]
+    "testPathIgnorePatterns": ["/node_modules/", "/android/", "/ios/"],
+    "moduleNameMapper": {
+    "^contexts/(.*)$": "<rootDir>/src/contexts/$1",
+    "^components/(.*)$": "<rootDir>/src/components/$1",
+    "^utils/(.*)$": "<rootDir>/src/utils/$1"
+    }
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
