@@ -48,16 +48,6 @@ const MoistureTracker = () => {
     submitData,
   } = useTracker();
 
-  // const plantOptions = plantsData.map((plant, index) => {
-  //   return (
-  //     <Picker.Item
-  //       key={`${index}${plant.id}`}
-  //       label={plant.name}
-  //       value={plant.id}
-  //     />
-  //   );
-  // });
-
   const moistureButtons = optionsList.map((item, index) => {
     return (
       <CustomButton

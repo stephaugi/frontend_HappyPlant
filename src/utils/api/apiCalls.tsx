@@ -7,8 +7,12 @@ import {
   convertWaterToAPI,
 } from "./convertData";
 
-// const apiUrl = "https://backend-happyplant.onrender.com";
-const apiUrl = "http://127.0.0.1:5000";
+// require('dotenv').config();
+
+// const apiUrl = process.env.API_URL;
+
+const apiUrl = "https://backend-happyplant.onrender.com";
+// const apiUrl = "http://127.0.0.1:5000";
 const ownerId = 1;
 
 const getOwnersFromApi = async () => {

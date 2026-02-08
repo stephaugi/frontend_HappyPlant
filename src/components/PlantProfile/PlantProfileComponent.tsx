@@ -19,42 +19,11 @@ const PlantProfileComponent = ({ toNavigate }) => {
       setPlantFormData({ ...plant });
     }, [])
   );
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     // Do something when the screen is focused
-  //     async function getPlants() {
-  //       setPlantsData(await getFromStorage("plantsData"));
-  //       setPlantFormData(await getFromStorage("currentSelectedPlant"));
-  //       // setPlantsData({...selectedPlant});
-  //       // selectPlant(1);
-  //       // console.log(selectedPlant);
-  //       setPlantFormData({...selectedPlant});
-  //     }
-  //     getPlants();
-  //     return () => {
-  //       // Do something when the screen is unfocused
-  //       // Useful for cleanup functions
-  //     };
-  //   }, [])
-  // );
+
   if (!plantFormData) return null; // or loading spinner
 
   const handleUpdatePlant = (plantFormData: Object) => {
-    // const updatePlant = async (inputData: object, plantFormData: any[]) => {
-    //   const requestBody = convertToAPI({ ...inputData });
-    //   const response = convertFromAPI(await updatePlantFromApi(requestBody));
-    //   setPlantFormData(response);
 
-    //   const newPlantData = plantsData.map((plant) => {
-    //     if (plant.id === plantFormData.id) {
-    //       return plant;
-    //     } else {
-    //       return plant;
-    //     }
-    //   });
-    //   saveToStorage("plantsData", newPlantData);
-    // };
-    // updatePlantsData(inputData, plantsData);
     updatePlantsData(plantFormData).then(() => {
       Alert.alert("Saved!", "", [
         {

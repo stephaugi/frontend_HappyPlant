@@ -12,13 +12,21 @@
   },
   "jest": {
     "preset": "jest-expo",
-    "setupFilesAfterEnv": ["./jest.setup.ts"],
-    "transformIgnorePatterns": ["node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@sentry/react-native|native-base|react-native-svg)"],
-    "testPathIgnorePatterns": ["/node_modules/", "/android/", "/ios/"],
+    "setupFilesAfterEnv": [
+      "./jest.setup.ts"
+    ],
+    "transformIgnorePatterns": [
+      "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@sentry/react-native|native-base|react-native-svg)"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/android/",
+      "/ios/"
+    ],
     "moduleNameMapper": {
-    "^contexts/(.*)$": "<rootDir>/src/contexts/$1",
-    "^components/(.*)$": "<rootDir>/src/components/$1",
-    "^utils/(.*)$": "<rootDir>/src/utils/$1"
+      "^contexts/(.*)$": "<rootDir>/src/contexts/$1",
+      "^components/(.*)$": "<rootDir>/src/components/$1",
+      "^utils/(.*)$": "<rootDir>/src/utils/$1"
     }
   },
   "dependencies": {
@@ -26,6 +34,7 @@
     "@react-native-async-storage/async-storage": "2.2.0",
     "@react-native-picker/picker": "2.11.1",
     "@testing-library/react-native": "^13.3.3",
+    "dotenv": "^17.2.4",
     "expo": "~54.0.32",
     "expo-constants": "~18.0.13",
     "expo-device": "~8.0.10",
