@@ -48,12 +48,10 @@ export default function CalendarScreen() {
 
   return (
     <View style={styles.container}>
-      {/* <View style={styles.calendar}> */}
       <PlantsDataProvider>
         <AllWaterDataProvider>
           <AllMoistureDataProvider>
             <WaterCalendar plants={plantsData} plantsToWater={plantsToWater} allMoistureLogs={allMoistureData} allWaterLogs={allWaterData}/>
-          {/* </View> */}
           </AllMoistureDataProvider>
         </AllWaterDataProvider>
       </PlantsDataProvider>
