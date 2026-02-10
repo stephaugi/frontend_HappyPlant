@@ -9,13 +9,22 @@ import { theme, fontStyles } from "../../theme";
 import { moistureScales } from "../../constants";
 import { usePlantsData } from "contexts/PlantsData/PlantsDataContext";
 import { useEffect } from "react";
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 type Props = {
   plantData: object;
 };
+const todayDate = new Date();
+const today = todayDate.toISOString().split('T')[0];
 
 const PlantCard = ({ plantData }: Props) => {
   const { plantsData, selectedPlant, updatePlantsData, resetPlantsData, refreshPlantsData, selectPlant } = usePlantsData();
+  const needsWater = plantData.nextWaterDate === today;
+  const waterIcon = needsWater ? (
+    <MaterialCommunityIcons name="emoticon-sad" size={30} color="orange" />
+  ) : (
+    <MaterialCommunityIcons name="emoticon-happy" size={30} color="teal" />
+  );
 
   const router = useRouter();
   const handleSelectPlant = (item: object) => {
@@ -37,6 +46,9 @@ const PlantCard = ({ plantData }: Props) => {
   return (
     <TouchableOpacity onPress={() => handleSelectPlant(plantData)}>
       <View style={styles.plantCardContainer}>
+        <View style={{position: "absolute", zIndex: 9999, top:-5, left: -5}}>
+          {waterIcon}
+          </View>
         <View style={styles.textContainer}>
           <View style={{ flexDirection: "row", alignItems: "center", gap:10 }}>
           <Text style={fontStyles.header}>{plantData.name}</Text>
@@ -48,10 +60,12 @@ const PlantCard = ({ plantData }: Props) => {
           <Text style={fontStyles.emphasis}>When to water: {moistureScales[plantData.desiredMoistureLevel-1]}</Text>
         </View>
         <View>
-          {plantData.photo && <Image source={{ uri: plantData.photo }}
-            style={styles.image}
-            resizeMode="cover"
-          />}
+          <View>
+            {plantData.photo && <Image source={{ uri: plantData.photo }}
+              style={styles.image}
+              resizeMode="cover"
+            />}
+          </View>
         </View>
       </View>
     </TouchableOpacity>
