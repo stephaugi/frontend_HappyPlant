@@ -10,48 +10,13 @@ import { AllWaterDataProvider } from "contexts/AllData/AllWaterDataContext";
 import { PlantsDataProvider } from "contexts/PlantsData/PlantsDataContext";
 
 export default function CalendarScreen() {
-  const [plantsData, setPlantsData] = useState([]);
-  const [plantsToWater, setPlantsToWater] = useState([]);
-  const [allMoistureData, setAllMoistureData] = useState({});
-  const [allWaterData, setAllWaterData] = useState({});
-
-  useFocusEffect(
-    React.useCallback(() => {
-      // Do something when the screen is focused
-      async function fetchInitial() {
-        const response = await getPlantsFromApi();
-        saveToStorage("plantsData", response.map(plantData => convertFromAPI(plantData)));
-        const converted = response.map((plantData) => convertFromAPI(plantData));
-        setPlantsData(converted);
-        const toWater = [];
-        for (const plant of converted) {
-          if (plant.nextWaterDate !== "None") {
-            toWater.push(plant);
-          }
-        const moisture = await getAllMoistureFromApi();
-        saveToStorage("allMoistureData", moisture);
-        setAllMoistureData(moisture);
-        const water = await getAllWaterFromApi();
-        saveToStorage("allWaterData", water);
-        setAllWaterData(water);
-        console.log(water);
-        }
-        setPlantsToWater(toWater);
-      }
-      fetchInitial();
-      return () => {
-        // Do something when the screen is unfocused
-        // Useful for cleanup functions
-      };
-    }, []));
-
 
   return (
     <View style={styles.container}>
       <PlantsDataProvider>
         <AllWaterDataProvider>
           <AllMoistureDataProvider>
-            <WaterCalendar plants={plantsData} plantsToWater={plantsToWater} allMoistureLogs={allMoistureData} allWaterLogs={allWaterData}/>
+            <WaterCalendar />
           </AllMoistureDataProvider>
         </AllWaterDataProvider>
       </PlantsDataProvider>

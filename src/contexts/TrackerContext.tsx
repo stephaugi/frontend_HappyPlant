@@ -5,7 +5,6 @@ import { useTrackerWaterData } from "./TrackerData/TrackerWaterDataContext";
 import { usePlantsData } from "./PlantsData/PlantsDataContext";
 import { convertFromAPI } from "utils/api/convertData";
 import { getOnePlantFromApi, updateMoistureFromApi, updateWaterFromApi } from "utils/api/apiCalls";
-import { theme } from "theme";
 import { Alert } from "react-native";
 
 const TrackerContext = createContext();
@@ -37,16 +36,14 @@ const TrackerProvider = ({ children }) => {
     const waterRequestData = { [selectedDay]: waterFormData };
     // // submit logged info in formData for the day
     const updateAPI = async(moistureRequestData, waterRequestData) => {
+      await updateWaterFromApi(selectedPlant.id, waterRequestData);
       const newMoistureData = await updateMoistureFromApi(selectedPlant.id, moistureRequestData);
-      updateWaterFromApi(selectedPlant.id, waterRequestData);
       const newPlantData = convertFromAPI(await getOnePlantFromApi(selectedPlant.id));
-      // if (newPlantData.currentMoistureLevel <= newPlantData.desiredMoistureLevel) {
-      //   Alert.alert("Watering Alert!", `Looks like ${newPlantData.name} is ready for a drink!`);
-      // }
+
       updateSelectedPlant(newPlantData);
     };
     updateAPI(moistureRequestData, waterRequestData);
-    Alert.alert("Saved!");
+    // Alert.alert("Saved!");
 
   };
 

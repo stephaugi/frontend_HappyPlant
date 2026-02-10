@@ -1,17 +1,14 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
-import {Calendar, LocaleConfig, Agenda, CalendarList, CalendarProvider, ExpandableCalendar } from 'react-native-calendars';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import {Calendar } from 'react-native-calendars';
 import PlantAgenda from './PlantAgenda';
-import { theme, colorStyles, uiStyles, fontStyles } from '../../theme';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { theme, fontStyles } from '../../theme';
 import { useAllMoistureData } from 'contexts/AllData/AllMoistureDataContext';
 import { useAllWaterData } from 'contexts/AllData/AllWaterDataContext';
 import { usePlantsData } from 'contexts/PlantsData/PlantsDataContext';
-import { useFocusEffect } from "@react-navigation/native";
 
 const WaterCalendar = () => {
   const [selectedDate, setSelectedDate] = useState('');
-  // const [plantsToWater, setPlantsToWater] = useState(null);
   const { allMoistureData, moistureDates } = useAllMoistureData();
   const { allWaterData } = useAllWaterData();
   const { plantsData, plantsToWater } = usePlantsData();
@@ -66,10 +63,6 @@ const WaterCalendar = () => {
     return [plant.nextWaterDate, {marked: true, selectedDotColor: theme.waterColor}]
   })) : null;
 
-  // const moistureDates = Object.fromEntries(Object.keys(allMoistureData).map(moistureDate => {
-  //   return [moistureDate, {marked: true, dotColor: theme.moistureColor}]
-  // }));
-
   return (<>
       <View style={{ flex: 1, marginTop: 30 }}>
         <Calendar
@@ -93,11 +86,3 @@ const WaterCalendar = () => {
 };
 
 export default WaterCalendar;
-
-const styles = StyleSheet.create({
-
-  label: {
-    fontSize: 24,
-    fontWeight: "800",
-  },
-});

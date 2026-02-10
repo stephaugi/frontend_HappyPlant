@@ -1,10 +1,9 @@
-import { Stack, Tabs } from "expo-router";
+import { Tabs } from "expo-router";
 import { theme } from "../../theme";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Feather from "@expo/vector-icons/Feather";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { useState } from "react";
 
 export default function Layout() {
 
@@ -21,7 +20,7 @@ export default function Layout() {
         }}
       />
       <Tabs.Screen
-        name="tracker"
+        name="index"
         options={{
           headerShown: false,
           title: "Track",
@@ -31,7 +30,7 @@ export default function Layout() {
         }}
       />
       <Tabs.Screen
-        name="index"
+        name="plants"
         options={{
           title: "My Plants",
           headerShown: false,

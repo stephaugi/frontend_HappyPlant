@@ -1,7 +1,6 @@
 import { usePlantsData } from "contexts/PlantsData/PlantsDataContext";
 import { createContext, useState, useEffect, useContext } from "react";
 import { getMoistureFromApi } from "utils/api/apiCalls";
-import { getFromStorage } from "utils/storage";
 
 const TrackerMoistureDataContext = createContext();
 
