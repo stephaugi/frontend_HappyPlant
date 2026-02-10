@@ -5,7 +5,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { theme, fontStyles, uiStyles } from "../../theme";
 import React from "react";
 import { usePlantsData } from "contexts/PlantsData/PlantsDataContext";
-import { useTracker } from "contexts/Tracker";
+import { useTracker } from "contexts/TrackerContext";
 import CustomPicker from "components/UI/CustomPicker";
 
 const optionsList = [

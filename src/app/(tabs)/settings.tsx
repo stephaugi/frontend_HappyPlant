@@ -6,9 +6,10 @@ import { Alert } from "react-native";
 import { useContext } from "react";
 import { PlantsDataProvider, usePlantsData } from "contexts/PlantsData/PlantsDataContext";
 import CompButton from "components/CompButton";
+import { useAuthStore } from "utils/authStore";
 
 export default function SettingsScreen() {
-  
+  const { updateHasNoPlants } = useAuthStore();
   const scheduleNotification = async () => {
     const result = await registerForPushNotificationsAsync();
     if (result === "granted") {
@@ -35,6 +36,10 @@ export default function SettingsScreen() {
       <CustomButton
         label="Request permission for Push notifications?"
         onPress={scheduleNotification}
+      />
+      <CustomButton
+        label="Set no plants"
+        onPress={updateHasNoPlants}
       />
       <CompButton />
       </PlantsDataProvider>

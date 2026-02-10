@@ -4,7 +4,7 @@ import { render, fireEvent } from "@testing-library/react-native";
 import MoistureTracker from "../src/components/MoistureTracker/MoistureTracker";
 
 import { usePlantsData } from "contexts/PlantsData/PlantsDataContext";
-import { useTracker } from "contexts/Tracker";
+import { useTracker } from "contexts/TrackerContext";
 
 const mockSelectPlant = jest.fn();
 const mockChangeDate = jest.fn();
@@ -31,7 +31,7 @@ jest.mock("contexts/PlantsData/PlantsDataContext", () => {
   }
 );
 
-jest.mock("contexts/Tracker", () => {
+jest.mock("contexts/TrackerContext", () => {
   return {
     useTracker: (() => {
       return {

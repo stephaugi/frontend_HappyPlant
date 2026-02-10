@@ -38,6 +38,20 @@ export const uiStyles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  textInput: {
+    borderColor: theme.colorTheme1,
+    borderWidth: 1,
+    backgroundColor: theme.colorTheme1Light,
+    borderRadius: theme.cornerRound,
+    paddingHorizontal: 18,
+    paddingVertical: 10,
+    minWidth: 300,
+  },
+  onBoardingCard: {
+    width: 300,
+    height: 500,
+    backgroundColor: "pink",
+  },
 });
 
 export const fontStyles = StyleSheet.create({

@@ -38,8 +38,13 @@ const PlantCard = ({ plantData }: Props) => {
     <TouchableOpacity onPress={() => handleSelectPlant(plantData)}>
       <View style={styles.plantCardContainer}>
         <View style={styles.textContainer}>
+          <View style={{ flexDirection: "row", alignItems: "center", gap:10 }}>
           <Text style={fontStyles.header}>{plantData.name}</Text>
+          { plantData.plantSpecies ?
+          <Text style={fontStyles.tinyDescription}>({plantData.plantSpecies})</Text> : null}
+          </View>
           <Text style={fontStyles.tinyDescription}>{plantData.description}</Text>
+          
           <Text style={fontStyles.emphasis}>When to water: {moistureScales[plantData.desiredMoistureLevel-1]}</Text>
         </View>
         <View>

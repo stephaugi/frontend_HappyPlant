@@ -68,6 +68,7 @@ export default function Layout() {
         name="newPlant"
         options={{
           title: "Add a Plant",
+          presentation: "modal",
         }}
       />
       <Stack.Screen

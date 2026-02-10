@@ -4,9 +4,9 @@ import React from "react";
 import { TrackerMoistureDataProvider } from "contexts/TrackerData/TrackerMoistureDataContext";
 import { TrackerWaterDataProvider } from "contexts/TrackerData/TrackerWaterDataContext";
 import { PlantsDataProvider } from "contexts/PlantsData/PlantsDataContext";
-import { TrackerProvider } from "contexts/Tracker";
-
+import { TrackerProvider } from "contexts/TrackerContext";
 export default function App() {
+
   return (
     <View style={styles.container}>
       <PlantsDataProvider>

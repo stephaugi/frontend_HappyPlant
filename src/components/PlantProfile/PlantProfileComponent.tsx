@@ -63,6 +63,13 @@ const PlantProfileComponent = ({ toNavigate }) => {
         textAreaHeight={100}
         textArea={true}
       />
+      <ControlledTextInput
+        labelName="Plant Species"
+        name="plantSpecies"
+        onChangeText={handleFormChange}
+        placeholder="What plant species are they?"
+        value={plantFormData["plantSpecies"]}
+      />
       <View>
       <Text style={fontStyles.emphasis}>When to water</Text>
         <ControlledOption

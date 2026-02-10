@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TextInput } from "react-native";
-import { fontStyles, theme } from "../../theme";
+import { fontStyles, theme, uiStyles } from "../../theme";
 
 type Props = {
   labelName: string;
@@ -22,7 +22,7 @@ const ControlledTextInput = ({
   textAreaHeight,
   textArea,
 }: Props) => {
-  return(<View style={styles.textInputContainer}>
+  return(<View>
     <Text style={fontStyles.emphasis}>{labelName}</Text>
     <TextInput
       // onFocus={(event: Event) => {
@@ -32,7 +32,7 @@ const ControlledTextInput = ({
       // autoFocus={true}
       multiline={textArea}
       placeholder={placeholder}
-      style={[styles.textInput, fontStyles.label, { height: textAreaHeight, alignSelf: "center" }]}
+      style={[uiStyles.textInput, fontStyles.label, { height: textAreaHeight, alignSelf: "center" }]}
       value={value}
       onChangeText={(value: string) => onChangeText(name, value)}
     />
@@ -43,17 +43,15 @@ const styles = StyleSheet.create({
   // textInputContainer: {
   //   marginVertical: 10,
   // },
-  textInput: {
-    borderColor: theme.colorTheme1,
-    borderWidth: 1,
-    backgroundColor: theme.colorTheme1Light,
-    borderRadius: theme.cornerRound,
-    // fontSize: theme.formTextSize,
-    // fontWeight: "800",
-    paddingHorizontal: 18,
-    paddingVertical: 10,
-    minWidth: 300,
-  },
+  // textInput: {
+  //   borderColor: theme.colorTheme1,
+  //   borderWidth: 1,
+  //   backgroundColor: theme.colorTheme1Light,
+  //   borderRadius: theme.cornerRound,
+  //   paddingHorizontal: 18,
+  //   paddingVertical: 10,
+  //   minWidth: 300,
+  // },
   label: {
     paddingBottom: 10,
     fontSize: 14,
