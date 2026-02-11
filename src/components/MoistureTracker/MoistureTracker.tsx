@@ -7,6 +7,7 @@ import React from "react";
 import { usePlantsData } from "contexts/PlantsData/PlantsDataContext";
 import { useTracker } from "contexts/TrackerContext";
 import CustomPicker from "components/UI/CustomPicker";
+import { StatusBar } from "expo-status-bar";
 
 const optionsList = [
   {
@@ -34,6 +35,42 @@ const optionsList = [
     value: 6,
   },
 ];
+
+const customTheme = {
+  // Calendar background color
+  // calendarBackground: theme.colorWhite,
+  // // Text color for the month title
+  // monthTextColor: theme.colorLightBlue,
+  // monthTextWeight: "500",
+  // // Color for today's date text
+  // todayTextColor: '#00 internal link 255 0', 
+  // // Default text color for all days
+  // dayTextColor: theme.colorGrey,
+  // selectedDayTextColor: theme.colorWhite,
+  dotColor: theme.colorLightBlue,
+  todayDotColor: theme.colorLightBlue,
+  // selectedDotColor: theme.colorOrange,
+  todayTextColor: theme.colorLightBlue,
+  arrowColor: theme.colorBlue,
+    calendarBackground: theme.colorLightGrey,
+  textSectionTitleColor: theme.colorGrey, // For all weekdays
+  // 'stylesheet.calendar.header': {
+  //   // This will apply a general style to the week header container
+  //   week: {
+  //     marginTop: 7,
+  //     marginBottom: 7,
+  //     flexDirection: 'row',
+  //     justifyContent: 'space-between',
+  //     // Note: Directly styling individual day text color for specific days (Sat/Sun) 
+  //     // is not straightforward with the 'theme' prop alone. The 'textSectionTitleColor'
+  //     // sets the color for ALL day headers.
+  //   },
+  //   // You can also try to target the header's text elements if the library 
+  //   // structure allows, but this is less reliable across versions.
+  // },
+  // textSectionTitleColor: theme.colorBlue, // For all weekdays
+
+};
 
 const MoistureTracker = () => {
   const { plantsData, selectPlant, selectedPlant } = usePlantsData();
@@ -68,8 +105,13 @@ const MoistureTracker = () => {
   });
 
   return (<>
-      <View style={{ height: 150, marginTop: 30 }}>
+      <StatusBar style="auto" />
+      <View style={{ height: 150, marginTop: 30, backgroundColor: theme.colorLightBlue }}>
         <CalendarProvider
+          style={{ elevation: 0 }}
+          // style={{backgroundColor:"transparent"}}
+          // theme={{calendarBackground: "transparent"}}
+          // theme={customTheme}
           date={selectedDay}
           disableAutoDaySelection={[
             ExpandableCalendar.navigationTypes.MONTH_SCROLL,
@@ -79,6 +121,9 @@ const MoistureTracker = () => {
           ]}
         >
           <ExpandableCalendar
+            // style={{backgroundColor:"transparent"}}
+            theme={customTheme}
+            style={{ elevation: 0 }}
             horizontal={true}
             disablePan={true}
             disableWeekScroll={false}
@@ -86,7 +131,7 @@ const MoistureTracker = () => {
               changeDate(day.dateString);
             }}
             markedDates={{...trackedDates,
-              [selectedDay]: { selected: true, selectedColor: theme.colorGrey },
+              [selectedDay]: { selected: true, selectedColor: theme.colorLightBlue },
             }}
           />
         </CalendarProvider>
@@ -94,7 +139,7 @@ const MoistureTracker = () => {
       <View style={styles.trackerContainer}>
         <View>
           <CustomPicker />
-          <Text style={[fontStyles.header, { alignSelf: "center" }]}>How is the soil feeling today?</Text>
+          <Text style={[fontStyles.header, { alignSelf: "center", color: theme.colorLightBlue }]}>How is the soil feeling today?</Text>
         </View>
         <View
           style={{
@@ -102,7 +147,6 @@ const MoistureTracker = () => {
             justifyContent: "space-evenly",
             paddingHorizontal: 30,
             paddingVertical: 10,
-            backgroundColor: "white",
             flexWrap: "wrap",
             gap: 10,
           }}
@@ -124,8 +168,10 @@ const MoistureTracker = () => {
           </CustomButton>
           <CustomButton
             label="Save"
+            colorTheme="colorTheme1"
             pill={true}
             fontStyle="buttonBold"
+            size={["100%"]}
             onPress={() => {
               submitData(selectedDay);
             }}
@@ -144,6 +190,8 @@ const styles = StyleSheet.create({
     flex: 1,
     // width: "80%",
     height: "90%",
+    // backgroundColor: theme.colorLightBlue,
     backgroundColor: "white",
+    paddingHorizontal: 5,
   },
 });

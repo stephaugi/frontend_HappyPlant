@@ -1,4 +1,4 @@
-import { fontStyles, theme } from "../../theme";
+import { fontStyles, theme, uiStyles } from "../../theme";
 import { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import ControlledTextInput from "./ControlledTextInput";
@@ -46,7 +46,13 @@ export default function NewPlantForm() {
       {/* <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       > */}
-
+          <View>
+          <ImageSelector
+            onSelectImage={handleFormChange}
+            selectedImage={plantFormData["photo"]}
+            />
+            </View>
+          <View style={styles.textInputsContainer}>
           <ControlledTextInput
             labelName="Name"
             name="name"
@@ -54,12 +60,6 @@ export default function NewPlantForm() {
             placeholder="Add a name"
             value={plantFormData["name"]}
           />
-          <View style={styles.photoSelectContainer}>
-          <ImageSelector
-            onSelectImage={handleFormChange}
-            selectedImage={plantFormData["photo"]}
-            />
-            </View>
           <ControlledTextInput
             labelName="Description"
             name="description"
@@ -76,18 +76,21 @@ export default function NewPlantForm() {
             placeholder="What plant species are they?"
             value={plantFormData["plantSpecies"]}
           />
+          <View>
           <Text style={fontStyles.emphasis}>When to water</Text>
           <ControlledOption
             moistureLevel={plantFormData.desiredMoistureLevel}
             onSelectOption={handleFormChange}
           />
-          <View style={{ marginTop: 20 }}>
+          </View>
             <CustomButton
               label="Submit"
               pill={true}
               fontStyle="buttonBold"
+              size={["100%"]}
               onPress={() => handleCreatePlant(plantFormData)}
             />
+
           </View>
     </KeyboardAwareScrollView>
       </View>
@@ -113,15 +116,12 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     flex: 1,
-    // width: 300,
-    // paddingHorizontal: 22,
-    // paddingVertical: 20,
-    // backgroundColor: theme.colorLightBlue,
     height: 600,
-    marginHorizontal: 20,
-    borderRadius: 16,
   },
-  photoSelectContainer: {
-    height: 200,
-  }
+  textInputsContainer: {
+    alignItems: "center",
+    marginHorizontal: 20,
+    marginTop: 10,
+    gap: 10,
+  },
 });

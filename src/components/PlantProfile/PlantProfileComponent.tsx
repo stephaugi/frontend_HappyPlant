@@ -8,6 +8,9 @@ import ControlledTextInput from "../PlantForm/ControlledTextInput";
 import ControlledOption from "../PlantForm/ControlledOption";
 import CustomButton from "components/UI/CustomButton";
 import { usePlantsData } from "contexts/PlantsData/PlantsDataContext";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { theme } from "../../theme";
+
 
 const PlantProfileComponent = ({ toNavigate }) => {
   const { plantsData, updatePlantsData, selectPlant } = usePlantsData();
@@ -42,59 +45,158 @@ const PlantProfileComponent = ({ toNavigate }) => {
   };
 
   return (
-    <View style={styles.profileContainer}>
-      <ControlledTextInput
-        labelName="Name"
-        name="name"
-        onChangeText={handleFormChange}
-        placeholder="Add a name"
-        value={plantFormData["name"]}
-      />
-      <ImageSelector
-        onSelectImage={handleFormChange}
-        selectedImage={plantFormData["photo"]}
-      />
-      <ControlledTextInput
-        labelName="Description"
-        name="description"
-        onChangeText={handleFormChange}
-        placeholder="Write something about your plant"
-        value={plantFormData["description"]}
-        textAreaHeight={100}
-        textArea={true}
-      />
-      <ControlledTextInput
-        labelName="Plant Species"
-        name="plantSpecies"
-        onChangeText={handleFormChange}
-        placeholder="What plant species are they?"
-        value={plantFormData["plantSpecies"]}
-      />
-      <View>
-      <Text style={fontStyles.emphasis}>When to water</Text>
-        <ControlledOption
-          moistureLevel={plantFormData.desiredMoistureLevel}
-          onSelectOption={handleFormChange}
-        />
+    <View style={styles.formContainer}>
+      <KeyboardAwareScrollView
+        enableOnAndroid={true}
+      >
+        {/* <ScrollView> */}
+      {/* <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      > */}
+          <View>
+          <ImageSelector
+            onSelectImage={handleFormChange}
+            selectedImage={plantFormData["photo"]}
+            />
+            </View>
+          <View style={styles.textInputsContainer}>
+          <ControlledTextInput
+            labelName="Name"
+            name="name"
+            onChangeText={handleFormChange}
+            placeholder="Add a name"
+            value={plantFormData["name"]}
+          />
+          <ControlledTextInput
+            labelName="Description"
+            name="description"
+            onChangeText={handleFormChange}
+            placeholder="Write something about your plant"
+            value={plantFormData["description"]}
+            textAreaHeight={100}
+            textArea={true}
+          />
+          <ControlledTextInput
+            labelName="Plant Species"
+            name="plantSpecies"
+            onChangeText={handleFormChange}
+            placeholder="What plant species are they?"
+            value={plantFormData["plantSpecies"]}
+          />
+          <View>
+          <Text style={fontStyles.emphasis}>When to water</Text>
+          <ControlledOption
+            moistureLevel={plantFormData.desiredMoistureLevel}
+            onSelectOption={handleFormChange}
+          />
+          </View>
+            <CustomButton
+              label="Save"
+              pill={true}
+              fontStyle="buttonBold"
+              size={["100%"]}
+              onPress={() => handleUpdatePlant(plantFormData)}
+            />
+
+          </View>
+    </KeyboardAwareScrollView>
       </View>
-      <CustomButton
-      label="Save"
-      onPress={() => handleUpdatePlant(plantFormData)}
-      />
-    </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  profileContainer: {
+  button: {
+    borderColor: theme.colorBlue,
+    borderWidth: 1,
+    backgroundColor: theme.colorBlue,
+    borderRadius: theme.cornerRound,
+    padding: 10,
+    width: 100,
+    alignSelf: "center",
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: theme.formTextSize,
+    fontWeight: "800",
+    textAlign: "center",
+  },
+  formContainer: {
     flex: 1,
-    paddingHorizontal: 22,
-    paddingVertical: 20,
     height: 600,
+    // 
+  },
+  textInputsContainer: {
+    alignItems: "center",
     marginHorizontal: 20,
-    borderRadius: 16,
+    marginTop: 10,
     gap: 10,
   },
 });
 
 export default PlantProfileComponent;
+
+//     <View style={styles.formContainer}>
+//       <KeyboardAwareScrollView
+//         enableOnAndroid={true}
+//       >
+//       <View>
+//       <ImageSelector
+//         onSelectImage={handleFormChange}
+//         selectedImage={plantFormData["photo"]}
+//         />
+//         </View>
+//       <View style={styles.textInputsContainer}>
+//       <ControlledTextInput
+//         labelName="Name"
+//         name="name"
+//         onChangeText={handleFormChange}
+//         placeholder="Add a name"
+//         value={plantFormData["name"]}
+//       />
+
+//       <ControlledTextInput
+//         labelName="Description"
+//         name="description"
+//         onChangeText={handleFormChange}
+//         placeholder="Write something about your plant"
+//         value={plantFormData["description"]}
+//         textAreaHeight={100}
+//         textArea={true}
+//       />
+//       <ControlledTextInput
+//         labelName="Plant Species"
+//         name="plantSpecies"
+//         onChangeText={handleFormChange}
+//         placeholder="What plant species are they?"
+//         value={plantFormData["plantSpecies"]}
+//       />
+//       <View>
+//       <Text style={fontStyles.emphasis}>When to water</Text>
+//         <ControlledOption
+//           moistureLevel={plantFormData.desiredMoistureLevel}
+//           onSelectOption={handleFormChange}
+//         />
+//       </View>
+//       <CustomButton
+//       label="Save"
+//       onPress={() => handleUpdatePlant(plantFormData)}
+//       />
+//       </View>
+//     </KeyboardAwareScrollView>
+//     </View>
+//   );
+// };
+
+// const styles = StyleSheet.create({
+//   textInputsContainer: {
+//     marginHorizontal: 20,
+//     marginTop: 10,
+//   },
+//   formContainer: {
+//     flex: 1,
+//     height: 600,
+//   },
+  
+// });
+
+// export default PlantProfileComponent;

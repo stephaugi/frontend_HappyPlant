@@ -7,6 +7,7 @@ import { getPlantsFromApi } from "../../../utils/api/apiCalls";
 import { convertFromAPI } from "../../../utils/api/convertData";
 import { getFromStorage, saveToStorage } from "../../../utils/storage";
 import { PlantsDataProvider } from "contexts/PlantsData/PlantsDataContext";
+import { StatusBar } from "expo-status-bar";
 
 const storageKey = "plantsData";
 

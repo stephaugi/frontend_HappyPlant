@@ -21,9 +21,9 @@ const PlantCard = ({ plantData }: Props) => {
   const { plantsData, selectedPlant, updatePlantsData, resetPlantsData, refreshPlantsData, selectPlant } = usePlantsData();
   const needsWater = plantData.nextWaterDate === today;
   const waterIcon = needsWater ? (
-    <MaterialCommunityIcons name="emoticon-sad" size={30} color="orange" />
+    <MaterialCommunityIcons name="emoticon-sad" size={50} color={theme.colorGrey} />
   ) : (
-    <MaterialCommunityIcons name="emoticon-happy" size={30} color="teal" />
+    <MaterialCommunityIcons name="emoticon-happy" size={50} color={theme.colorOrange} />
   );
 
   const router = useRouter();
@@ -46,19 +46,6 @@ const PlantCard = ({ plantData }: Props) => {
   return (
     <TouchableOpacity onPress={() => handleSelectPlant(plantData)}>
       <View style={styles.plantCardContainer}>
-        <View style={{position: "absolute", zIndex: 9999, top:-5, left: -5}}>
-          {waterIcon}
-          </View>
-        <View style={styles.textContainer}>
-          <View style={{ flexDirection: "row", alignItems: "center", gap:10 }}>
-          <Text style={fontStyles.header}>{plantData.name}</Text>
-          { plantData.plantSpecies ?
-          <Text style={fontStyles.tinyDescription}>({plantData.plantSpecies})</Text> : null}
-          </View>
-          <Text style={fontStyles.tinyDescription}>{plantData.description}</Text>
-          
-          <Text style={fontStyles.emphasis}>When to water: {moistureScales[plantData.desiredMoistureLevel-1]}</Text>
-        </View>
         <View>
           <View>
             {plantData.photo && <Image source={{ uri: plantData.photo }}
@@ -67,6 +54,20 @@ const PlantCard = ({ plantData }: Props) => {
             />}
           </View>
         </View>
+        <View style={styles.water}>
+          {waterIcon}
+          </View>
+        <View style={styles.textContainer}>
+          <View style={{ flexDirection: "row", alignItems: "center", gap:10 }}>
+          <Text style={[fontStyles.header, {color: theme.colorLightBlue}]}>{plantData.name}</Text>
+          { plantData.plantSpecies ?
+          <Text style={fontStyles.tinyDescription}>({plantData.plantSpecies})</Text> : null}
+          </View>
+          <Text style={fontStyles.tinyDescription}>{plantData.description}</Text>
+          
+          <Text style={fontStyles.emphasis}>When to water: {moistureScales[plantData.desiredMoistureLevel-1]}</Text>
+        </View>
+        
       </View>
     </TouchableOpacity>
   );
@@ -76,21 +77,28 @@ const styles = StyleSheet.create({
   plantCardContainer: {
     padding: 22,
     backgroundColor: theme.colorLightGrey,
-    height: 100,
-    marginHorizontal: 20,
+    // height: 250,
+    // marginHorizontal: 20,
     borderRadius: 16,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    // flexDirection: "row",
+    // justifyContent: "space-between",
+    // alignItems: "center",
+
   },
   image: {
-    // alignSelf: "center",
-    width: 80,
-    height: 80,
+    alignSelf: "center",
+    width: 150,
+    height: 150,
     borderRadius: 40,
   },
   textContainer: {
-    width: 200,
+    // width: 200,
+  },
+  water: {
+    position: "absolute",
+    zIndex: 9999,
+    top: 10,
+    right: 10,
   },
 });
 

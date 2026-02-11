@@ -2,19 +2,18 @@ import { View, Text, StyleSheet, Image } from "react-native";
 import { theme, fontStyles } from "../../theme";
 import { moistureScales } from "../../constants";
 
-
 type Prop = {
   plant?: object;
   data?: object;
 };
 const PlantAgenda = ({ plant, upcomingWater=false, water=false, moisture=false, data }: Prop) => {
-  const moistureDateLog = moisture ? (<><Text style={fontStyles.emphasis}>
+  const moistureDateLog = moisture ? (<><Text style={[fontStyles.emphasis, {color: theme.colorWhite}]}>
         Moisture Check
       </Text>
-      <Text>{`${data.plantName}'s Soil was feeling ${moistureScales[data.moistureLevel-1]} today!`}</Text>
+      <Text style={{color: theme.colorWhite}}>{`${data.plantName}'s Soil was feeling ${moistureScales[data.moistureLevel-1]} today!`}</Text>
   </>) : null;
 
-  const nextWater = upcomingWater ? (<><Text style={fontStyles.emphasis}>
+  const nextWater = upcomingWater ? (<><Text style={[fontStyles.emphasis, {color: theme.colorWhite}]}>
         {new Date(plant.nextWaterDate).toLocaleDateString("us-en", {
           year: 'numeric',
           month: 'long',
@@ -22,12 +21,12 @@ const PlantAgenda = ({ plant, upcomingWater=false, water=false, moisture=false, 
           timeZone: 'UTC',
         })}
       </Text>
-      <Text>Time to water {plant.name}!</Text></>) : null;
+      <Text style={{color: theme.colorWhite}}>Time to water {plant.name}!</Text></>) : null;
 
-  const waterDate = water ? (<><Text style={fontStyles.emphasis}>
+  const waterDate = water ? (<><Text style={[fontStyles.emphasis, {color: theme.colorBlack}]}>
         Watered
       </Text>
-      <Text>{`${data.plantName} was watered today!`}</Text>
+      <Text style={{color: theme.colorBlack}}>{`${data.plantName} was watered today!`}</Text>
   </>) : null;
 
   return (
@@ -56,11 +55,12 @@ export default PlantAgenda;
 
 const styles = StyleSheet.create({
   plantCardContainer: {
+
     padding: 10,
     marginHorizontal: 20,
     marginVertical: 10,
-    width: 300,
-    borderRadius: 16,
+    width: "95%",
+    borderRadius: 50,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.moistureColor,
   },
   upcomingWater: {
-    backgroundColor: theme.waterColor,
+    backgroundColor: theme.colorLightBlue,
   },
   agendaItem: {
     // backgroundColor: "#eee",

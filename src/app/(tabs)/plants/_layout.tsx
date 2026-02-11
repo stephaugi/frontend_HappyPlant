@@ -7,6 +7,7 @@ import { getFromStorage } from "../../../utils/storage";
 import { deletePlant } from "../../../utils/plantActions";
 import { useRouter } from "expo-router";
 import { Alert } from "react-native";
+import { theme } from "theme";
 
 export default function Layout() {
   const [visible, setVisible] = useState(false);
@@ -39,12 +40,19 @@ export default function Layout() {
   };
   
   return (
-    <Stack>
+    <Stack screenOptions={{
+        headerTintColor: '#fff',
+    }}>
       <Stack.Screen
         name="index"
         options={{
+        headerTintColor: '#fff',
+        headerShadowVisible: false,
+        headerStyle:{
+          backgroundColor: theme.colorBlue,
+        },
           title: "Plants",
-          headerRight: () => {
+          headerRight: ({tintColor}) => {
             return (
               <View
                 style={{
@@ -56,7 +64,7 @@ export default function Layout() {
               >
                 <Link href="plants/newPlant" asChild>
                   <TouchableOpacity hitSlop={20}>
-                    <AntDesign name="plus" size={24} color="black" />
+                    <AntDesign name="plus" size={24} color={tintColor} />
                   </TouchableOpacity>
                 </Link>
               </View>
@@ -67,15 +75,18 @@ export default function Layout() {
       <Stack.Screen
         name="newPlant"
         options={{
-          title: "Add a Plant",
+          // headerShown: false,
+          headerTransparent: true,
+          title: "",
           presentation: "modal",
         }}
       />
       <Stack.Screen
         name="plantProfile"
         options={{
-          title: "My Plant",
-          headerRight: () => {
+          title: "",
+          headerTransparent: true,
+          headerRight: ({tintColor}) => {
             return (<View
                 style={{
                   alignItems: "center",
@@ -84,8 +95,8 @@ export default function Layout() {
                   height: 36,
                 }}
               >
-                <TouchableOpacity hitSlop={20} onPress={handleDeletePlant}>
-                  <FontAwesome6 name="trash" size={24} color="black" />
+                <TouchableOpacity hitSlop={20} onPressOut={handleDeletePlant}>
+                  <FontAwesome6 name="trash" size={24} color={tintColor} />
                 </TouchableOpacity>
               </View>)
           },

@@ -9,22 +9,16 @@ export default function PlantProfileScreen() {
   const router = useRouter();
   return (
     <PlantsDataProvider>
-      <ScrollView style={styles.scrollContainer}>
         <View style={styles.container}>
           <PlantProfileComponent toNavigate={router}/>
         </View>
-      </ScrollView>
     </PlantsDataProvider>
   );
 }
 
 const styles = StyleSheet.create({
-  scrollContainer: {
-    flex: 1,
-  },
   container: {
+    flex: 1,
     backgroundColor: "#fff",
-    // alignItems: "center",
-    // justifyContent: "center",
   },
 });

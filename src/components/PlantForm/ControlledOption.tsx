@@ -83,12 +83,12 @@ const styles = StyleSheet.create({
     alignItems: "left",
   },
   menu: {
-    borderColor: theme.colorTheme1,
-    borderWidth: 1,
+    // borderColor: theme.colorTheme1,
+    // borderWidth: 1,
     backgroundColor: theme.colorTheme1Light,
     borderRadius: theme.cornerRound,
     padding: 10,
-    elevation: 4,
+    // elevation: 4,
     width: 300,
   },
   menuItemText: {

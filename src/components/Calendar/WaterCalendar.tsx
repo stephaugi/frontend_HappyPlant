@@ -7,6 +7,15 @@ import { useAllMoistureData } from 'contexts/AllData/AllMoistureDataContext';
 import { useAllWaterData } from 'contexts/AllData/AllWaterDataContext';
 import { usePlantsData } from 'contexts/PlantsData/PlantsDataContext';
 
+const customTheme = {
+  dotColor: theme.colorLightBlue,
+  todayDotColor: theme.colorLightBlue,
+  todayTextColor: theme.colorLightBlue,
+  arrowColor: theme.colorBlue,
+  calendarBackground: theme.colorLightGrey,
+  textSectionTitleColor: theme.colorGrey, // For all weekdays
+};
+
 const WaterCalendar = () => {
   const [selectedDate, setSelectedDate] = useState('');
   const { allMoistureData, moistureDates } = useAllMoistureData();
@@ -64,19 +73,20 @@ const WaterCalendar = () => {
   })) : null;
 
   return (<>
-      <View style={{ flex: 1, marginTop: 30 }}>
+      <View style={{ flex: 1, paddingTop: 40, backgroundColor: theme.colorLightGrey }}>
         <Calendar
-          style={{ width: 300, height: 350, position: "relative", alignSelf: "center" }}
+          theme={customTheme}
+          style={styles.calendarStyle}
           headerStyle={{ justifyContent: "center" }}
           onDayPress={day => {
             const newDate = (day.dateString == selectedDate) ? null : day.dateString
             setSelectedDate(newDate)}}
           markedDates=
-          {{...waterDates, ...moistureDates, [selectedDate]: {selected: true}}}
+          {{...waterDates, ...moistureDates, [selectedDate]: {selected: true, selectedColor: theme.colorLightBlue}}}
       />
-      <ScrollView >
-      <View style={[{ alignItems: "center" }]}>
-        <Text style={fontStyles.header}>{selectedDate && (selectedDate in allMoistureData) ? `${selectedDateWritten}` : "Upcoming Waterings"}</Text>
+      <ScrollView>
+      <View style={styles.agendaContainer}>
+        <Text style={[fontStyles.header, { color: theme.colorLightBlue }]}>{selectedDate && (selectedDate in allMoistureData) ? `${selectedDateWritten}` : "Upcoming Waterings"}</Text>
         {agendas}{water_history}
       </View>
       </ScrollView>
@@ -86,3 +96,20 @@ const WaterCalendar = () => {
 };
 
 export default WaterCalendar;
+
+const styles = StyleSheet.create({
+  calendarStyles: {
+    width: 300,
+    height: 350,
+    position: "relative",
+    alignSelf: "center",
+  },
+  agendaContainer: { alignItems: "center",
+    backgroundColor: theme.colorWhite,
+    borderTopRightRadius: 30,
+    borderTopLeftRadius: 30,
+    paddingTop: 20,
+    // justifyContent: "flex-end",
+    height: 400,
+  },
+});

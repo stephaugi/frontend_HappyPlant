@@ -1,7 +1,12 @@
 import { useState } from 'react';
-import { Alert, Button, Image, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Alert, View, StyleSheet, TouchableOpacity, Text, ImageBackground } from 'react-native';
 import * as ImagePicker from "expo-image-picker";
 import { getFromStorage, saveToStorage } from '../../utils/storage';
+import { fontStyles, theme, uiStyles } from 'theme';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+// import { LinearGradient } from "react-native-svg";
+import { StatusBar } from "expo-status-bar"
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function ImageSelector({ onSelectImage, selectedImage }) {
   const [image, setImage] = useState<string | null>(selectedImage);
@@ -38,28 +43,77 @@ export default function ImageSelector({ onSelectImage, selectedImage }) {
     }
   };
 
-  return (
+  return (<>
+      <StatusBar style="light" />
     <View style={styles.container}>
       {selectedImage ? (<TouchableOpacity onPress={pickImage}>
-        <Image source={{ uri: selectedImage }}
-          style={styles.image}
-          resizeMode="cover"
-        /></TouchableOpacity>
-      ) : (<Button title="Pick an image from camera roll" onPress={pickImage} />)}
+          <ImageBackground source={{ uri: selectedImage }} style={styles.image} />
+            <LinearGradient
+              colors={["rgba(0, 0, 0, 0.8)", "transparent", "transparent"]}
+              style={styles.gradStyle}
+            />
+          {/* </ImageBackground> */}
+        </TouchableOpacity>
+      ) : (<View style={styles.selectImageContainer}>
+        <TouchableOpacity style={[uiStyles.centerAlign, {gap: 20}]} onPress={pickImage}>
+          <View style={styles.button}>
+            <MaterialCommunityIcons
+              name="camera-plus"
+              size={34}
+              color={theme.colorWhite}
+            />
+          </View>
+          <Text style={[{color: theme.colorWhite}, fontStyles.buttonLarge]}>Add a Photo</Text>
+        </TouchableOpacity>
+        </View>
+      )}
     </View>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
+
+    height: 300,
+    backgroundColor: theme.colorBlue,
+    borderBottomRightRadius: 30,
+    borderBottomLeftRadius: 30,
+  },
+  selectImageContainer: {
+    // width: "100%",
+    height: "100%",
+    alignItems: "center",
     justifyContent: "center",
   },
   image: {
     // alignSelf: "center",
-    width: 200,
-    height: 200,
-    borderRadius: 5,
+
+    width: "100%",
+    height: 300,
+    borderBottomRightRadius: 30,
+    borderBottomLeftRadius: 30,
+    // objectFit: "cover",
+    overflow: "hidden",
+  },
+  button: {
+    width: 100,
+    height: 100,
+    alignItems: "center",
+    justifyContent: "center",
+    // padding: 30,
+    borderColor: theme.colorWhite,
+    borderWidth: 2,
+    borderRadius: 50,
+  },
+  gradStyle: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    // top: 0,
+    // bottom: 0,
+    // left: 0,
+    // right: 0,
   },
 });

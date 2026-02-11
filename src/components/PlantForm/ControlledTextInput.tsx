@@ -22,7 +22,8 @@ const ControlledTextInput = ({
   textAreaHeight,
   textArea,
 }: Props) => {
-  return(<View>
+  return(<View style={{justifyContent: "flex-start",
+    alignContent: "flex-start"}}>
     <Text style={fontStyles.emphasis}>{labelName}</Text>
     <TextInput
       // onFocus={(event: Event) => {
@@ -32,7 +33,7 @@ const ControlledTextInput = ({
       // autoFocus={true}
       multiline={textArea}
       placeholder={placeholder}
-      style={[uiStyles.textInput, fontStyles.label, { height: textAreaHeight, alignSelf: "center" }]}
+      style={[uiStyles.textInput, fontStyles.label, { height: textAreaHeight}]}
       value={value}
       onChangeText={(value: string) => onChangeText(name, value)}
     />
